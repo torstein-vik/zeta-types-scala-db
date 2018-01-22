@@ -51,3 +51,10 @@ This framework is and will remain completely open source, under the GNU General 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
+
+## Languages/Frameworks
+
+* Implementation: Scala
+* Build tool: SBT
+* Database: MongoDB
+

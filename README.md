@@ -16,3 +16,11 @@ Instructions for the actual database setup is not available or decided yet.
 
 Please tell us if this doesn't work, because that means something is wrong with our instructions.
 
+## Current features
+
+TODO...
+
+## Usage Examples
+
+TODO...
+

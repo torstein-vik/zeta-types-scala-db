@@ -1,2 +1,2 @@
-# zeta-types-scala-db
-Database bindings for multiplicative functions / zeta-types
+# Zeta Types (Scala) Database
+***Database bindings for multiplicative functions / zeta-types*** <p>

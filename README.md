@@ -24,3 +24,10 @@ TODO...
 
 TODO...
 
+## Contributors
+
+_Ask Torstein ([torsteinv64@gmail.com](mailto:torsteinv64@gmail.com)) to add you here if you contribute to this project_
+* Torstein Vik
+
+Additionally, we thank all the contributors of ([https://github.com/torstein-vik/multfuncs-db](https://github.com/torstein-vik/multfuncs-db)) for the database specification
+

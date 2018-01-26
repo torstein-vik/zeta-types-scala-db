@@ -13,4 +13,11 @@ class ArithmeticTest extends FunSuite {
         ;{ Nat(10) }
     }
     
+    test ("Ratio requirements") {
+        assertThrows[IllegalArgumentException]{ Ratio(Integer(0), Integer(0)) }
+        assertThrows[IllegalArgumentException]{ Ratio(Integer(10), Integer(0)) }
+        ;{ Ratio(Integer(10), Integer(1)) }
+        ;{ Ratio(Integer(10), Integer(-15)) }
+    }
+    
 }

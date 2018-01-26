@@ -57,6 +57,7 @@ This framework is and will remain completely open source, under the GNU General 
 * Implementation: Scala
 * Build tool: SBT
 * Database: MongoDB
+* Database spec.: [https://github.com/torstein-vik/multfuncs-db](https://github.com/torstein-vik/multfuncs-db)
 
 ## Folder structure
 

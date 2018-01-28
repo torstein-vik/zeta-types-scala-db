@@ -1,6 +1,7 @@
 package io.github.torsteinvik.zetatypes.db
 
-object Datatypes {
+/** Provides data-types used in JSON-schema */
+package object Datatypes {
 
     import scala.language.implicitConversions
 

@@ -30,5 +30,8 @@ object Arithmetic {
         case Floating(x) => x
         case Ratio(Integer(x), Integer(y)) => x.floatValue / y.floatValue
     }
+    
+    /** A polynomial with coefficients in the [[ComplexNumber]]s, stored sparsely */
+    sealed case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 
 
 }

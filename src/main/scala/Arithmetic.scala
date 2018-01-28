@@ -9,8 +9,8 @@ object Arithmetic {
     /** Abstract data type representing a real number, and realizing a [[ComplexNumber]]*/
     sealed abstract class Real extends ComplexNumber
 
-    /** A natural number > 0, realizing a [[Real]] */
-    sealed case class Nat (x : BigInt) extends Real {require(x > 0)}
+    /** A natural number >= 0, realizing a [[Real]] */
+    sealed case class Nat (x : BigInt) extends Real {require(x >= 0)}
     /** A (big) integer, realizing a [[Real]] */
     sealed case class Integer (x : BigInt) extends Real
     /** A floating point number, realizing a [[Real]] */

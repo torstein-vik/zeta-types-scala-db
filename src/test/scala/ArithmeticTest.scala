@@ -8,8 +8,8 @@ class ArithmeticTest extends FunSuite {
     
     test ("Natural number requirements") {
         assertThrows[IllegalArgumentException]{ Nat(-10) }
-        assertThrows[IllegalArgumentException]{ Nat(0) }
-        ;{ Nat(1) }
+        assertThrows[IllegalArgumentException]{ Nat(-1) }
+        ;{ Nat(0) }
         ;{ Nat(10) }
     }
     

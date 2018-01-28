@@ -1,10 +1,7 @@
 package io.github.torsteinvik.zetatypes.db
 
-/** Provides data-types used in JSON-schema */
-package object Datatypes {
-
-    import scala.language.implicitConversions
-
+package Datatypes {
+    
     /** Abstract data type representing a complex number*/
     sealed abstract class ComplexNumber
     /** Abstract data type representing a real number, and realizing a [[ComplexNumber]]*/
@@ -23,6 +20,19 @@ package object Datatypes {
     sealed case class CartesianComplex (re : Real, im : Real) extends ComplexNumber
     /** A pair of [[Real]] numbers, representing the absolute value and argument (normalized to [0, 1[) of a [[ComplexNumber]] */
     sealed case class PolarComplex (abs : Real, unitarg : Real) extends ComplexNumber {require(abs >= 0 && unitarg >= 0 && unitarg < 1)}
+    
+    /** A polynomial with coefficients in the [[ComplexNumber]]s, stored sparsely */
+    sealed case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 
+    
+    /** A Hybrid set of elements in the input type */
+    sealed case class HybridSet[A] (multiplicities : (A, Int)*)
+
+}
+
+/** Provides data-types used in JSON-schema */
+package object Datatypes {
+
+    import scala.language.implicitConversions
 
     /** Implicit conversion of any [[Real]] to a scala floting point number */
     implicit def realToFloat(x : Real) : Float = x match {
@@ -32,7 +42,4 @@ package object Datatypes {
         case Ratio(Integer(x), Integer(y)) => x.floatValue / y.floatValue
     }
     
-    /** A polynomial with coefficients in the [[ComplexNumber]]s, stored sparsely */
-    sealed case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 
-
 }

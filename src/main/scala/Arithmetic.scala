@@ -4,17 +4,26 @@ object Arithmetic {
 
     import scala.language.implicitConversions
 
+    /** Abstract data type representing a complex number*/
     sealed abstract class ComplexNumber
+    /** Abstract data type representing a real number, and realizing a [[ComplexNumber]]*/
     sealed abstract class Real extends ComplexNumber
 
-    sealed case class Nat      (x : BigInt) extends Real {require(x > 0)}
-    sealed case class Integer  (x : BigInt) extends Real
-    sealed case class Floating (x : Float)  extends Real
-    sealed case class Ratio    (num : Integer, den : Integer) extends Real {require(realToFloat(den) != 0)}
+    /** A natural number > 0, realizing a [[Real]] */
+    sealed case class Nat (x : BigInt) extends Real {require(x > 0)}
+    /** A (big) integer, realizing a [[Real]] */
+    sealed case class Integer (x : BigInt) extends Real
+    /** A floating point number, realizing a [[Real]] */
+    sealed case class Floating (x : Float) extends Real
+    /** A ratio of integers, realizing a [[Real]] */
+    sealed case class Ratio (num : Integer, den : Integer) extends Real {require(realToFloat(den) != 0)}
 
+    /** A pair of [[Real]] numbers, representing a real and imaginary part of a [[ComplexNumber]] */
     sealed case class CartesianComplex (re : Real, im : Real) extends ComplexNumber
+    /** A pair of [[Real]] numbers, representing the absolute value and argument (normalized to [0, 1[) of a [[ComplexNumber]] */
     sealed case class PolarComplex (abs : Real, unitarg : Real) extends ComplexNumber {require(abs >= 0 && unitarg >= 0 && unitarg < 1)}
 
+    /** Implicit conversion of any [[Real]] to a scala floting point number */
     implicit def realToFloat(x : Real) : Float = x match {
         case Nat(x) => x.floatValue
         case Integer(x) => x.floatValue

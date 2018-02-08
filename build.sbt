@@ -11,4 +11,4 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused",
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
-dependsOn(RootProject(uri("git://github.com/torstein-vik/zeta-types-scala.git#1.0.x")))
+//dependsOn(RootProject(uri("git://github.com/torstein-vik/zeta-types-scala.git#1.0.x")))

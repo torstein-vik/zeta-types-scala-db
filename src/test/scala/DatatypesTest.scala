@@ -13,6 +13,18 @@ class DatatypesTest extends FunSuite {
         ;{ Nat(10) }
     }
     
+    test ("Prime number requirements") {
+        assertThrows[IllegalArgumentException]{ Prime(1) }
+        assertThrows[IllegalArgumentException]{ Prime(-1) }
+        assertThrows[IllegalArgumentException]{ Prime(0) }
+        assertThrows[IllegalArgumentException]{ Prime(20) }
+        assertThrows[IllegalArgumentException]{ Prime((179425177 : BigInt) * 179425177) }
+        ;{ Prime(3) }
+        ;{ Prime(17) }
+        ;{ Prime(97) }
+        ;{ Prime(179425177) }
+    }
+    
     test ("Ratio requirements") {
         assertThrows[IllegalArgumentException]{ Ratio(Integer(0), Integer(0)) }
         assertThrows[IllegalArgumentException]{ Ratio(Integer(10), Integer(0)) }

@@ -48,6 +48,10 @@ package object Datatypes extends LowerPriorityImplicits {
         case Ratio(Integer(x), Integer(y)) => x.floatValue / y.floatValue
     }
     
+    implicit def floatToReal(x : Float) : Real = Floating(x)
+    implicit def doubleToReal(x : Double) : Real = Floating(x.floatValue)
+    implicit def intToReal(x : Int) : Real = Integer(x)
+    
 }
 
 trait LowerPriorityImplicits {

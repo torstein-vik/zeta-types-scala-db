@@ -35,7 +35,7 @@ package Datatypes {
 }
 
 /** Provides data-types used in JSON-schema */
-package object Datatypes {
+package object Datatypes extends LowerPriorityImplicits {
 
     import scala.language.implicitConversions
 
@@ -48,4 +48,13 @@ package object Datatypes {
         case Ratio(Integer(x), Integer(y)) => x.floatValue / y.floatValue
     }
     
+}
+
+trait LowerPriorityImplicits {
+    import Datatypes._
+    import scala.language.implicitConversions
+    
+    implicit def intToInteger(x : Int) : Integer = Integer(x)
+    implicit def intToPrime(x : Int) : Prime = Prime(x)
+    implicit def intToNat(x : Int) : Nat = Nat(x)
 }

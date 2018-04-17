@@ -8,6 +8,11 @@ import io.github.torsteinvik.zetatypes.db.codec._
 
 class CodecTest extends FunSuite {
     
+    
+    test("Define codec for impossible types") {
+        assertThrows[Exception] { Codec[Option[_]] }
+    }
+    
     test("Define codec for MultiplicativeFunction") { Codec[MultiplicativeFunction] }
     
     test("Encode MultiplicativeFunction"){

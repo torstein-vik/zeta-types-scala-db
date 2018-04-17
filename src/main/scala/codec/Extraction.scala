@@ -13,6 +13,9 @@ private[codec] object Extraction {
             case t if t =:= typeOf[String] => return StringCodec
         }
         
+        val typeSymbol : TypeSymbol = symbolOf[T]
+        
+        if (typeSymbol.isAbstract) throw new Exception("Can't create codec for abstract type " + typeSymbol.toString)
         
         throw new Exception("Not Yet Implemented")
     }

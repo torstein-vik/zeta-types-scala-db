@@ -6,6 +6,15 @@ import org.json4s._
 
 private[codec] object Extraction {
     def apply[T](implicit tt : TypeTag[T]) : Codec[_] = {
+        
+        typeOf[T] match {
+            case t if t =:= typeOf[BigInt] => return BigIntCodec
+            case t if t =:= typeOf[Double] => return DoubleCodec
+            case t if t =:= typeOf[String] => return StringCodec
+        }
+        
+        
+        throw new Exception("Not Yet Implemented")
     }
     
     private object BigIntCodec extends Codec[BigInt]{

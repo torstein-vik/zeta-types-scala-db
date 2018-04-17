@@ -23,6 +23,11 @@ case class URI (
 )
 
 
+case class ModulusForm (
+    modulus: Nat,
+    symbols: Seq[PrimeLogSymbol]
+)
+
 case class FunctionalEquationParameters (
     degree: Option[Nat] = None, 
     conductor: Option[Nat] = None, 

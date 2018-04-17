@@ -52,6 +52,8 @@ package object Datatypes extends LowerPriorityImplicits {
     implicit def doubleToReal(x : Double) : Real = Floating(x.floatValue)
     implicit def intToReal(x : Int) : Real = Integer(x)
     
+    type PrimeLogSymbol = HybridSet[(Real, Real)]
+    
 }
 
 trait LowerPriorityImplicits {

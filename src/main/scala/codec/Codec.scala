@@ -10,7 +10,5 @@ trait Codec[T] {
 }
 
 object Codec {
-    def apply[T](implicit typetag : TypeTag[T]) : Codec[T] = {
-        throw new Exception("Couldn't find codec for type")
-    }
+    def apply[T](implicit typetag : TypeTag[T]) : Codec[T] = Extraction[T](typetag).asInstanceOf[Codec[T]]
 }

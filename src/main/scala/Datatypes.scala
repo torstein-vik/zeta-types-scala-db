@@ -29,6 +29,9 @@ package Datatypes {
     /** A Hybrid set of elements in the input type */
     sealed case class HybridSet[A] (multiplicities : (A, Int)*)
 
+    /** A JSON object, each value of specified type */
+    sealed case class Record[T] (entries : (String, T)*)
+
 }
 
 /** Provides data-types used in JSON-schema */

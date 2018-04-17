@@ -14,9 +14,9 @@ package Datatypes {
     /** A (big) integer, realizing a [[Real]] */
     sealed case class Integer (x : BigInt) extends Real
     /** A floating point number, realizing a [[Real]] */
-    sealed case class Floating (x : Float) extends Real
+    sealed case class Floating (x : Double) extends Real
     /** A ratio of integers, realizing a [[Real]] */
-    sealed case class Ratio (num : Integer, den : Integer) extends Real {require(realToFloat(den) != 0)}
+    sealed case class Ratio (num : Integer, den : Integer) extends Real {require(realToDouble(den) != 0)}
 
     /** A pair of [[Real]] numbers, representing a real and imaginary part of a [[ComplexNumber]] */
     sealed case class CartesianComplex (re : Real, im : Real) extends ComplexNumber
@@ -40,16 +40,16 @@ package object Datatypes extends LowerPriorityImplicits {
     import scala.language.implicitConversions
 
     /** Implicit conversion of any [[Real]] to a scala floting point number */
-    implicit def realToFloat(x : Real) : Float = x match {
-        case Prime(x) => x.floatValue
-        case Nat(x) => x.floatValue
-        case Integer(x) => x.floatValue
+    implicit def realToDouble(x : Real) : Double = x match {
+        case Prime(x) => x.doubleValue
+        case Nat(x) => x.doubleValue
+        case Integer(x) => x.doubleValue
         case Floating(x) => x
-        case Ratio(Integer(x), Integer(y)) => x.floatValue / y.floatValue
+        case Ratio(Integer(x), Integer(y)) => x.doubleValue / y.doubleValue
     }
     
-    implicit def floatToReal(x : Float) : Real = Floating(x)
-    implicit def doubleToReal(x : Double) : Real = Floating(x.floatValue)
+    implicit def floatToReal(x : Float) : Real = Floating(x.doubleValue)
+    implicit def doubleToReal(x : Double) : Real = Floating(x)
     implicit def intToReal(x : Int) : Real = Integer(x)
     
     type PrimeLogSymbol = HybridSet[(Real, Real)]

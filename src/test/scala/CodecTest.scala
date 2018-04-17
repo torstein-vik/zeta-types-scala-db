@@ -19,6 +19,27 @@ class CodecTest extends FunSuite {
         Codec[String]
     }
     
+    test("Encode for possible types") {
+        val bic = Codec[BigInt]
+        val fc = Codec[Double]
+        val sc = Codec[String]
+        
+        assert(bic.decode(bic.encode(BigInt("13"))) === BigInt("13"))
+        assert(bic.decode(bic.encode(BigInt("-135532525253"))) === BigInt("-135532525253"))
+        assert(bic.decode(bic.encode(BigInt("43252356"))) === BigInt("43252356"))
+        assert(bic.decode(bic.encode(BigInt("13"))) !== BigInt("12"))
+        
+        assert(fc.decode(fc.encode(121.243F)) === 121.243F)
+        assert(fc.decode(fc.encode(12E23)) === 12E23)
+        assert(fc.decode(fc.encode(-5E-21)) === -5E-21)
+        assert(fc.decode(fc.encode(-4E-21)) !== -3E-21)
+        
+        assert(sc.decode(sc.encode("test1..%&\"")) === "test1..%&\"")
+        assert(sc.decode(sc.encode("testy test +++--- <3")) === "testy test +++--- <3")
+        assert(sc.decode(sc.encode("''''hey$:::")) === "''''hey$:::")
+        assert(sc.decode(sc.encode("halo")) !== "halo ")
+    }
+    
     test("Define codec for MultiplicativeFunction") { Codec[MultiplicativeFunction] }
     
     test("Encode MultiplicativeFunction"){

@@ -71,6 +71,8 @@ class CodecTest extends FunSuite {
             ))
         )
         
+        assert(mf === codec.decode(codec.encode(mf)))
+        
     }
     
 }

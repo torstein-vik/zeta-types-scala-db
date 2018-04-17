@@ -29,6 +29,13 @@ case class BellTable (
     eulerFactors: Seq[(Prime, ComplexPolynomial, ComplexPolynomial)] 
 )
 
+case class GlobalTannakianSymbol (
+    exceptionalPrimes: Seq[Prime], 
+    localValues: Seq[(Prime, HybridSet[ComplexNumber])], 
+    primeLogForm: Option[PrimeLogSymbol] = None, 
+    polynomialForm: Option[HybridSet[ComplexPolynomial]] = None, 
+    modulusForm: Option[ModulusForm] = None
+)
 
 case class ModulusForm (
     modulus: Nat,

@@ -13,6 +13,12 @@ class CodecTest extends FunSuite {
         assertThrows[Exception] { Codec[Option[_]] }
     }
     
+    test("Define codec for possible types") {
+        Codec[BigInt]
+        Codec[Double]
+        Codec[String]
+    }
+    
     test("Define codec for MultiplicativeFunction") { Codec[MultiplicativeFunction] }
     
     test("Encode MultiplicativeFunction"){

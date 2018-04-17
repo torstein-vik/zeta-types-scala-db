@@ -22,3 +22,8 @@ case class URI (
     uri : String 
 )
 
+
+case class EtaCombination (
+    elements: HybridSet[HybridSet[Nat]],
+    isProven: Boolean
+)

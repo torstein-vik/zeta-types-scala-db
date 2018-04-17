@@ -2,6 +2,16 @@ package io.github.torsteinvik.zetatypes.db
 
 import Datatypes._
 
+case class MultiplicativeFunction (
+    mflabel: String, 
+    metadata: Metadata, 
+    properties: Record[Boolean], 
+    invariants: Record[ComplexNumber], 
+    bellTable: BellTable, 
+    globalTannakianSymbol: Option[GlobalTannakianSymbol] = None, 
+    functionalEquationParameters: Option[FunctionalEquationParameters] = None, 
+    etaCombination: Option[EtaCombination] = None
+)
 
 case class Metadata (
     descriptiveName: String, 

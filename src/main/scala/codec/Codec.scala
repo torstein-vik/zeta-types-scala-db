@@ -1,5 +1,6 @@
 package io.github.torsteinvik.zetatypes.db.codec
 
+import scala.reflect.runtime.universe._
 
 import org.json4s._
 
@@ -8,3 +9,8 @@ trait Codec[T] {
     def decode (x : JValue) : T
 }
 
+object Codec {
+    def apply[T](implicit typetag : TypeTag[T]) : Codec[T] = {
+        throw new Exception("Couldn't find codec for type")
+    }
+}

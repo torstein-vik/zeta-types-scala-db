@@ -22,6 +22,13 @@ case class URI (
     uri : String 
 )
 
+case class BellTable (
+    masterEquation: Option[String] = None, 
+    formalMasterEquation: Option[String] = None, 
+    values: Seq[(Prime, Seq[ComplexNumber])], 
+    eulerFactors: Seq[(Prime, ComplexPolynomial, ComplexPolynomial)] 
+)
+
 
 case class ModulusForm (
     modulus: Nat,

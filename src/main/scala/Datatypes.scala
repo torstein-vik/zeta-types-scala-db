@@ -9,6 +9,8 @@ package Datatypes {
 
     /** A natural number >= 0, realizing a [[Real]] */
     sealed case class Nat (x : BigInt) extends Real {require(x >= 0)}
+    /** A prime number, realizing a [[Real]] */
+    sealed case class Prime (x : BigInt) extends Real {require(x.isProbablePrime(10))}
     /** A (big) integer, realizing a [[Real]] */
     sealed case class Integer (x : BigInt) extends Real
     /** A floating point number, realizing a [[Real]] */
@@ -36,6 +38,7 @@ package object Datatypes {
 
     /** Implicit conversion of any [[Real]] to a scala floting point number */
     implicit def realToFloat(x : Real) : Float = x match {
+        case Prime(x) => x.floatValue
         case Nat(x) => x.floatValue
         case Integer(x) => x.floatValue
         case Floating(x) => x

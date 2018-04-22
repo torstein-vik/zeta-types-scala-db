@@ -50,5 +50,22 @@ trait Codecs {
         }
     }
     
+    implicit def listCodec[T](implicit codec : Codec[T]) : Codec[List[T]] = new ListCodec[T](codec)
+    class ListCodec[T] (codec : Codec[T]) extends Codec[List[T]] {
+        def encode (x : List[T]) : JValue = JArray(x.map(codec.encode))
+        def decode (x : JValue) : List[T] = x match {
+            case JArray(ls) => ls.map(codec.decode)
+            case _ => throw new CodecException("Found " + x + " expected array (JArray)")
+        }
+    }
+    implicit def seqCodec[T](implicit codec : Codec[T]) : Codec[Seq[T]] = new SeqCodec[T](codec)
+    class SeqCodec[T] (codec : Codec[T]) extends Codec[Seq[T]] {
+        def encode (x : Seq[T]) : JValue = JArray(x.map(codec.encode).toList)
+        def decode (x : JValue) : Seq[T] = x match {
+            case JArray(ls) => ls.map(codec.decode)
+            case _ => throw new CodecException("Found " + x + " expected array (JArray)")
+        }
+    }
+    
     
 }

@@ -52,6 +52,14 @@ package Datatypes {
         }
     )
     
+    object PolarComplex extends CodecContainer[PolarComplex](
+        {case PolarComplex(abs, unitarg) => new JObject(List(JField("abs", encode[Real](abs)), JField("unitarg", encode[Real](unitarg))))},
+        {
+            case JObject(List(JField("abs", abs), JField("unitarg", unitarg))) => new PolarComplex(decode[Real](abs), decode[Real](unitarg)) 
+            case x => throw new CodecException("Found " + x + " expected {\"abs\": ..., \"unitarg\": ...} (JObject(JField(\"abs\", x), JField(\"unitarg\", y)))")
+        }
+    )
+    
 }
 
 /** Provides data-types used in JSON-schema */

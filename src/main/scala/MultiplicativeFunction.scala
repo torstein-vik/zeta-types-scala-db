@@ -96,3 +96,39 @@ object MultiplicativeFunction extends CodecContainer[MultiplicativeFunction](
         )
     }
 )
+
+object Metadata extends CodecContainer[Metadata](
+    {
+        case Metadata(descriptiveName, verbalDefinition, formalDefinition, latexMacroUnapplied, latexMacroApplied, comments, firstAddedTimestamp, lastChangedTimestamp, authors, computationalOrigin, batchId, relatedObjects) => JObject(List(
+            JField("descriptiveName", encode(descriptiveName)),
+            JField("verbalDefinition", encode(verbalDefinition)),
+            JField("formalDefinition", encode(formalDefinition)),
+            JField("latexMacroUnapplied", encode(latexMacroUnapplied)),
+            JField("latexMacroApplied", encode(latexMacroApplied)),
+            JField("comments", encode(comments)),
+            JField("firstAddedTimestamp", encode(firstAddedTimestamp)),
+            JField("lastChangedTimestamp", encode(lastChangedTimestamp)),
+            JField("authors", encode(authors)),
+            JField("computationalOrigin", encode(computationalOrigin)),
+            JField("batchId", encode(batchId)),
+            JField("relatedObjects", encode(relatedObjects))
+        ))
+    },
+    {
+        case json => new Metadata(
+            descriptiveName = decode[String](json \ "descriptiveName"), 
+            verbalDefinition = decode[String](json \ "verbalDefinition"), 
+            formalDefinition = decode[Option[String]](json \ "formalDefinition"), 
+            latexMacroUnapplied = decode[Option[String]](json \ "latexMacroUnapplied"), 
+            latexMacroApplied = decode[Option[String]](json \ "latexMacroApplied"), 
+            comments = decode[Seq[String]](json \ "comments"), 
+            firstAddedTimestamp = decode[String](json \ "firstAddedTimestamp"), 
+            lastChangedTimestamp = decode[String](json \ "lastChangedTimestamp"), 
+            authors = decode[Seq[String]](json \ "authors"), 
+            computationalOrigin = decode[String](json \ "computationalOrigin"), 
+            batchId = decode[String](json \ "batchId"), 
+            relatedObjects = decode[Seq[URI]](json \ "relatedObjects") 
+        )
+    }
+)
+

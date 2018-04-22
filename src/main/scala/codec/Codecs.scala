@@ -22,5 +22,13 @@ trait Codecs {
         }
     }
     
+    implicit object StringCodec extends Codec[String] {
+        def encode (x : String) : JValue = JString(x)
+        def decode (x : JValue) : String = x match {
+            case JString(str) => str
+            case _ => throw new CodecException("Found " + x + " expected String (JString)")
+        }
+    }
+    
     
 }

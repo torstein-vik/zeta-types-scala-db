@@ -44,6 +44,14 @@ package Datatypes {
     object Floating extends CodecContainer[Floating]({case Floating(x) => encode[Double](x)}, {case x => new Floating(decode[Double](x))})
     object Ratio extends CodecContainer[Ratio]({case Ratio(x, y) => encode[(Integer, Integer)]((x, y))}, {case t => decode[(Integer, Integer)](t) match {case (x, y) => new Ratio(x, y)}})
     
+    object CartesianComplex extends CodecContainer[CartesianComplex](
+        {case CartesianComplex(re, im) => new JObject(List(JField("re", encode[Real](re)), JField("im", encode[Real](im))))},
+        {
+            case JObject(List(JField("re", re), JField("im", im))) => new CartesianComplex(decode[Real](re), decode[Real](im)) 
+            case x => throw new CodecException("Found " + x + " expected {\"re\": ..., \"im\": ...} (JObject(JField(\"re\", x), JField(\"im\", y)))")
+        }
+    )
+    
 }
 
 /** Provides data-types used in JSON-schema */

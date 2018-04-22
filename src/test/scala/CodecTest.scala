@@ -82,6 +82,16 @@ class CodecTest extends FunSuite {
         }    
     }
     
+    test("Codec for ComplexPolynomial") {
+        val ys : Seq[ComplexPolynomial] = Seq(
+            ComplexPolynomial(Integer(-2) -> 12, PolarComplex(Integer(7), Ratio(1, 2)) -> 1, Floating(1.4324) -> 0),
+            ComplexPolynomial(Ratio(2, 3) -> 2, Floating(2.32E23) -> Nat(BigInt("485734807857345873485720239234857280")))
+        )
+        
+        for (y <- ys) {
+            assert(decode[ComplexPolynomial](encode[ComplexPolynomial](y)) === y)
+        }
+    }
         
     test("Codec for MultiplicativeFunction"){        
         val mf = MultiplicativeFunction (

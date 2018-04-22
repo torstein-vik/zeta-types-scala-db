@@ -79,6 +79,21 @@ package Datatypes {
         }
     )
     
+    object ComplexNumber extends CodecContainer[ComplexNumber](
+        encoder = (x : ComplexNumber) => x match { 
+            case x : Real => encode[Real](x)
+            case x : CartesianComplex => encode[CartesianComplex](x)
+            case x : PolarComplex => encode[PolarComplex](x)
+            case _ => throw new CodecException("ComplexNumber not in spec")
+        },
+        decoder = (x : JValue) => {
+            (Try(decode[Real](x)) getOrElse
+            (Try(decode[CartesianComplex](x)) getOrElse
+            (Try(decode[PolarComplex](x)) getOrElse
+            {throw new CodecException("Could not parse ComplexNumber from " + x.toString) })))
+        }
+    )
+    
 }
 
 /** Provides data-types used in JSON-schema */

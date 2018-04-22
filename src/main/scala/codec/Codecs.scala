@@ -30,5 +30,13 @@ trait Codecs {
         }
     }
     
+    implicit object BooleanCodec extends Codec[Boolean] {
+        def encode (x : Boolean) : JValue = JBool(x)
+        def decode (x : JValue) : Boolean = x match {
+            case JBool(bool) => bool
+            case _ => throw new CodecException("Found " + x + " expected true or false (JBool)")
+        }
+    }
+    
     
 }

@@ -27,7 +27,7 @@ package Datatypes {
     sealed case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 
     
     /** A Hybrid set of elements in the input type */
-    sealed case class HybridSet[A] (multiplicities : (A, Int)*)
+    sealed case class HybridSet[A] (multiplicities : (A, Integer)*)
 
     /** A JSON object, each value of specified type */
     sealed case class Record[T] (entries : (String, T)*)

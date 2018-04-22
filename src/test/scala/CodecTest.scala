@@ -59,6 +59,28 @@ class CodecTest extends FunSuite {
         assert(decode[(String, BigInt, BigInt)](encode(("hey", BigInt(4), BigInt(3)))) ===(("hey", BigInt(4), BigInt(3))))
     }
     
+    test("Codec for ComplexNumber") {
+        val xs : Seq[ComplexNumber] = Seq(
+            Nat(12), 
+            Prime(7), 
+            Nat(3), 
+            Integer(-2), 
+            Integer(0), 
+            Floating(12E-23), 
+            Floating(1.4322E22), 
+            Ratio(1, 2), 
+            Ratio(1, 3), 
+            CartesianComplex(Ratio(1, 3), Floating(12E-23)), 
+            CartesianComplex(Integer(2), Floating(2)),
+            CartesianComplex(Integer(-4), Ratio(2, 4)),
+            PolarComplex(Integer(7), Ratio(1, 2)),
+            PolarComplex(Integer(7), Floating(1/2 + 5E-7))
+        )  
+        
+        for (x <- xs) {
+            assert(decode[ComplexNumber](encode[ComplexNumber](x)) === x)
+        }    
+    }
     
         
     test("Codec for MultiplicativeFunction"){        

@@ -9,15 +9,7 @@ import io.github.torsteinvik.zetatypes.db.codec._
 class CodecTest extends FunSuite {
     
     
-    test("Define codec for impossible types") {
-        assertThrows[Exception] { Codec[Option[_]] }
-    }
     
-    test("Define codec for possible types") {
-        Codec[BigInt]
-        Codec[Double]
-        Codec[String]
-    }
     
     test("Encode for possible types") {
         val bic = Codec[BigInt]
@@ -40,7 +32,6 @@ class CodecTest extends FunSuite {
         assert(sc.decode(sc.encode("halo")) !== "halo ")
     }
     
-    test("Define codec for MultiplicativeFunction") { Codec[MultiplicativeFunction] }
     
     test("Encode MultiplicativeFunction"){
         val codec = Codec[MultiplicativeFunction]

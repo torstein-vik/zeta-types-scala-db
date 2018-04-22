@@ -13,5 +13,14 @@ trait Codecs {
         }
     }
     
+    implicit object DoubleCodec extends Codec[Double] {
+        // TODO: Note not up to spec, spec uses floating numbers
+        def encode (x : Double) : JValue = JDouble(x)
+        def decode (x : JValue) : Double = x match {
+            case JDouble(num) => num
+            case _ => throw new CodecException("Found " + x + " expected Double (JDouble)")
+        }
+    }
+    
     
 }

@@ -132,3 +132,16 @@ object Metadata extends CodecContainer[Metadata](
     }
 )
 
+object URI extends CodecContainer[URI](
+    {
+        case URI(uri) => JObject(List(
+            JField("uri", encode(uri))
+        ))
+    },
+    {
+        case json => new URI(
+            uri = decode[String](json \ "uri")
+        )
+    }
+)
+

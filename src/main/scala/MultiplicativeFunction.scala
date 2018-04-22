@@ -200,3 +200,26 @@ object ModulusForm extends CodecContainer[ModulusForm](
     }
 )
 
+object FunctionalEquationParameters extends CodecContainer[FunctionalEquationParameters](
+    {
+        case FunctionalEquationParameters(degree, conductor, signature, spectralParameterListR, spectralParameterListC, sign) => JObject(List(
+            JField("degree", encode(degree)),
+            JField("conductor", encode(conductor)),
+            JField("signature", encode(signature)),
+            JField("spectralParameterListR", encode(spectralParameterListR)),
+            JField("spectralParameterListC", encode(spectralParameterListC)),
+            JField("sign", encode(sign)),
+        ))
+    },
+    {
+        case json => new FunctionalEquationParameters(            
+            degree = decode[Option[Nat]](json \ "degree"), 
+            conductor = decode[Option[Nat]](json \ "conductor"), 
+            signature = decode[Option[(Nat, Nat)]](json \ "signature"), 
+            spectralParameterListR = decode[Option[Seq[ComplexNumber]]](json \ "spectralParameterListR"), 
+            spectralParameterListC = decode[Option[Seq[ComplexNumber]]](json \ "spectralParameterListC"), 
+            sign = decode[Option[ComplexNumber]](json \ "sign")
+        )
+    }
+)
+

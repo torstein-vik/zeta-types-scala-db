@@ -94,6 +94,11 @@ package Datatypes {
         }
     )
     
+    object ComplexPolynomial extends CodecContainer[ComplexPolynomial](
+        { case ComplexPolynomial(x @ _*) => JObject(List(JField("monomials", encode[List[(ComplexNumber, Nat)]](x.toList))))},
+        { case JObject(List(JField("monomials", x))) => new ComplexPolynomial(decode[List[(ComplexNumber, Nat)]](x) : _*)}
+    )
+    
 }
 
 /** Provides data-types used in JSON-schema */

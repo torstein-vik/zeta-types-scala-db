@@ -60,6 +60,25 @@ package Datatypes {
         }
     )
     
+    object Real extends CodecContainer[Real](
+        encoder = (x : Real) => x match { 
+            case x : Nat => encode[Nat](x)
+            case x : Prime => encode[Prime](x)
+            case x : Integer => encode[Integer](x)
+            case x : Floating => encode[Floating](x)
+            case x : Ratio => encode[Ratio](x)
+            case _ => throw new CodecException("Real number not in spec")
+        },
+        decoder = (x : JValue) => {
+            (Try(decode[Nat](x)) getOrElse
+            (Try(decode[Prime](x)) getOrElse
+            (Try(decode[Integer](x)) getOrElse
+            (Try(decode[Floating](x)) getOrElse
+            (Try(decode[Ratio](x)) getOrElse
+            {throw new CodecException("Could not parse Real number from " + x.toString) })))))
+        }
+    )
+    
 }
 
 /** Provides data-types used in JSON-schema */

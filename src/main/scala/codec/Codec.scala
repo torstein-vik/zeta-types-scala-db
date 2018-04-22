@@ -13,6 +13,7 @@ trait Codec[T] {
     def decode (x : JValue) : T 
 }
 
+object Codec extends Codecs
 
 class CodecContainer[T] (val encoder : T => JValue, val decoder : JValue => T) { outer => 
     implicit object codec extends Codec[T] {

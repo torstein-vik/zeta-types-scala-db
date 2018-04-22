@@ -13,6 +13,9 @@ class CodecTest extends FunSuite {
     
     test("Codec for basic types") {
         
+        assert(decode[Boolean](encode(true)) === true)
+        assert(decode[Boolean](encode(false)) === false)
+        
         assert(decode[BigInt](encode(BigInt("13"))) === BigInt("13"))
         assert(decode[BigInt](encode(BigInt("-135532525253"))) === BigInt("-135532525253"))
         assert(decode[BigInt](encode(BigInt("43252356"))) === BigInt("43252356"))

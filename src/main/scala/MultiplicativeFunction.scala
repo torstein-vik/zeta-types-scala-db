@@ -223,3 +223,17 @@ object FunctionalEquationParameters extends CodecContainer[FunctionalEquationPar
     }
 )
 
+object EtaCombination extends CodecContainer[EtaCombination](
+    {
+        case EtaCombination(elements, isProven) => JObject(List(
+            JField("elements", encode(elements)),
+            JField("isProven", encode(isProven))
+        ))
+    },
+    {
+        case json => new EtaCombination(
+            elements = decode[HybridSet[HybridSet[Nat]]](json \ "elements"),
+            isProven = decode[Boolean](json \ "isProven")
+        )
+    }
+)

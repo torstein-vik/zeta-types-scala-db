@@ -7,3 +7,4 @@ trait Codec[T] {
     def decode (x : JValue) : T
 }
 
+case class CodecException(str : String) extends Exception(str)

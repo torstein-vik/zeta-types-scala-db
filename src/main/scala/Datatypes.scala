@@ -1,5 +1,10 @@
 package io.github.torsteinvik.zetatypes.db
 
+import codec._
+import org.json4s._
+
+import scala.util.Try
+
 package Datatypes {
     
     /** Abstract data type representing a complex number*/
@@ -32,6 +37,7 @@ package Datatypes {
     /** A JSON object, each value of specified type */
     sealed case class Record[T] (entries : (String, T)*)
 
+    object Nat extends CodecContainer[Nat]({case Nat(x) => JObject(List(JField("nat", encode[BigInt](x))))}, {case JObject(List(JField("nat", x))) => new Nat(decode[BigInt](x))})
 }
 
 /** Provides data-types used in JSON-schema */

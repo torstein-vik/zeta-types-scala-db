@@ -6,6 +6,6 @@ import org.json4s._
  *  @author Torstein Vik
  */
 package object codec extends codec.Codecs { // TODO: remove extension, put into companion object
-    def encode[T](x : T)(implicit encoder : Encoder[T]) : JValue = encoder.encode(x)
-    def decode[T](x : JValue)(implicit decoder : Decoder[T]) : T = decoder.decode(x)
+    def encode[T](x : T)(implicit codec : Codec[T]) : JValue = codec.encode(x)
+    def decode[T](x : JValue)(implicit codec : Codec[T]) : T = codec.decode(x)
 } 

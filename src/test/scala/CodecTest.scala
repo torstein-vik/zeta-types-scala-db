@@ -92,7 +92,18 @@ class CodecTest extends FunSuite {
             assert(decode[ComplexPolynomial](encode[ComplexPolynomial](y)) === y)
         }
     }
+    
+    test("Codec for hybrid sets") {
+        val hss = HybridSet[String]("hey" -> 12, "hola" -> 14)
+        assert(decode[HybridSet[String]](encode[HybridSet[String]](hss)) === hss)
         
+        val hsc = HybridSet[ComplexNumber](
+            PolarComplex(Integer(7), Floating(1/2 + 5E-7)) -> -34, 
+            CartesianComplex(Integer(2), Floating(2)) -> Integer(BigInt("-489734589034718524589234563478965712465746716514789561234796"))
+        )
+        assert(decode[HybridSet[ComplexNumber]](encode[HybridSet[ComplexNumber]](hsc)) === hsc)
+    }
+    
     test("Codec for records") {
         val rec1 = Record[String](
             "hey" -> "hello",

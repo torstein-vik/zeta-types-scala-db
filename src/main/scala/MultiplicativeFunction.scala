@@ -185,3 +185,18 @@ object GlobalTannakianSymbol extends CodecContainer[GlobalTannakianSymbol](
     }
 )
 
+object ModulusForm extends CodecContainer[ModulusForm](
+    {
+        case ModulusForm(modulus, symbols) => JObject(List(
+            JField("modulus", encode(modulus)),
+            JField("symbols", encode(symbols))
+        ))
+    },
+    {
+        case json => new ModulusForm(
+            modulus = decode[Nat](json \ "modulus"),
+            symbols = decode[Seq[PrimeLogSymbol]](json \ "symbols")
+        )
+    }
+)
+

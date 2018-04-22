@@ -18,4 +18,12 @@ trait Decoder[T] {
 @implicitNotFound(msg = "Could not find a codec for type ${T}")
 trait Codec[T] extends Encoder[T] with Decoder[T]
 
+
+class CodecContainer[T] (val encoder : T => JValue, val decoder : JValue => T) { outer => 
+    implicit object codec extends Codec[T] {
+        def encode(x : T) : JValue = outer.encoder(x)
+        def decode(x : JValue) : T = outer.decoder(x)
+    }
+}
+
 case class CodecException(str : String) extends Exception(str)

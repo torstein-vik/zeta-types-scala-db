@@ -99,6 +99,13 @@ package Datatypes {
         { case JObject(List(JField("monomials", x))) => new ComplexPolynomial(decode[List[(ComplexNumber, Nat)]](x) : _*)}
     )
     
+    object HybridSet {
+        implicit def hybridSetCodec[A](implicit codecA : Codec[A]) : Codec[HybridSet[A]] = new Codec[HybridSet[A]] {
+            def encode (x : HybridSet[A]) = codec.encode[List[(A, Integer)]](x.multiplicities.toList)
+            def decode (x : JValue) = HybridSet[A](codec.decode[List[(A, Integer)]](x) : _*)
+        }
+    }
+    
 }
 
 /** Provides data-types used in JSON-schema */

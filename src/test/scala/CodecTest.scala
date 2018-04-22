@@ -31,6 +31,20 @@ class CodecTest extends FunSuite {
         assert(decode[String](encode("''''hey$:::")) === "''''hey$:::")
         assert(decode[String](encode("halo")) !== "halo ")
         
+        
+        assert(decode[Option[BigInt]](encode[Option[BigInt]](Some(BigInt(123)))) === Some(BigInt(123)))
+        assert(decode[Option[Double]](encode[Option[Double]](Some(-5E-21))) === Some(-5E-21))
+        assert(decode[Option[String]](encode[Option[String]](Some("hello"))) === Some("hello"))
+        assert(decode[Option[BigInt]](encode[Option[BigInt]](Some(BigInt(-2)))) !== Some(BigInt(12)))
+        assert(decode[Option[Double]](encode[Option[Double]](Some(-2.12))) !== Some(12.12))
+        assert(decode[Option[String]](encode[Option[String]](Some("test"))) !== Some("test "))
+        assert(decode[Option[BigInt]](encode[Option[BigInt]](Some(BigInt(0)))) !== None)
+        assert(decode[Option[Double]](encode[Option[Double]](Some(Double.NaN))) !== None)
+        assert(decode[Option[String]](encode[Option[String]](Some(""))) !== None)
+        assert(decode[Option[BigInt]](encode[Option[BigInt]](None)) === None)
+        assert(decode[Option[Double]](encode[Option[Double]](None)) === None)
+        assert(decode[Option[String]](encode[Option[String]](None)) === None)
+        
     }
     
     

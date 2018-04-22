@@ -67,5 +67,22 @@ trait Codecs {
         }
     }
     
+    implicit def pairCodec[T1, T2](implicit codec1 : Codec[T1], codec2 : Codec[T2]) : Codec[(T1, T2)] = new PairCodec[T1, T2](codec1, codec2)
+    class PairCodec[T1, T2] (codec1 : Codec[T1], codec2 : Codec[T2]) extends Codec[(T1, T2)] {
+        def encode (x : (T1, T2)) : JValue = JArray(List(codec1.encode(x._1), codec2.encode(x._2)))
+        def decode (x : JValue) : (T1, T2) = x match {
+            case JArray(List(t1, t2)) => (codec1.decode(t1), codec2.decode(t2))
+            case _ => throw new CodecException("Found " + x + " expected pair (JArray(x, y))")
+        }
+    }
+    
+    implicit def tripleCodec[T1, T2, T3](implicit codec1 : Codec[T1], codec2 : Codec[T2], codec3 : Codec[T3]) : Codec[(T1, T2, T3)] = new TripleCodec[T1, T2, T3](codec1, codec2, codec3)
+    class TripleCodec[T1, T2, T3] (codec1 : Codec[T1], codec2 : Codec[T2], codec3 : Codec[T3]) extends Codec[(T1, T2, T3)] {
+        def encode (x : (T1, T2, T3)) : JValue = JArray(List(codec1.encode(x._1), codec2.encode(x._2), codec3.encode(x._3)))
+        def decode (x : JValue) : (T1, T2, T3) = x match {
+            case JArray(List(t1, t2, t3)) => (codec1.decode(t1), codec2.decode(t2), codec3.decode(t3))
+            case _ => throw new CodecException("Found " + x + " expected triple (JArray(x, y, z))")
+        }
+    }
     
 }

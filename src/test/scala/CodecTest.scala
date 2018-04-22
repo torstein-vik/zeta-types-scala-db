@@ -61,9 +61,8 @@ class CodecTest extends FunSuite {
     }
     
     
-    test("Encode MultiplicativeFunction"){
-        val codec = Codec[MultiplicativeFunction]
         
+    test("Codec for MultiplicativeFunction"){        
         val mf = MultiplicativeFunction (
             mflabel = "MF-2000",
             metadata = Metadata (
@@ -122,7 +121,7 @@ class CodecTest extends FunSuite {
             ))
         )
         
-        assert(mf === codec.decode(codec.encode(mf)))
+        assert(decode[MultiplicativeFunction](encode(mf)) === mf)
         
     }
     

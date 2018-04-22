@@ -53,6 +53,11 @@ class CodecTest extends FunSuite {
         assert(decode[Seq[Double]](encode(Seq(1.2, 2.4, 3.5))) === Seq(1.2, 2.4, 3.5))
         assert(decode[Seq[String]](encode(Seq("hey", "there", "!"))) === Seq("hey", "there", "!"))
         
+        assert(decode[(String, Double)](encode(("hey", 1.2))) ===(("hey", 1.2)))
+        assert(decode[(String, (Double, String))](encode(("hey", (1.2, "hallo")))) ===(("hey", (1.2, "hallo"))))
+        assert(decode[(String, (BigInt, BigInt))](encode(("hey", (BigInt(4), BigInt(3))))) ===(("hey", (BigInt(4), BigInt(3)))))
+        
+        assert(decode[(String, BigInt, BigInt)](encode(("hey", BigInt(4), BigInt(3)))) ===(("hey", BigInt(4), BigInt(3))))
     }
     
     

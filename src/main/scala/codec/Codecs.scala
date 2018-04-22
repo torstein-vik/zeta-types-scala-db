@@ -38,5 +38,17 @@ trait Codecs {
         }
     }
     
+    implicit def optionCodec[T](implicit codec : Codec[T]) : Codec[Option[T]] = new OptionCodec[T](codec)
+    class OptionCodec[T] (codec : Codec[T]) extends Codec[Option[T]] {
+        def encode (x : Option[T]) : JValue = x match {
+            case None => JNull
+            case Some(u) => codec.encode(u)
+        }
+        def decode (x : JValue) : Option[T] = x match {
+            case JNull => None
+            case _ => Some(codec.decode(x))
+        }
+    }
+    
     
 }

@@ -164,3 +164,24 @@ object BellTable extends CodecContainer[BellTable](
     }
 )
 
+object GlobalTannakianSymbol extends CodecContainer[GlobalTannakianSymbol](
+    {
+        case GlobalTannakianSymbol(exceptionalPrimes, localValues, primeLogForm, polynomialForm, modulusForm) => JObject(List(
+            JField("exceptionalPrimes", encode(exceptionalPrimes)),
+            JField("localValues", encode(localValues)),
+            JField("primeLogForm", encode(primeLogForm)),
+            JField("polynomialForm", encode(polynomialForm)),
+            JField("modulusForm", encode(modulusForm))
+        ))
+    },
+    {
+        case json => new GlobalTannakianSymbol(
+            exceptionalPrimes = decode[Seq[Prime]](json \ "exceptionalPrimes"), 
+            localValues = decode[Seq[(Prime, HybridSet[ComplexNumber])]](json \ "localValues"), 
+            primeLogForm = decode[Option[PrimeLogSymbol]](json \ "primeLogForm"), 
+            polynomialForm = decode[Option[HybridSet[ComplexPolynomial]]](json \ "polynomialForm"), 
+            modulusForm = decode[Option[ModulusForm]](json \ "modulusForm") 
+        )
+    }
+)
+

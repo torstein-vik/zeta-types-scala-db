@@ -1,6 +1,8 @@
 package io.github.torsteinvik.zetatypes.db
 
 import Datatypes._
+import codec._
+import org.json4s._
 
 case class MultiplicativeFunction (
     mflabel: String, 
@@ -64,4 +66,33 @@ case class FunctionalEquationParameters (
 case class EtaCombination (
     elements: HybridSet[HybridSet[Nat]],
     isProven: Boolean
+)
+
+
+
+object MultiplicativeFunction extends CodecContainer[MultiplicativeFunction](
+    {
+        case MultiplicativeFunction(mflabel, metadata, properties, invariants, bellTable, globalTannakianSymbol, functionalEquationParameters, etaCombination) => JObject(List(
+            JField("mflabel", encode(mflabel)),
+            JField("metadata", encode(metadata)),
+            JField("properties", encode(properties)),
+            JField("invariants", encode(invariants)),
+            JField("bellTable", encode(bellTable)),
+            JField("globalTannakianSymbol", encode(globalTannakianSymbol)),
+            JField("functionalEquationParameters", encode(functionalEquationParameters)),
+            JField("etaCombination", encode(etaCombination))
+        ))
+    },
+    {
+        case json => new MultiplicativeFunction(
+            mflabel = decode[String](json \ "mflabel"),
+            metadata = decode[Metadata](json \ "metadata"),
+            properties = decode[Record[Boolean]](json \ "properties"),
+            invariants = decode[Record[ComplexNumber]](json \ "invariants"),
+            bellTable = decode[BellTable](json \ "bellTable"),
+            globalTannakianSymbol = decode[Option[GlobalTannakianSymbol]](json \ "globalTannakianSymbol"),
+            functionalEquationParameters = decode[Option[FunctionalEquationParameters]](json \ "functionalEquationParameters"),
+            etaCombination = decode[Option[EtaCombination]](json \ "etaCombination")
+        )
+    }
 )

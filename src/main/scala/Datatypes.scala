@@ -42,6 +42,8 @@ package Datatypes {
     object Integer extends CodecContainer[Integer]({case Integer(x) => encode[BigInt](x)}, {case x => new Integer(decode[BigInt](x))})
     
     object Floating extends CodecContainer[Floating]({case Floating(x) => encode[Double](x)}, {case x => new Floating(decode[Double](x))})
+    object Ratio extends CodecContainer[Ratio]({case Ratio(x, y) => encode[(Integer, Integer)]((x, y))}, {case t => decode[(Integer, Integer)](t) match {case (x, y) => new Ratio(x, y)}})
+    
 }
 
 /** Provides data-types used in JSON-schema */

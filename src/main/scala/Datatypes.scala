@@ -40,6 +40,8 @@ package Datatypes {
     object Nat extends CodecContainer[Nat]({case Nat(x) => JObject(List(JField("nat", encode[BigInt](x))))}, {case JObject(List(JField("nat", x))) => new Nat(decode[BigInt](x))})
     object Prime extends CodecContainer[Prime]({case Prime(x) => JObject(List(JField("prime", encode[BigInt](x))))}, {case JObject(List(JField("prime", x))) => new Prime(decode[BigInt](x))})
     object Integer extends CodecContainer[Integer]({case Integer(x) => encode[BigInt](x)}, {case x => new Integer(decode[BigInt](x))})
+    
+    object Floating extends CodecContainer[Floating]({case Floating(x) => encode[Double](x)}, {case x => new Floating(decode[Double](x))})
 }
 
 /** Provides data-types used in JSON-schema */

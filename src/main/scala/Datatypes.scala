@@ -38,6 +38,7 @@ package Datatypes {
     sealed case class Record[T] (entries : (String, T)*)
 
     object Nat extends CodecContainer[Nat]({case Nat(x) => JObject(List(JField("nat", encode[BigInt](x))))}, {case JObject(List(JField("nat", x))) => new Nat(decode[BigInt](x))})
+    object Prime extends CodecContainer[Prime]({case Prime(x) => JObject(List(JField("prime", encode[BigInt](x))))}, {case JObject(List(JField("prime", x))) => new Prime(decode[BigInt](x))})
 }
 
 /** Provides data-types used in JSON-schema */

@@ -8,8 +8,6 @@ import io.github.torsteinvik.zetatypes.db.codec._
 
 class CodecTest extends FunSuite {
     
-    //TODO: WRITE CHECK-macro for check[T](x) = assert(decode[T](encode[T](x)) === x)
-    
     test("Codec for basic types") {
         
         assert(decode[Boolean](encode(true)) === true)

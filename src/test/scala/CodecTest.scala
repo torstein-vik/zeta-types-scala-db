@@ -93,6 +93,22 @@ class CodecTest extends FunSuite {
         }
     }
         
+    test("Codec for records") {
+        val rec1 = Record[String](
+            "hey" -> "hello",
+            "final" -> "Not quite",
+            "static" -> "plausible"
+        )
+        assert(decode[Record[String]](encode[Record[String]](rec1)) === rec1)
+        
+        val rec2 = Record[ComplexNumber](
+            "sign eval" -> PolarComplex(Integer(12), Ratio(1, 2)),
+            "conductor" -> Nat(13),
+            "first bad prime" -> Prime(13)
+        )
+        assert(decode[Record[ComplexNumber]](encode[Record[ComplexNumber]](rec2)) === rec2)
+    }
+    
     test("Codec for MultiplicativeFunction"){        
         val mf = MultiplicativeFunction (
             mflabel = "MF-2000",

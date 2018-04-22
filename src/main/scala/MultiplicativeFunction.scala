@@ -145,3 +145,22 @@ object URI extends CodecContainer[URI](
     }
 )
 
+object BellTable extends CodecContainer[BellTable](
+    {
+        case BellTable(masterEquation, formalMasterEquation, values, eulerFactors) => JObject(List(
+            JField("masterEquation", encode(masterEquation)),
+            JField("formalMasterEquation", encode(formalMasterEquation)),
+            JField("values", encode(values)),
+            JField("eulerFactors", encode(eulerFactors))
+        ))
+    },
+    {
+        case json => new BellTable(
+            masterEquation = decode[Option[String]](json \ "masterEquation"), 
+            formalMasterEquation = decode[Option[String]](json \ "formalMasterEquation"), 
+            values = decode[Seq[(Prime, Seq[ComplexNumber])]](json \ "values"), 
+            eulerFactors = decode[Seq[(Prime, ComplexPolynomial, ComplexPolynomial)]](json \ "eulerFactors") 
+        )
+    }
+)
+

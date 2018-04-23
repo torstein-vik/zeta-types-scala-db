@@ -1,6 +1,10 @@
 package io.github.torsteinvik.zetatypes.db
 
+import mongo._
+
 object REPL {
+    
+    use(MongoDB())
     
     private object dbstate {
         private var db : Database = null

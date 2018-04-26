@@ -7,8 +7,8 @@ import org.json4s._
 case class MultiplicativeFunction (
     mflabel: String, 
     metadata: Metadata, 
-    properties: Record[Boolean], 
-    invariants: Record[ComplexNumber], 
+    properties: Record[Boolean] = Record(), 
+    invariants: Record[ComplexNumber] = Record(), 
     bellTable: BellTable, 
     globalTannakianSymbol: Option[GlobalTannakianSymbol] = None, 
     functionalEquationParameters: Option[FunctionalEquationParameters] = None, 
@@ -21,13 +21,13 @@ case class Metadata (
     formalDefinition: Option[String] = None, 
     latexMacroUnapplied: Option[String] = None, 
     latexMacroApplied: Option[String] = None, 
-    comments: Seq[String], 
-    firstAddedTimestamp: String, 
-    lastChangedTimestamp: String, 
-    authors: Seq[String], 
+    comments: Seq[String] = Seq(), 
+    firstAddedTimestamp: String = "error - time should have been set by database binding", 
+    lastChangedTimestamp: String = "error - time should have been set by database binding", 
+    authors: Seq[String] = Seq(), 
     computationalOrigin: String, 
-    batchId: String, 
-    relatedObjects: Seq[URI] 
+    batchId: String = "error - batch id should have been set by database binding", 
+    relatedObjects: Seq[URI] = Seq()
 )
 
 case class URI (
@@ -38,12 +38,12 @@ case class BellTable (
     masterEquation: Option[String] = None, 
     formalMasterEquation: Option[String] = None, 
     values: Seq[(Prime, Seq[ComplexNumber])], 
-    eulerFactors: Seq[(Prime, ComplexPolynomial, ComplexPolynomial)] 
+    eulerFactors: Seq[(Prime, ComplexPolynomial, ComplexPolynomial)] = Seq()
 )
 
 case class GlobalTannakianSymbol (
-    exceptionalPrimes: Seq[Prime], 
-    localValues: Seq[(Prime, HybridSet[ComplexNumber])], 
+    exceptionalPrimes: Seq[Prime] = Seq(), 
+    localValues: Seq[(Prime, HybridSet[ComplexNumber])] = Seq(), 
     primeLogForm: Option[PrimeLogSymbol] = None, 
     polynomialForm: Option[HybridSet[ComplexPolynomial]] = None, 
     modulusForm: Option[ModulusForm] = None

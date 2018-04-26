@@ -6,6 +6,7 @@ abstract sealed class Property[T] {
     def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
 }
 
+abstract sealed class MFProperty[T] extends Property[T]
 sealed case class ConstantProperty[T](value : T) extends Property[T]
 
 trait Properties {

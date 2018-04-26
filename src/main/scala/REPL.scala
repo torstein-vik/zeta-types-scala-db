@@ -17,6 +17,7 @@ trait REPL {
     def mfstore(mf : MultiplicativeFunction) = dbstate.getDB.store(mf)
     
     def mfget(mflabel : String) : MultiplicativeFunction = dbstate.getDB.get(mflabel)
+    def mfgetall : Seq[MultiplicativeFunction] = dbstate.getDB.getAll
 }
 
 object REPL extends REPL

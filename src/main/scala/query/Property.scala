@@ -6,8 +6,12 @@ abstract sealed class Property[T] {
     def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
 }
 
+sealed case class ConstantProperty[T](value : T) extends Property[T]
 
 trait Properties {
+    import scala.language.implicitConversions
+    implicit def liftProperty[T](t : T) : ConstantProperty[T] = ConstantProperty[T](t)
+    
 }
 
 object Property extends Properties

@@ -18,6 +18,11 @@ object Download {
         println("count: " + count)
         println("queries: " + amt)
         
+        for (i <- 0 to (amt - 1)) {
+            val results = query(i)
+            
+            Thread.sleep(500)
+        }
                 
         return data.to[Seq]
         

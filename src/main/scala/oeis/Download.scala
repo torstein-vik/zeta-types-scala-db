@@ -21,6 +21,11 @@ object Download {
         for (i <- 0 to (amt - 1)) {
             val results = query(i)
             
+
+            for ( result <- (results \ "results").extract[List[JObject]] ) {
+                data += result
+            }
+            
             Thread.sleep(500)
         }
                 

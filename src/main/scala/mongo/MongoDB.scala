@@ -18,9 +18,12 @@ class MongoDB (address : String, database : String, collection : String) extends
     private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(10, TimeUnit.SECONDS))
     
     def store(mf : MultiplicativeFunction) : Unit = ???
+    def batch(mfs : Seq[MultiplicativeFunction], batchid : String = null) : Unit = ???
     def get(mflabel : String) : MultiplicativeFunction = ???
     
     def query[T](query : Query[T]) : T = ???
+    
+    def length : Int = ???
     
 }
 

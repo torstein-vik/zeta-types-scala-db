@@ -13,6 +13,8 @@ trait Properties {
     import scala.language.implicitConversions
     implicit def liftProperty[T](t : T) : ConstantProperty[T] = ConstantProperty[T](t)
     
+    case object mf extends MFProperty[MultiplicativeFunction]
+    case object mflabel extends MFProperty[String]
 }
 
 object Property extends Properties

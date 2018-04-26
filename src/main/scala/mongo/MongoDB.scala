@@ -4,12 +4,18 @@ import io.github.torsteinvik.zetatypes.db._
 
 import org.mongodb.scala._
 
+import java.util.concurrent.TimeUnit
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 class MongoDB (address : String, database : String, collection : String) extends Database {
     val client : MongoClient = MongoClient(address)
     val db : MongoDatabase = client.getDatabase(database)
     val zetatypes : MongoCollection[Document] = db.getCollection(collection)
     
     def close() = {client.close();}
+    private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(10, TimeUnit.SECONDS))
     
     def store(mf : MultiplicativeFunction) : Unit = ???
     def get(mflabel : String) : MultiplicativeFunction = ???

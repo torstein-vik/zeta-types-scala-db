@@ -5,10 +5,30 @@ import org.json4s._
 trait Codecs {
     
     implicit object BigIntCodec extends Codec[BigInt] {
-        // TODO: Note not up to spec, weird [base, 32, [...]] thing not accounted for, seems uneeded
-        def encode (x : BigInt) : JValue = JInt(x)
+        def encode (x : BigInt) : JValue = if (x <= BigInt(2).pow(32 - 1)) JInt(x) else {
+            val mod = BigInt(2).pow(32 - 1)
+            var rem = x
+            var lst = Seq[Int]()
+            
+            while (rem != BigInt(0)) {
+                val remm = rem % mod
+                lst = lst :+ remm.toInt
+                rem = (rem - remm) / mod
+            }
+            
+            return JArray(List(JString("base"),JInt(32 - 1),JArray(lst.map(JInt(_)).toList)))
+        }
         def decode (x : JValue) : BigInt = x match {
             case JInt(num) => num
+            case JArray(List(JString("base"), JInt(base), JArray(lst))) => {
+                var sum = BigInt(0)
+                
+                for ((JInt(v), i) <- lst.zipWithIndex) {
+                    sum = sum + v * BigInt(2).pow(base.toInt * i)
+                }
+                
+                return sum
+            }
             case _ => throw new CodecException("Found " + x + " expected BigInt (JInt)")
         }
     }

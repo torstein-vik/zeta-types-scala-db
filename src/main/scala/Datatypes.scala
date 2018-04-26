@@ -8,9 +8,22 @@ import scala.util.Try
 package Datatypes {
     
     /** Abstract data type representing a complex number*/
-    sealed abstract class ComplexNumber
+    sealed abstract class ComplexNumber {
+        def pretty : String = this match {
+            case CartesianComplex(re, im) => re.pretty + " " + im.pretty + "i"
+            case PolarComplex(abs, unitarg) => abs.pretty + " @ " + unitarg.pretty
+        }
+    }
     /** Abstract data type representing a real number, and realizing a [[ComplexNumber]]*/
-    sealed abstract class Real extends ComplexNumber
+    sealed abstract class Real extends ComplexNumber {
+        override def pretty : String = this match {
+            case Nat(x) => x.toString
+            case Prime(x) => x.toString
+            case Integer(x) => x.toString
+            case Floating(x) => x.toString
+            case Ratio(x, y) => x.pretty + "/" + y.pretty
+        }
+    }
 
     /** A natural number >= 0, realizing a [[Real]] */
     sealed case class Nat (x : BigInt) extends Real {require(x >= 0)}

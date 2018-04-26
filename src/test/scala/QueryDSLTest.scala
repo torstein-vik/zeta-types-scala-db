@@ -4,6 +4,7 @@ import org.scalatest.FunSuite
 
 import io.github.torsteinvik.zetatypes.db._
 import io.github.torsteinvik.zetatypes.db.Query._
+import io.github.torsteinvik.zetatypes.db.Property._
 
 class QueryDSLTest extends FunSuite {
     test("basic queries") {

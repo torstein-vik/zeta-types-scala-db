@@ -13,5 +13,4 @@ final class CombinedQuery[T, S](query1 : Query[T], query2 : Query[S]) extends Qu
 object Query {
     type ~[S, T] = (S, T)
     
-    def mf : Query[MultiplicativeFunction] = ???
 }

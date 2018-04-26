@@ -14,9 +14,9 @@ trait REPL {
     
     def use(db : Database) : Unit = {dbstate.setDB(db)}
     
-    def mfstore(mf : MultiplicativeFunction) : String = ???
+    def mfstore(mf : MultiplicativeFunction) = dbstate.getDB.store(mf)
     
-    def mfget(mflabel : String) : MultiplicativeFunction = ???
+    def mfget(mflabel : String) : MultiplicativeFunction = dbstate.getDB.get(mflabel)
 }
 
 object REPL extends REPL

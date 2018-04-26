@@ -11,8 +11,8 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def close() = {client.close();}
     
-    def store(mf : MultiplicativeFunction) : String = ???
-    def getByMFLabel(mflabel : String) : MultiplicativeFunction = ???
+    def store(mf : MultiplicativeFunction) : Unit = ???
+    def get(mflabel : String) : MultiplicativeFunction = ???
     
     def query[T](query : Query[T]) : T = ???
     

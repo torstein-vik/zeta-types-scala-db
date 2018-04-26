@@ -2,7 +2,7 @@ package io.github.torsteinvik.zetatypes.db
 
 import mongo._
 
-object REPL {
+trait REPL {
     
     use(MongoDB())
     
@@ -18,3 +18,5 @@ object REPL {
     
     def mfget(mflabel : String) : MultiplicativeFunction = ???
 }
+
+object REPL extends REPL

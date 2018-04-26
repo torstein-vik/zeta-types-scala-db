@@ -35,5 +35,18 @@ object Converter{
             for (e <- naturals.takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))
         ).toList).toList
         
+        return MultiplicativeFunction (
+            mflabel = "MF-OEIS-" + oeisID,
+            metadata = Metadata (
+                descriptiveName = oeisID,
+                verbalDefinition = name,
+                comments = comments,
+                authors = Seq(author),
+                computationalOrigin = "Converted from OEIS using https://github.com/torstein-vik/zeta-types-scala-db",
+                relatedObjects = Seq(URI("oeis://" + oeisID))
+            ),
+            properties = Record (keywords : _*),
+            bellTable = BellTable (values = bellTable)
+        )
     }
 }

@@ -13,7 +13,18 @@ case class MultiplicativeFunction (
     globalTannakianSymbol: Option[GlobalTannakianSymbol] = None, 
     functionalEquationParameters: Option[FunctionalEquationParameters] = None, 
     etaCombination: Option[EtaCombination] = None
-)
+) {
+    def bellTableText() : String = {
+        var str = "Label: " + mflabel + "\t Name: " + metadata.descriptiveName + "\n Description: " + metadata.verbalDefinition + "\n\n Bell Table: \n"
+        
+        for {(Prime(prime), vals : Seq[ComplexNumber]) <- bellTable.values} {
+            str = str + "\np=" + prime + ": \t "+ vals.map(_.pretty).mkString(",\t")
+        }
+        
+        
+        return str
+    }
+}
 
 case class Metadata (
     descriptiveName: String, 

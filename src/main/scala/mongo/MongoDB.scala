@@ -16,26 +16,29 @@ class MongoDB (address : String, database : String, collection : String) extends
     val db : MongoDatabase = client.getDatabase(database)
     val zetatypes : MongoCollection[Document] = db.getCollection(collection)
     
-    def close() = {client.close();}
+    private def toDoc[T](x : T)(implicit codec : Codec[T]) : Document = MongoCodec.encode(encode[T](x))
+    private def fromDoc[T](x : Document)(implicit codec : Codec[T]) : T = decode[T](MongoCodec.decode(x))
+    
     private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(10, TimeUnit.SECONDS))
+    
+    def close() = {client.close();}
     
     def batch(mfs : Seq[MultiplicativeFunction], batchid : String = null) : Unit = ???
     def store(mf : MultiplicativeFunction) : Unit = {
-        val doc : Document = MongoCodec.encode(encode(mf))
-        sync(zetatypes.insertOne(doc))
+        sync(zetatypes.insertOne(toDoc(mf)))
     }
-    def get(mflabel : String) : MultiplicativeFunction = decode[MultiplicativeFunction](MongoCodec.decode((sync {
+    def get(mflabel : String) : MultiplicativeFunction = fromDoc[MultiplicativeFunction](sync {
         import org.mongodb.scala.model.Filters._
         zetatypes.find(equal("mflabel", mflabel))
-    }) match {
+    } match {
         case Seq() => throw new Exception("Didn't find: " + mflabel)
         case Seq(x) => x
         case _ => throw new Exception("Many with this label: " + mflabel)
-    }))
+    })
     
     def query[T](query : Query[T]) : T = ???
     
-    def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(x => decode[MultiplicativeFunction](MongoCodec.decode(x)))
+    def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction])
     def length : Int = sync(zetatypes.count())(0).toInt
     
 }

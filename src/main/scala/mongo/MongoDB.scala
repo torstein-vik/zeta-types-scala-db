@@ -24,7 +24,14 @@ class MongoDB (address : String, database : String, collection : String) extends
         val doc : Document = MongoCodec.encode(encode(mf))
         sync(zetatypes.insertOne(doc))
     }
-    def get(mflabel : String) : MultiplicativeFunction = ???
+    def get(mflabel : String) : MultiplicativeFunction = decode[MultiplicativeFunction](MongoCodec.decode((sync {
+        import org.mongodb.scala.model.Filters._
+        zetatypes.find(equal("mflabel", mflabel))
+    }) match {
+        case Seq() => throw new Exception("Didn't find: " + mflabel)
+        case Seq(x) => x
+        case _ => throw new Exception("Many with this label: " + mflabel)
+    }))
     
     def query[T](query : Query[T]) : T = ???
     

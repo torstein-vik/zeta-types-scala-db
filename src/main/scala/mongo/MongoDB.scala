@@ -29,7 +29,7 @@ class MongoDB (address : String, database : String, collection : String) extends
     def query[T](query : Query[T]) : T = ???
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(x => decode[MultiplicativeFunction](MongoCodec.decode(x)))
-    def length : Int = ???
+    def length : Int = sync(zetatypes.count())(0).toInt
     
 }
 

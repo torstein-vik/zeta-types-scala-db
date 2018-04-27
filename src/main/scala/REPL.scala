@@ -12,12 +12,14 @@ trait REPL {
         def setDB (db: Database) : Unit = {this.db = db}
     }
     
+    def db : Database = dbstate.getDB
+    
     def use(db : Database) : Unit = {dbstate.setDB(db)}
     
-    def mfstore(mf : MultiplicativeFunction) = dbstate.getDB.store(mf)
+    def mfstore(mf : MultiplicativeFunction) = db.store(mf)
     
-    def mfget(mflabel : String) : MultiplicativeFunction = dbstate.getDB.get(mflabel)
-    def mfgetall : Seq[MultiplicativeFunction] = dbstate.getDB.getAll
+    def mfget(mflabel : String) : MultiplicativeFunction = db.get(mflabel)
+    def mfgetall : Seq[MultiplicativeFunction] = db.getAll
 }
 
 object REPL extends REPL

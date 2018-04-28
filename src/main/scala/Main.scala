@@ -29,4 +29,5 @@ object Main extends App with REPL {
         all foreach {mf => println(mf.bellTableText()); println()}
     }
     
+    close()
 }

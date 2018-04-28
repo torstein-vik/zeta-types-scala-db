@@ -140,11 +140,8 @@ class CodecTest extends FunSuite {
                     "This entry isn't properly documented",
                     "What idiot added this"
                 ),
-                firstAddedTimestamp = "2000",
-                lastChangedTimestamp = "2002",
                 authors = Seq("Virstein Tok"),
                 computationalOrigin = "2000",
-                batchId = "2000",
                 relatedObjects = Seq(URI("mflabel://mf-1999"), URI("mflabel://mf-2001"))
             ),
             properties = Record (

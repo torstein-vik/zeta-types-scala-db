@@ -33,11 +33,11 @@ case class Metadata (
     latexMacroUnapplied: Option[String] = None, 
     latexMacroApplied: Option[String] = None, 
     comments: Seq[String] = Seq(), 
-    firstAddedTimestamp: String = "error - time should have been set by database binding", 
-    lastChangedTimestamp: String = "error - time should have been set by database binding", 
+    firstAddedTimestamp: Option[String] = None, 
+    lastChangedTimestamp: Option[String] = None, 
     authors: Seq[String] = Seq(), 
     computationalOrigin: String, 
-    batchId: String = "error - batch id should have been set by database binding", 
+    batchId: Option[String] = None, 
     relatedObjects: Seq[URI] = Seq()
 )
 
@@ -133,11 +133,11 @@ object Metadata extends CodecContainer[Metadata](
             latexMacroUnapplied = decode[Option[String]](json \ "latexMacroUnapplied"), 
             latexMacroApplied = decode[Option[String]](json \ "latexMacroApplied"), 
             comments = decode[Seq[String]](json \ "comments"), 
-            firstAddedTimestamp = decode[String](json \ "firstAddedTimestamp"), 
-            lastChangedTimestamp = decode[String](json \ "lastChangedTimestamp"), 
+            firstAddedTimestamp = decode[Option[String]](json \ "firstAddedTimestamp"), 
+            lastChangedTimestamp = decode[Option[String]](json \ "lastChangedTimestamp"), 
             authors = decode[Seq[String]](json \ "authors"), 
             computationalOrigin = decode[String](json \ "computationalOrigin"), 
-            batchId = decode[String](json \ "batchId"), 
+            batchId = decode[Option[String]](json \ "batchId"), 
             relatedObjects = decode[Seq[URI]](json \ "relatedObjects") 
         )
     }

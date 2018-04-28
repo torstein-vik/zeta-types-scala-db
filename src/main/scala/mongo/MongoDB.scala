@@ -8,6 +8,8 @@ import org.mongodb.scala._
 
 import java.util.concurrent.TimeUnit
 
+import java.time.Instant
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -25,8 +27,16 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def batch(mfs : Seq[MultiplicativeFunction], batchid : String = null) : Unit = ???
     def store(mf : MultiplicativeFunction) : Unit = {
-        sync(zetatypes.insertOne(toDoc(mf)))
+        val time = Instant.now.getEpochSecond.toString
+        val meta = mf.metadata
+        val nMeta = meta.copy(
+            firstAddedTimestamp = if(meta.firstAddedTimestamp.isEmpty) Some(time) else meta.firstAddedTimestamp,
+            lastChangedTimestamp = Some(time),
+        )
+        val nmf = mf.copy(metadata = nMeta)
+        sync(zetatypes.insertOne(toDoc(nmf)))
     }
+    
     def get(mflabel : String) : MultiplicativeFunction = fromDoc[MultiplicativeFunction](sync {
         import org.mongodb.scala.model.Filters._
         zetatypes.find(equal("mflabel", mflabel))

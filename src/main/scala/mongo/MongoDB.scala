@@ -28,10 +28,13 @@ class MongoDB (address : String, database : String, collection : String) extends
     def batch(mfs : Seq[MultiplicativeFunction], batchid : String = null) : Unit = ???
     def store(mf : MultiplicativeFunction) : Unit = {
         val time = Instant.now.getEpochSecond.toString
+        val batchId = "#" + (mf##).toHexString + " - 1" 
+        
         val meta = mf.metadata
         val nMeta = meta.copy(
             firstAddedTimestamp = if(meta.firstAddedTimestamp.isEmpty) Some(time) else meta.firstAddedTimestamp,
             lastChangedTimestamp = Some(time),
+            batchId = if(meta.batchId.isEmpty) Some(batchId) else meta.batchId
         )
         val nmf = mf.copy(metadata = nMeta)
         sync(zetatypes.insertOne(toDoc(nmf)))

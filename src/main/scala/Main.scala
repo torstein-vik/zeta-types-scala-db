@@ -18,7 +18,7 @@ object Main extends App with REPL {
             conv
         }
         
-        multsInOEIS.map(mfstore)
+        mfbatch(multsInOEIS)
         
         println(multsInOEIS)
     }

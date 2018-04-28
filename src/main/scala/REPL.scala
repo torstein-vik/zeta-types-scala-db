@@ -17,6 +17,7 @@ trait REPL {
     def use(db : Database) : Unit = {dbstate.setDB(db)}
     
     def mfstore(mf : MultiplicativeFunction) = db.store(mf)
+    def mfbatch(mfs : Seq[MultiplicativeFunction]) = db.batch(mfs)
     
     def mfget(mflabel : String) : MultiplicativeFunction = db.get(mflabel)
     def mfgetall : Seq[MultiplicativeFunction] = db.getAll

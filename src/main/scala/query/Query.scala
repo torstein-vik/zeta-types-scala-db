@@ -6,7 +6,7 @@ sealed abstract class Query[T] {
     final def where(f : Predicate) : Query[T] = FilteredQuery[T](this, f)
 }
 
-case class FilteredQuery[T](query : Query[T], filter : Predicate) extends Query[T]
+case class FilteredQuery[T](query : Query[T], predicate : Predicate) extends Query[T]
 
 sealed abstract class PropertyQuery[T] extends Query[T] {
     final def ~[S](query : PropertyQuery[S]) : PropertyQuery[T ~ S] = CombinedPropertyQuery[T, S](this, query)
@@ -14,5 +14,3 @@ sealed abstract class PropertyQuery[T] extends Query[T] {
 
 case class SinglePropertyQuery[T](property : Property[T]) extends PropertyQuery[T]
 case class CombinedPropertyQuery[T, S](query1 : PropertyQuery[T], query2 : PropertyQuery[S]) extends PropertyQuery[T ~ S]
-
-

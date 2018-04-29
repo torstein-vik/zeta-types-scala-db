@@ -11,7 +11,7 @@ sealed case class ConstantProperty[T](value : T) extends Property[T]
 
 trait Properties {
     import scala.language.implicitConversions
-    implicit def liftProperty[T](t : T) : ConstantProperty[T] = ConstantProperty[T](t)
+    implicit def liftProperty[S, T](s : S)(implicit f : S => T) : ConstantProperty[T] = ConstantProperty[T](f(s))
     
     case object mf extends MFProperty[MultiplicativeFunction]
     case object mflabel extends MFProperty[String]

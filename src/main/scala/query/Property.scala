@@ -36,5 +36,6 @@ object Property extends Properties {
     }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {
+        def contains (contains : Property[T]) : Predicate = new SeqContainsPredicate(prop, contains)
     }
 }

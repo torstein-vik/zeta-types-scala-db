@@ -34,6 +34,9 @@ object Property extends Properties {
         def contains (contains : Property[String]) : Predicate = StringContainsPredicate(prop, contains)
         def matches (regex : Regex) : Predicate = RegexPredicate(prop, regex)
     }
+    
+    implicit final class OptionProperty[T](prop : Property[Option[T]]) {
+    }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {
         def contains (contains : Property[T]) : Predicate = SeqContainsPredicate(prop, contains)

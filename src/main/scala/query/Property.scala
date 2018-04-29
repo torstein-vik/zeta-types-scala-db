@@ -30,6 +30,7 @@ trait Properties {
 
 object Property extends Properties {
     implicit final class StringProperty(prop : Property[String]) {
+        def contains (contains : Property[String]) : Predicate = new StringContainsPredicate(prop, contains)
     }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {

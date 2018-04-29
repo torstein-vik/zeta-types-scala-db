@@ -3,13 +3,13 @@ package io.github.torsteinvik.zetatypes.db.query
 import scala.util.matching.Regex
 
 abstract sealed class Predicate {
-    def and (other : Predicate) = new AndPredicate(this, other)
-    def or (other : Predicate) = new OrPredicate(this, other)
-    def not = new NotPredicate(this)
+    final def and (other : Predicate) = new AndPredicate(this, other)
+    final def or (other : Predicate) = new OrPredicate(this, other)
+    final def not = new NotPredicate(this)
     
-    def unary_! = not
-    def & (other : Predicate) = and(other)
-    def | (other : Predicate) = or(other)
+    final def unary_! = not
+    final def & (other : Predicate) = and(other)
+    final def | (other : Predicate) = or(other)
 }
 
 sealed case class EqualityPredicate[T](prop1 : Property[T], prop2 : Property[T]) extends Predicate

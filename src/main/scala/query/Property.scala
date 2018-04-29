@@ -6,8 +6,8 @@ import io.github.torsteinvik.zetatypes.db.Datatypes._
 import scala.util.matching.Regex
 
 abstract sealed class Property[T] {
-    def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
-    def !== (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other).not
+    final def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
+    final def !== (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other).not
 }
 
 abstract sealed class MFProperty[T] extends Property[T]

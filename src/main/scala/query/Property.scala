@@ -1,6 +1,8 @@
 package io.github.torsteinvik.zetatypes.db.query
 
 import io.github.torsteinvik.zetatypes.db._
+import io.github.torsteinvik.zetatypes.db.Datatypes._
+
 
 abstract sealed class Property[T] {
     def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
@@ -22,6 +24,8 @@ trait Properties {
     case object comments extends MFProperty[Seq[String]]
     case object keywords extends MFProperty[Seq[String]]
     
+    case class mfvalue(n : Nat) extends Property[ComplexNumber]
+    case class mfbell(p : Prime, e : Nat) extends Property[ComplexNumber]
 }
 
 object Property extends Properties

@@ -25,8 +25,8 @@ trait Properties {
     case object comments extends MFProperty[Seq[String]]
     case object keywords extends MFProperty[Seq[String]]
     
-    case class mfvalue(n : Nat) extends Property[ComplexNumber]
-    case class mfbell(p : Prime, e : Nat) extends Property[ComplexNumber]
+    case class mfvalue(n : Nat) extends MFProperty[ComplexNumber]
+    case class mfbell(p : Prime, e : Nat) extends MFProperty[ComplexNumber]
 }
 
 object Property extends Properties {

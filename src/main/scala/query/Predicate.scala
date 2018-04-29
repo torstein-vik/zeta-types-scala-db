@@ -17,6 +17,8 @@ sealed case class StringContainsPredicate(superstr : Property[String], substr : 
 sealed case class RegexPredicate(str : Property[String], regex : Regex) extends Predicate
 
 sealed case class SeqContainsPredicate[T](seq : Property[Seq[T]], element : Property[T]) extends Predicate
+sealed case class SeqHasPredicate[T](seq : Property[Seq[T]], pred : Property[T] => Predicate) extends Predicate
+sealed case class SeqAllPredicate[T](seq : Property[Seq[T]], pred : Property[T] => Predicate) extends Predicate
 
 sealed case class AndPredicate(pred1 : Predicate, pred2 : Predicate) extends Predicate
 sealed case class OrPredicate(pred1 : Predicate, pred2 : Predicate) extends Predicate

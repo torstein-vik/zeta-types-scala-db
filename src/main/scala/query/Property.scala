@@ -12,6 +12,7 @@ abstract sealed class Property[T] {
 
 abstract sealed class MFProperty[T] extends Property[T]
 case class ConstantProperty[T](value : T) extends Property[T]
+case class GetProperty[T](inner : Property[Option[T]]) extends Property[T]
 
 trait Properties {
     import scala.language.implicitConversions
@@ -36,6 +37,8 @@ object Property extends Properties {
     }
     
     implicit final class OptionProperty[T](prop : Property[Option[T]]) {
+        def get = GetProperty(prop)
+        
         def exists = ExistsPredicate(prop)
     }
 

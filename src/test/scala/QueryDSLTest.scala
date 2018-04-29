@@ -15,5 +15,8 @@ class QueryDSLTest extends FunSuite {
         mflabel ~ mf where mf === mf : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf and mf === mf) : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf or mf === mf) : Query[String ~ MultiplicativeFunction]
+        mflabel ~ mf where (mf === mf & mf === mf) : Query[String ~ MultiplicativeFunction]
+        mflabel ~ mf where (mf === mf | mf === mf) : Query[String ~ MultiplicativeFunction]
+        
     }
 }

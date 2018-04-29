@@ -10,7 +10,7 @@ import io.github.torsteinvik.zetatypes.db.query.Property._
 class QueryDSLTest extends FunSuite {
     test("basic queries") {
         mf : Query[MultiplicativeFunction]
-        mf ~ mflabel ~ mfvalue(2) : Query[MultiplicativeFunction ~ String ~ ComplexNumber]
+        mf ~ mflabel ~ mfvalue(2) : Query[MultiplicativeFunction ~ String ~ Option[ComplexNumber]]
         
         mflabel ~ mf where mf === mf : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf and mf === mf) : Query[String ~ MultiplicativeFunction]

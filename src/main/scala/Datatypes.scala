@@ -131,7 +131,7 @@ package Datatypes {
 }
 
 /** Provides data-types used in JSON-schema */
-package object Datatypes extends LowerPriorityImplicits {
+package object Datatypes extends LowerPriorityImplicits1 {
 
     import scala.language.implicitConversions
 
@@ -144,15 +144,24 @@ package object Datatypes extends LowerPriorityImplicits {
         case Ratio(Integer(x), Integer(y)) => x.doubleValue / y.doubleValue
     }
     
-    implicit def floatToReal(x : Float) : Real = Floating(x.doubleValue)
-    implicit def doubleToReal(x : Double) : Real = Floating(x)
-    implicit def intToReal(x : Int) : Real = Integer(x)
+    implicit def floatToComplex(x : Float) : ComplexNumber = Floating(x.doubleValue)
+    implicit def doubleToComplex(x : Double) : ComplexNumber = Floating(x)
+    implicit def intToComplex(x : Int) : ComplexNumber = Integer(x)
     
     type PrimeLogSymbol = HybridSet[(Real, Real)]
     
 }
 
-trait LowerPriorityImplicits {
+trait LowerPriorityImplicits1 extends LowerPriorityImplicits2{
+    import Datatypes._
+    import scala.language.implicitConversions
+    
+    implicit def floatToReal(x : Float) : Real = Floating(x.doubleValue)
+    implicit def doubleToReal(x : Double) : Real = Floating(x)
+    implicit def intToReal(x : Int) : Real = Integer(x)
+}
+
+trait LowerPriorityImplicits2 {
     import Datatypes._
     import scala.language.implicitConversions
     

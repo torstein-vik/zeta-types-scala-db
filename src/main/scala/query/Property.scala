@@ -3,6 +3,7 @@ package io.github.torsteinvik.zetatypes.db.query
 import io.github.torsteinvik.zetatypes.db._
 import io.github.torsteinvik.zetatypes.db.Datatypes._
 
+import scala.util.matching.Regex
 
 abstract sealed class Property[T] {
     def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
@@ -31,6 +32,7 @@ trait Properties {
 object Property extends Properties {
     implicit final class StringProperty(prop : Property[String]) {
         def contains (contains : Property[String]) : Predicate = new StringContainsPredicate(prop, contains)
+        def matches (regex : Regex) : Predicate = new RegexPredicate(prop, regex)
     }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {

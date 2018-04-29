@@ -18,5 +18,16 @@ class QueryDSLTest extends FunSuite {
         mflabel ~ mf where (mf === mf & mf === mf) : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf | mf === mf) : Query[String ~ MultiplicativeFunction]
         
+        mflabel where (definition contains "eta") : Query[String]
+        mflabel where (name matches """A0\d+""".r) : Query[String]
+        mflabel where (comments has (_ contains "A000006")) : Query[String]
+        mflabel where (mflabel contains name) : Query[String]
+        mflabel where (("A000005A000006" : Property[String]) contains name) : Query[String]
+        mflabel where (keywords contains "oeis_nonn") : Query[String]
+        mflabel where (mfvalue(2) === 1) : Query[String]
+        mflabel where (!(mfvalue(2) === 1)) : Query[String]
+        mflabel where (mfvalue(2) !== 1) : Query[String]
+        mflabel where (mfbell(Prime(2), 3) === 1) : Query[String]
+        mflabel where (mfbell(Prime(2), 3) === 1 and mfbell(Prime(3), 3) === 1) : Query[String]
     }
 }

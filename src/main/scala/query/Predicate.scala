@@ -20,6 +20,8 @@ case class SeqContainsPredicate[T](seq : Property[Seq[T]], element : Property[T]
 case class SeqHasPredicate[T](seq : Property[Seq[T]], pred : Property[T] => Predicate) extends Predicate
 case class SeqAllPredicate[T](seq : Property[Seq[T]], pred : Property[T] => Predicate) extends Predicate
 
+case class ExistsPredicate[T](opt : Property[Option[T]]) extends Predicate
+
 case class AndPredicate(pred1 : Predicate, pred2 : Predicate) extends Predicate
 case class OrPredicate(pred1 : Predicate, pred2 : Predicate) extends Predicate
 case class NotPredicate(pred : Predicate) extends Predicate

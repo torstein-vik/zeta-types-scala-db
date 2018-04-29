@@ -36,6 +36,7 @@ object Property extends Properties {
     }
     
     implicit final class OptionProperty[T](prop : Property[Option[T]]) {
+        def exists = ExistsPredicate(prop)
     }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {

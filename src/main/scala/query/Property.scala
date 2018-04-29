@@ -4,6 +4,7 @@ import io.github.torsteinvik.zetatypes.db._
 
 abstract sealed class Property[T] {
     def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
+    def !== (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other).not
 }
 
 abstract sealed class MFProperty[T] extends Property[T]

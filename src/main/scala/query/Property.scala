@@ -40,6 +40,8 @@ object Property extends Properties {
         def get = GetProperty(prop)
         
         def exists = ExistsPredicate(prop)
+        final def ==? (other : Property[T]) : Predicate = exists and EqualityPredicate[T](get, other)
+        final def !=? (other : Property[T]) : Predicate = exists and EqualityPredicate[T](get, other).not
     }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {

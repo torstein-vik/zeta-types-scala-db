@@ -8,7 +8,7 @@ trait Database {
     def batch(mfs : Seq[MultiplicativeFunction], batchid : String = null) : Unit
     def store(mf : MultiplicativeFunction) : Unit
     def get(mflabel : String) : MultiplicativeFunction
-    def query[T](query : Query[T]) : T
+    def query[T](query : Query[T]) : Seq[T]
     
     def length : Int
     def getAll : Seq[MultiplicativeFunction]

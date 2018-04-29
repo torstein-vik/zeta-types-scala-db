@@ -6,8 +6,8 @@ import io.github.torsteinvik.zetatypes.db.Datatypes._
 import scala.util.matching.Regex
 
 abstract sealed class Property[T] {
-    final def === (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other)
-    final def !== (other : Property[T]) : Predicate = new EqualityPredicate[T](this, other).not
+    final def === (other : Property[T]) : Predicate = EqualityPredicate[T](this, other)
+    final def !== (other : Property[T]) : Predicate = EqualityPredicate[T](this, other).not
 }
 
 abstract sealed class MFProperty[T] extends Property[T]
@@ -31,13 +31,13 @@ trait Properties {
 
 object Property extends Properties {
     implicit final class StringProperty(prop : Property[String]) {
-        def contains (contains : Property[String]) : Predicate = new StringContainsPredicate(prop, contains)
-        def matches (regex : Regex) : Predicate = new RegexPredicate(prop, regex)
+        def contains (contains : Property[String]) : Predicate = StringContainsPredicate(prop, contains)
+        def matches (regex : Regex) : Predicate = RegexPredicate(prop, regex)
     }
 
     implicit final class SeqProperty[T](prop : Property[Seq[T]]) {
-        def contains (contains : Property[T]) : Predicate = new SeqContainsPredicate(prop, contains)
-        def has (pred : Property[T] => Predicate) : Predicate = new SeqHasPredicate(prop, pred)
-        def all (pred : Property[T] => Predicate) : Predicate = new SeqAllPredicate(prop, pred)
+        def contains (contains : Property[T]) : Predicate = SeqContainsPredicate(prop, contains)
+        def has (pred : Property[T] => Predicate) : Predicate = SeqHasPredicate(prop, pred)
+        def all (pred : Property[T] => Predicate) : Predicate = SeqAllPredicate(prop, pred)
     }
 }

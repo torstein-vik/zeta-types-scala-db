@@ -3,9 +3,9 @@ package io.github.torsteinvik.zetatypes.db.query
 import scala.util.matching.Regex
 
 abstract sealed class Predicate {
-    final def and (other : Predicate) = new AndPredicate(this, other)
-    final def or (other : Predicate) = new OrPredicate(this, other)
-    final def not = new NotPredicate(this)
+    final def and (other : Predicate) = AndPredicate(this, other)
+    final def or (other : Predicate) = OrPredicate(this, other)
+    final def not = NotPredicate(this)
     
     final def unary_! = not
     final def & (other : Predicate) = and(other)

@@ -3,13 +3,13 @@ package io.github.torsteinvik.zetatypes.db.query
 import io.github.torsteinvik.zetatypes.db._
 
 sealed abstract class Query[T] {
-    final def where(f : Predicate) : Query[T] = new FilteredQuery[T](this, f)
+    final def where(f : Predicate) : Query[T] = FilteredQuery[T](this, f)
 }
 
 case class FilteredQuery[T](query : Query[T], filter : Predicate) extends Query[T]
 
 sealed abstract class PropertyQuery[T] extends Query[T] {
-    final def ~[S](query : PropertyQuery[S]) : PropertyQuery[T ~ S] = new CombinedPropertyQuery[T, S](this, query)
+    final def ~[S](query : PropertyQuery[S]) : PropertyQuery[T ~ S] = CombinedPropertyQuery[T, S](this, query)
 }
 
 case class SinglePropertyQuery[T](property : Property[T]) extends PropertyQuery[T]

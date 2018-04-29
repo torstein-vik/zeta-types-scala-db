@@ -7,7 +7,7 @@ abstract sealed class Property[T] {
 }
 
 abstract sealed class MFProperty[T] extends Property[T]
-sealed case class ConstantProperty[T](value : T) extends Property[T]
+case class ConstantProperty[T](value : T) extends Property[T]
 
 trait Properties {
     import scala.language.implicitConversions

@@ -28,4 +28,10 @@ trait Properties {
     case class mfbell(p : Prime, e : Nat) extends Property[ComplexNumber]
 }
 
-object Property extends Properties
+object Property extends Properties {
+    implicit final class StringProperty(prop : Property[String]) {
+    }
+
+    implicit final class SeqProperty[T](prop : Property[Seq[T]]) {
+    }
+}

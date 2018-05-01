@@ -26,29 +26,29 @@ package Datatypes {
     }
 
     /** A natural number >= 0, realizing a [[Real]] */
-    sealed case class Nat (x : BigInt) extends Real {require(x >= 0)}
+    case class Nat (x : BigInt) extends Real {require(x >= 0)}
     /** A prime number, realizing a [[Real]] */
-    sealed case class Prime (x : BigInt) extends Real {require(x.isProbablePrime(10))}
+    case class Prime (x : BigInt) extends Real {require(x.isProbablePrime(10))}
     /** A (big) integer, realizing a [[Real]] */
-    sealed case class Integer (x : BigInt) extends Real
+    case class Integer (x : BigInt) extends Real 
     /** A floating point number, realizing a [[Real]] */
-    sealed case class Floating (x : Double) extends Real
+    case class Floating (x : Double) extends Real 
     /** A ratio of integers, realizing a [[Real]] */
-    sealed case class Ratio (num : Integer, den : Integer) extends Real {require(realToDouble(den) != 0)}
+    case class Ratio (num : Integer, den : Integer) extends Real {require(realToDouble(den) != 0)}
 
     /** A pair of [[Real]] numbers, representing a real and imaginary part of a [[ComplexNumber]] */
-    sealed case class CartesianComplex (re : Real, im : Real) extends ComplexNumber
+    case class CartesianComplex (re : Real, im : Real) extends ComplexNumber
     /** A pair of [[Real]] numbers, representing the absolute value and argument (normalized to [0, 1[) of a [[ComplexNumber]] */
-    sealed case class PolarComplex (abs : Real, unitarg : Real) extends ComplexNumber {require(abs >= 0 && unitarg >= 0 && unitarg < 1)}
+    case class PolarComplex (abs : Real, unitarg : Real) extends ComplexNumber {require(abs >= 0 && unitarg >= 0 && unitarg < 1)}
     
     /** A polynomial with coefficients in the [[ComplexNumber]]s, stored sparsely */
-    sealed case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 
+    case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 
     
     /** A Hybrid set of elements in the input type */
-    sealed case class HybridSet[A] (multiplicities : (A, Integer)*)
+    case class HybridSet[A] (multiplicities : (A, Integer)*)
 
     /** A JSON object, each value of specified type */
-    sealed case class Record[T] (entries : (String, T)*)
+    case class Record[T] (entries : (String, T)*)
 
     object Nat extends CodecContainer[Nat]({case Nat(x) => JObject(List(JField("nat", encode[BigInt](x))))}, {case JObject(List(JField("nat", x))) => new Nat(decode[BigInt](x))})
     object Prime extends CodecContainer[Prime]({case Prime(x) => JObject(List(JField("prime", encode[BigInt](x))))}, {case JObject(List(JField("prime", x))) => new Prime(decode[BigInt](x))})

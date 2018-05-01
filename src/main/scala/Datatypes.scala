@@ -25,12 +25,14 @@ package Datatypes {
         }
     }
 
+    sealed abstract class Integral (val value : BigInt) extends Real
+
     /** A natural number >= 0, realizing a [[Real]] */
-    case class Nat (x : BigInt) extends Real {require(x >= 0)}
+    case class Nat (x : BigInt) extends Integral(x) {require(x >= 0)}
     /** A prime number, realizing a [[Real]] */
-    case class Prime (x : BigInt) extends Real {require(x.isProbablePrime(10))}
+    case class Prime (x : BigInt) extends Integral(x) {require(x.isProbablePrime(10))}
     /** A (big) integer, realizing a [[Real]] */
-    case class Integer (x : BigInt) extends Real 
+    case class Integer (x : BigInt) extends Integral(x)
     /** A floating point number, realizing a [[Real]] */
     case class Floating (x : Double) extends Real 
     /** A ratio of integers, realizing a [[Real]] */

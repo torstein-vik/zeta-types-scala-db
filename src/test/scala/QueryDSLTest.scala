@@ -12,12 +12,18 @@ class QueryDSLTest extends FunSuite {
         mf : Query[MultiplicativeFunction]
         
         mf ~ mflabel ~ mfvalue(2).get : Query[MultiplicativeFunction ~ String ~ ComplexNumber]
+    }
+    
+    test("simple filtered queries") {
         mflabel ~ mf where mf === mf : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf and mf === mf) : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf or mf === mf) : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf & mf === mf) : Query[String ~ MultiplicativeFunction]
         mflabel ~ mf where (mf === mf | mf === mf) : Query[String ~ MultiplicativeFunction]
         
+    }
+    
+    test("complicated query test") {
         mflabel where (definition contains "eta") : Query[String]
         mflabel where (name matches """A0\d+""".r) : Query[String]
         mflabel where (comments has (_ contains "A000006")) : Query[String]

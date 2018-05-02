@@ -67,4 +67,23 @@ class DirectQueryTest extends FunSuite {
             )
         )
     )
+    val mf2 = MultiplicativeFunction(
+        mflabel = "MF-Test-1",
+        metadata = Metadata(
+            descriptiveName = "Test function - dummy",
+            verbalDefinition = "A dummy test function for testing the direct query system. nr 1. Contains the word 'eta'",
+            comments = List(
+                "Comment 1 - ",
+                "Comment 2 - "
+            ),
+            computationalOrigin = "Defined explicitly in DirectQueryTest.scala"
+        ),
+        properties = Record(),
+        bellTable = BellTable(
+            values = List(
+                (Prime(2),List(Integer(1), Integer(7), Integer(1), Integer(1)))
+            )
+        )
+    )
+    
 }

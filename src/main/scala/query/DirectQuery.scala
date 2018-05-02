@@ -1,10 +1,18 @@
 package io.github.torsteinvik.zetatypes.db.query
 
 import io.github.torsteinvik.zetatypes.db._
+import io.github.torsteinvik.zetatypes.db.query.Property._
+import io.github.torsteinvik.zetatypes.db.Datatypes._
+
+import scala.annotation.tailrec
 
 object DirectQuery {
     
     def query[T](q : Query[T])(mfs : Seq[MultiplicativeFunction]) : QueryResult[T] = new QueryResult(q match {
+        case q : PropertyQuery[T] => q match {
+            case CombinedPropertyQuery(q1, q2) => (query(q1)(mfs) zip query(q2)(mfs)) map {case (x, y) => x ~ y}
+            case SinglePropertyQuery(property) => mfs.map(evalProperty(property, _))
+        }
     })
     
     def evalProperty[T](p : Property[T], mf : MultiplicativeFunction) : T = p match {

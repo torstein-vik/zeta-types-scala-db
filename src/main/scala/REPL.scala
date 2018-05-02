@@ -1,6 +1,7 @@
 package io.github.torsteinvik.zetatypes.db
 
 import mongo._
+import query._
 
 trait REPL {
     
@@ -23,6 +24,8 @@ trait REPL {
     
     def mfget(mflabel : String) : MultiplicativeFunction = db.get(mflabel)
     def mfgetall : Seq[MultiplicativeFunction] = db.getAll
+    
+    def mfquery[T](q : Query[T]) : QueryResult[T] = db.query(q)
 }
 
 object REPL extends REPL

@@ -23,6 +23,7 @@ object DirectQuery {
             case Property.comments => mf.metadata.comments
             case Property.properties => mf.properties.entries.collect{ case (property, true) => property }
             
+            case mfbell(p, Nat(e)) => mf.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
         }
     }
     

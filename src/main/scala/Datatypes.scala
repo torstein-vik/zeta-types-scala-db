@@ -9,6 +9,9 @@ package Datatypes {
     
     /** Abstract data type representing a complex number*/
     sealed abstract class ComplexNumber {
+        def re : Real
+        def im : Real
+        
         def pretty : String = this match {
             case CartesianComplex(re, im) => re.pretty + " " + im.pretty + "i"
             case PolarComplex(abs, unitarg) => abs.pretty + " @ " + unitarg.pretty
@@ -16,6 +19,9 @@ package Datatypes {
     }
     /** Abstract data type representing a real number, and realizing a [[ComplexNumber]]*/
     sealed abstract class Real extends ComplexNumber {
+        def re = this
+        def im = Integer(0)
+        
         override def pretty : String = this match {
             case Nat(x) => x.toString
             case Prime(x) => x.toString
@@ -41,7 +47,12 @@ package Datatypes {
     /** A pair of [[Real]] numbers, representing a real and imaginary part of a [[ComplexNumber]] */
     case class CartesianComplex (re : Real, im : Real) extends ComplexNumber
     /** A pair of [[Real]] numbers, representing the absolute value and argument (normalized to [0, 1[) of a [[ComplexNumber]] */
-    case class PolarComplex (abs : Real, unitarg : Real) extends ComplexNumber {require(abs >= 0 && unitarg >= 0 && unitarg < 1)}
+    case class PolarComplex (abs : Real, unitarg : Real) extends ComplexNumber {
+        require(abs >= 0 && unitarg >= 0 && unitarg < 1)
+        def re = Floating(abs * math.cos(unitarg * 2 * math.Pi))
+        def im = Floating(abs * math.sin(unitarg * 2 * math.Pi))
+        
+    }
     
     /** A polynomial with coefficients in the [[ComplexNumber]]s, stored sparsely */
     case class ComplexPolynomial (coeffs : (ComplexNumber, Nat)*) 

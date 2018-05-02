@@ -89,4 +89,9 @@ class DirectQueryTest extends FunSuite {
     val mfs = Seq(mf1, mf2)
     def query[T](q : Query[T]) : Seq[T] = DirectQuery.query(q)(mfs)
     
+    test("basic queries direct") {
+        assert( query(mf) === Seq(mf1, mf2))
+        assert( query(mf ~ mflabel ~ mfvalue(2).get) === Seq(mf1 ~ "MF-OEIS-A000005" ~ CartesianComplex(Floating(2), Floating(0)), mf2 ~ "MF-Test-1" ~ CartesianComplex(Floating(7), Floating(0))))
+    }
+    
 }

@@ -19,6 +19,36 @@ Please tell us if this doesn't work, because that means something is wrong with 
 ## Current features
 
 TODO...
+### Query system
+Queries are built from properties and predicates. A query starts with a list of properties (separated w/ ~) that are the outputs from the query. In order to restrict the set of returned multiplicative functions, continue with "where (...)" where ... is some Predicate. 
+
+#### Properties
+All properties have a type, which is the kind of object they represent. Constants are automatically properties. Given an Option[T]-property, which works like optional part of the db-schema of type T, one can write ".get" to turn it into a property of type T. However, if the value doesn't exist, the query will crash.
+
+Here are the currently available properties that come from multiplicative functions:
+
+- mf of type MultiplicativeFunction: the entire multiplicative function
+- mflabel of type String: the mf-label
+- batchid of type Option[String]: the batchId
+- name of type String: the descriptiveName
+- belltable of type String: a string containing a nicely formatted bell-table with the label, name, and definition
+- definition of type String: the verbalDefinition
+- comments of type Seq[String]: the list of comments
+- properties of type Seq[String]: the list of properties with value true
+
+- mfvalue(n) of type Option[ComplexNumber]: the value of the function at the natural number n
+- mfbell(p, e) of type Option[ComplexNumber]: the value of the function at the natural number p^e with p prime
+
+#### Predicates
+Predicates are built from properties. For any two properties, placing "===" or "!==" between them will create a predicate based on the two being equal or different respectively. Predicates can also be combined using "and"/"&" and "or"/"|", as well as negated using ".not" or by prepending "!". 
+
+Furthermore, certain types of properties have additional functionality to create predicates. 
+
+- Any option-type can use ".exists" to check if the value exists. Additionally, "==?" and "!=?" are provided to check for existence before checking equality or inequality.
+- Any string-type can use "contains" to check if some other string-property (including constants) is contained in this string. 
+- Any string-type can use 'regex "...".r' to check if this string matches some regular expression. 
+- Any seq-type can use "contains" to check if some property value is contained in the sequence.
+- Any seq-type can use "has" and "all" to check if some predicate holds for respectively at least one or all of the elements in the sequence. This is specified by a property-function, such as "_ contains ..." or "_ === 20".
 
 ## Usage Examples
 

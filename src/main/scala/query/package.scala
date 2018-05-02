@@ -4,7 +4,9 @@ package io.github.torsteinvik.zetatypes.db
  *  @author Torstein Vik
  */
 package object query {
-    type ~[S, T] = (S, T)
+    implicit class Helper_~[T](t : T){
+        def ~[S](s : S) = new ~(t, s)
+    }
     
     import scala.language.implicitConversions
     implicit def propertyAsQuery[T](p : Property[T]) : PropertyQuery[T] = new SinglePropertyQuery[T](p)

@@ -14,3 +14,5 @@ sealed abstract class PropertyQuery[T] extends Query[T] {
 
 case class SinglePropertyQuery[T](property : Property[T]) extends PropertyQuery[T]
 case class CombinedPropertyQuery[T, S](query1 : PropertyQuery[T], query2 : PropertyQuery[S]) extends PropertyQuery[T ~ S]
+
+case class ~[+T, +S](t : T, s : S) 

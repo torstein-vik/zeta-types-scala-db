@@ -20,7 +20,7 @@ trait Properties {
     
     case object mf extends MFProperty[MultiplicativeFunction]
     case object mflabel extends MFProperty[String]
-    case object batchid extends MFProperty[String]
+    case object batchid extends MFProperty[Option[String]]
     case object name extends MFProperty[String]
     case object definition extends MFProperty[String]
     case object comments extends MFProperty[Seq[String]]

@@ -13,6 +13,7 @@ object DirectQuery {
             case CombinedPropertyQuery(q1, q2) => (query(q1)(mfs) zip query(q2)(mfs)) map {case (x, y) => x ~ y}
             case SinglePropertyQuery(property) => mfs.map(evalProperty(property, _))
         }
+        case FilteredQuery(innerq, predicate) => query(innerq)(mfs.filter(evalPredicate(predicate, _)))
     })
     
     def evalProperty[T](p : Property[T], mf : MultiplicativeFunction) : T = p match {

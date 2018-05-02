@@ -22,6 +22,7 @@ trait Properties {
     case object mflabel extends MFProperty[String]
     case object batchid extends MFProperty[Option[String]]
     case object name extends MFProperty[String]
+    case object belltable extends MFProperty[String]
     case object definition extends MFProperty[String]
     case object comments extends MFProperty[Seq[String]]
     case object properties extends MFProperty[Seq[String]]

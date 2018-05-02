@@ -16,6 +16,11 @@ package Datatypes {
             case CartesianComplex(re, im) => re.pretty + " " + im.pretty + "i"
             case PolarComplex(abs, unitarg) => abs.pretty + " @ " + unitarg.pretty
         }
+        
+        override def equals (other : Any) = other match {
+            case other : ComplexNumber => (re : Double) == (other.re : Double) && (im : Double) == (other.im : Double)
+            case _ => false
+        }
     }
     /** Abstract data type representing a real number, and realizing a [[ComplexNumber]]*/
     sealed abstract class Real extends ComplexNumber {

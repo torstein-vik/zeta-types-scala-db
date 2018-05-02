@@ -24,7 +24,7 @@ trait Properties {
     case object name extends MFProperty[String]
     case object definition extends MFProperty[String]
     case object comments extends MFProperty[Seq[String]]
-    case object keywords extends MFProperty[Seq[String]]
+    case object properties extends MFProperty[Seq[String]]
     
     case class mfvalue(n : Nat) extends MFProperty[Option[ComplexNumber]]
     case class mfbell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]

@@ -47,6 +47,7 @@ object DirectQuery {
     }
     
     def evalPredicate(p : Predicate, mf : MultiplicativeFunction) : Boolean = p match {
+        case EqualityPredicate(prop1, prop2) => evalProperty(prop1, mf) == evalProperty(prop2, mf)
     }
     
     //TODO: unify with other primes and naturals stream

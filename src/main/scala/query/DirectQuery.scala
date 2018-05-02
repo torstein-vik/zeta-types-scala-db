@@ -24,6 +24,16 @@ object DirectQuery {
             case Property.properties => mf.properties.entries.collect{ case (property, true) => property }
             
             case mfbell(p, Nat(e)) => mf.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+            case mfvalue(nn @ Nat(n)) => n match {
+                case _ if n == 0 => Some(Nat(0)) 
+                case _ if n == 1 => mf.bellTable.values.headOption.map(_._2.headOption).flatten // In all cases but one, this is 1. Discuss this counterexample, should it be included?
+                case _ => {
+                    val parts = factor(nn).map(mfbell.tupled).map(evalProperty[Option[ComplexNumber]](_, mf))
+                    if (parts.exists(_ isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({
+                        case (acc, next) => CartesianComplex(Floating(acc.re * next.re - acc.im * next.im), Floating(acc.re * next.im + acc.im * next.re))
+                    }))
+                }
+            }
         }
     }
     

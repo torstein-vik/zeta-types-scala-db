@@ -94,4 +94,13 @@ class DirectQueryTest extends FunSuite {
         assert( query(mf ~ mflabel ~ mfvalue(2).get) === Seq(mf1 ~ "MF-OEIS-A000005" ~ CartesianComplex(Floating(2), Floating(0)), mf2 ~ "MF-Test-1" ~ CartesianComplex(Floating(7), Floating(0))))
     }
     
+    test("simple filtered queries direct") {
+        assert(query(mflabel ~ mf where mf === mf) === Seq("MF-OEIS-A000005" ~ mf1, "MF-Test-1" ~ mf2))
+        assert(query(mflabel ~ mf where (mf === mf and (mf !== mf))) === Seq())
+        assert(query(mflabel ~ mf where (mf === mf or (mf !== mf))) === Seq("MF-OEIS-A000005" ~ mf1, "MF-Test-1" ~ mf2))
+        assert(query(mflabel ~ mf where (mf === mf & (mf !== mf))) === Seq())
+        assert(query(mflabel ~ mf where (mf === mf | (mf !== mf))) === Seq("MF-OEIS-A000005" ~ mf1, "MF-Test-1" ~ mf2))
+        
+    }
+    
 }

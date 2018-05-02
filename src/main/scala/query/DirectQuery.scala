@@ -48,6 +48,9 @@ object DirectQuery {
     
     def evalPredicate(p : Predicate, mf : MultiplicativeFunction) : Boolean = p match {
         case EqualityPredicate(prop1, prop2) => evalProperty(prop1, mf) == evalProperty(prop2, mf)
+        case StringContainsPredicate(superstr, substr) => evalProperty(superstr, mf) contains evalProperty(substr, mf)
+        case RegexPredicate(str, regex) => evalProperty(str, mf) match {case regex() => true case _ => false}
+        
         
         case ExistsPredicate(opt) => !evalProperty(opt, mf).isEmpty
         

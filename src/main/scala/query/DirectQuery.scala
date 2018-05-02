@@ -51,6 +51,7 @@ object DirectQuery {
         case StringContainsPredicate(superstr, substr) => evalProperty(superstr, mf) contains evalProperty(substr, mf)
         case RegexPredicate(str, regex) => evalProperty(str, mf) match {case regex() => true case _ => false}
         
+        case SeqContainsPredicate(seq, element) => evalProperty(seq, mf) contains evalProperty(element, mf)
         
         case ExistsPredicate(opt) => !evalProperty(opt, mf).isEmpty
         

@@ -86,4 +86,7 @@ class DirectQueryTest extends FunSuite {
         )
     )
     
+    val mfs = Seq(mf1, mf2)
+    def query[T](q : Query[T]) : Seq[T] = DirectQuery.query(q)(mfs)
+    
 }

@@ -65,7 +65,7 @@ class MongoDB (address : String, database : String, collection : String) extends
         case _ => throw new Exception("Many with this label: " + mflabel)
     })
     
-    def query[T](query : Query[T]) : Seq[T] = ???
+    def query[T](query : Query[T]) : QueryResult[T] = DirectQuery.query(query)(getAll.sortBy(_.mflabel))
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction])
     def length : Int = sync(zetatypes.count())(0).toInt

@@ -20,7 +20,7 @@ trait Codecs {
         }
         def decode (x : JValue) : BigInt = x match {
             case JInt(num) => num
-            case JObject(List(JField("$numberLong", JString(num)))) => BigInt(num)
+            case JObject(List(JField("$numberLong", JString(num)))) => BigInt(num) // TODO: This must be nuked
             case JArray(List(JString("base"), JInt(base), JArray(lst))) => {
                 var sum = BigInt(0)
                 

@@ -14,11 +14,11 @@ case class MultiplicativeFunction (
     functionalEquationParameters: Option[FunctionalEquationParameters] = None, 
     etaCombination: Option[EtaCombination] = None
 ) {
-    def bellTableText() : String = {
+    def bellTableText(ps : Int = 10, es : Int = 15) : String = {
         var str = "Label: " + mflabel + "\t Name: " + metadata.descriptiveName + "\n Description: " + metadata.verbalDefinition + "\n\n Bell Table: \n"
         
-        for {(Prime(prime), vals : Seq[ComplexNumber]) <- bellTable.values} {
-            str = str + "\np=" + prime + ": \t "+ vals.map(_.pretty).mkString(",\t")
+        for {(Prime(prime), vals : Seq[ComplexNumber]) <- bellTable.values.take(ps)} { // max ps primes
+            str = str + "\np=" + prime + ": \t "+ vals.take(es).map(_.pretty).mkString(",\t") // max es exponents 
         }
         
         

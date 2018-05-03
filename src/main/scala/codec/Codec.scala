@@ -4,9 +4,6 @@ import org.json4s._
 
 import scala.annotation._
 
-
-
-
 @implicitNotFound(msg = "Could not find a codec for type ${T}")
 trait Codec[T] {
     def encode (x : T) : JValue 

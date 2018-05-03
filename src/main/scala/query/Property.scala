@@ -22,10 +22,11 @@ trait Properties {
     case object mflabel extends MFProperty[String]
     case object batchid extends MFProperty[Option[String]]
     case object name extends MFProperty[String]
-    case object belltable extends MFProperty[String]
     case object definition extends MFProperty[String]
     case object comments extends MFProperty[Seq[String]]
     case object properties extends MFProperty[Seq[String]]
+    
+    case class belltable(ps : Int = 10, es : Int = 15) extends MFProperty[String]
     
     case class mfvalue(n : Nat) extends MFProperty[Option[ComplexNumber]]
     case class mfbell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]

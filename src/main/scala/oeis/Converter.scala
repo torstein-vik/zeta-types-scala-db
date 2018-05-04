@@ -14,14 +14,20 @@ object Converter{
     //credit: https://gist.github.com/ramn/8378315
     private lazy val primes: Stream[Int] = 2 #:: Stream.from(3).filter { n => !primes.takeWhile(_ <= math.sqrt(n)).exists(n % _ == 0) }
     
-    def apply(json : JObject) : MultiplicativeFunction = {
+    def apply(json : JObject, useBFile : Boolean = false) : MultiplicativeFunction = {
         val oeisID : String = "A%06d".format((json \ "number").extract[Int])
-        val predata : Seq[BigInt] = (json \ "data").extract[String].split(",").map(BigInt(_))
-        val offset : Int = (json \ "offset").extract[String].split(",")(0).toInt
         val name : String = (json \ "name").extract[String]
         val keywords : Seq[(String, Boolean)] = (json \ "keyword").extract[String].split(",").map(s => ("oeis_" + s) -> true)
         val comments : Seq[String] = (json \ "comment").extract[Seq[String]]
         val author : String = (json \ "author").extract[String]
+        
+        val (offset : Int, predata : Seq[BigInt]) = if (useBFile) {
+            BFile(oeisID) : (Int, Seq[BigInt])
+        } else {
+            val predata : Seq[BigInt] = (json \ "data").extract[String].split(",").map(BigInt(_))
+            val offset : Int = (json \ "offset").extract[String].split(",")(0).toInt
+            (offset, predata)
+        }
         
         val data : Seq[BigInt] = offset match {
             case k if k < 0 => predata.drop( - k)

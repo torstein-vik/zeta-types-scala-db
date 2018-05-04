@@ -4,12 +4,15 @@ import scala.io.Source
 
 import org.json4s._
 
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+
+
 object Download {
     private implicit val formats = DefaultFormats
     
-    def apply() : Seq[JObject] = {
+    def apply() : Seq[Future[JObject]] = {
         
-        val data = collection.mutable.ListBuffer[JObject]()
         val first = query(0)
         
         val count = (first \ "count").extract[Int]
@@ -18,20 +21,24 @@ object Download {
         println("count: " + count)
         println("queries: " + amt)
         
-        for (i <- 0 to (amt - 1)) {
+        var downloaded : Int = 0
+        
+        val data : Seq[Promise[JObject]] = Seq.fill(count)(Promise[JObject]())
+        
+        for (i <- 0 to (amt - 1)) { Future {
             val results = query(i)
-            
+            val mfs = (results \ "results").extract[List[JObject]]
 
-            for ( result <- (results \ "results").extract[List[JObject]] ) {
-                data += result
+            for ( (mf, index) <- mfs.zipWithIndex ) {
+                data(index + 10 * i).success(mf)
             }
             
-            printf("%d of %d - %2.2f %%\n", math.min((i + 1) * 10, count), count, (math.min((i + 1) * 10, count).toFloat / count) * 100)
+            downloaded += mfs.length
+            printf("download: %d of %d - %2.2f %%\n", downloaded, count, (downloaded.toFloat / count) * 100)
             
-            Thread.sleep(500)
-        }
-                
-        return data.to[Seq]
+        }}
+        
+        return data.map(_.future)
         
     }
     

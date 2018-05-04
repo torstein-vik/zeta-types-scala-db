@@ -16,14 +16,28 @@ object Main extends App with REPL {
     def downloadAndSaveOEIS() {
         val multsInOEIS : Seq[MultiplicativeFunction] = {
             import oeis._
+            import scala.concurrent.duration.Duration
+            import scala.concurrent._
+            import ExecutionContext.Implicits.global
             
             // Download json from oeis.org
+            println("Downloading...")
             val download = Download()
-            // Convert json into lsit of MultiplicativeFunction
-            val conv = download.map(Converter.apply)
+            // Convert json into list of MultiplicativeFunction
+            println("Converting...")
+            var converted : Int = 0
+            val conv = download.zipWithIndex.map{ case (future, index) => 
+                future.flatMap{ d => Future {
+                        val mf = Converter.apply(d, true)
+                        converted += 1
+                        printf("conversion: %d of %d - %2.2f %%\n", converted, download.length, (converted.toFloat / download.length) * 100)
+                        mf
+                    }
+                }
+            }
             
             // Return this as multsInOEIS
-            conv
+            Await.result(Future.sequence(conv), Duration.Inf)
         }
         
         // Batch-add multsInOEIS

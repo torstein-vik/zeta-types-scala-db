@@ -19,7 +19,7 @@ object DirectQuery {
         case ConstantProperty(x) => x
         case GetProperty(x) => evalProperty[Option[T]](x, mf) match {
             case Some(y) => y
-            case None => throw new Exception("Value assumed to exist in q did not exist!")
+            case None => throw new Exception("Value assumed to exist in query did not exist!")
         }
         case p : MFProperty[T] => p match {
             case Property.mf => mf

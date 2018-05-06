@@ -16,9 +16,13 @@ abstract sealed class MFProperty[T] extends Property[T]
 case class ConstantProperty[T](value : T) extends Property[T]
 case class GetProperty[T](inner : Property[Option[T]]) extends Property[T]
 
+case class PropertyLambda[T](output : Predicate)
+case class LambdaInputProperty[T]() extends Property[T]
+
 trait Properties {
     import scala.language.implicitConversions
     implicit def liftProperty[S, T](s : S)(implicit f : S => T) : ConstantProperty[T] = ConstantProperty[T](f(s))
+    implicit def liftPropertyLambda[T](f : Property[T] => Predicate) : PropertyLambda[T] = PropertyLambda[T](f(LambdaInputProperty[T]()))
     
     case object mf extends MFProperty[MultiplicativeFunction]
     case object mflabel extends MFProperty[String]

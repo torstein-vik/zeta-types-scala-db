@@ -45,7 +45,15 @@ object DirectQuery {
             case ApplyProperty(record, name) => evalProperty(record, mf).entries.find(_._1 == name).map(_._2)
             case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
             case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
-            case pretty(ps, es) => mf.bellTableText(ps, es)
+            case pretty(ps, es) => 
+                var str = "Label: " + mflabel + "\t Name: " + metadata.descriptiveName + "\n Description: " + metadata.verbalDefinition + "\n\n Bell Table: \n"
+                
+                for {(Prime(prime), vals : Seq[ComplexNumber]) <- bellTable.values.take(ps)} { // max ps primes
+                    str = str + "\np=" + prime + ": \t "+ vals.take(es).map(_.pretty).mkString(",\t") // max es exponents 
+                }
+                
+                return str
+            }
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(Nat(0)) 
                 case _ if n == 1 => mf.bellTable.values.headOption.map(_._2.headOption).flatten // In all cases but one, this is 1. Discuss this counterexample, should it be included?

@@ -19,6 +19,10 @@ abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) ext
 
 case class ConstantProperty[T](value : T) extends CompoundProperty[T](Set())
 case class GetProperty[T](inner : Property[Option[T]]) extends CompoundProperty[T](inner.requires)
+case class ApplyProperty[T](inner : Property[Record[T]], name : String) extends CompoundProperty[Option[T]](inner.requires)
+case class TupleFirstProperty[T, S](inner : Property[(T, S)]) extends CompoundProperty[T](inner.requires)
+case class TupleSecondProperty[T, S](inner : Property[(T, S)]) extends CompoundProperty[S](inner.requires)
+
 case class PropertyLambda[T](output : Predicate)
 case class LambdaInputProperty[T]() extends CompoundProperty[T](Set())
 
@@ -64,4 +68,14 @@ object Property extends Properties {
         def has (pred : Property[T] => Predicate) : Predicate = SeqHasPredicate(prop, pred)
         def all (pred : Property[T] => Predicate) : Predicate = SeqAllPredicate(prop, pred)
     }
+
+    implicit final class RecordProperty[T](prop : Property[Record[T]]) {
+        def apply (name : String) : Property[Option[T]] = ApplyProperty(prop, name)
+    }
+    
+    implicit final class TupleProperty[T, S](prop : Property[(T, S)]) {
+        def _1 : Property[T] = TupleFirstProperty(prop)
+        def _2 : Property[S] = TupleSecondProperty(prop)
+    }
+    
 }

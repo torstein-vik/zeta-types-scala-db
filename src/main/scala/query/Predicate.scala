@@ -25,3 +25,6 @@ case class ExistsPredicate[T](opt : Property[Option[T]]) extends Predicate(opt.r
 case class AndPredicate(pred1 : Predicate, pred2 : Predicate) extends Predicate(pred1.requires ++ pred2.requires)
 case class OrPredicate(pred1 : Predicate, pred2 : Predicate) extends Predicate(pred1.requires ++ pred2.requires)
 case class NotPredicate(pred : Predicate) extends Predicate(pred.requires)
+
+case class BooleanPredicate(value : Property[Boolean]) extends Predicate(value.requires)
+

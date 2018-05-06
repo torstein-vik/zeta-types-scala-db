@@ -39,6 +39,9 @@ object DirectQuery {
             case Property.properties => mf.properties
             
             case bellcell(p, Nat(e)) => mf.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+        }
+        
+        case p : CompoundProperty[T] => p match {
             case pretty(ps, es) => mf.bellTableText(ps, es)
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(Nat(0)) 

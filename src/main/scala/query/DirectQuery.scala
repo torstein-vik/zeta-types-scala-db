@@ -44,7 +44,7 @@ object DirectQuery {
                 case _ if n == 0 => Some(Nat(0)) 
                 case _ if n == 1 => mf.bellTable.values.headOption.map(_._2.headOption).flatten // In all cases but one, this is 1. Discuss this counterexample, should it be included?
                 case _ => {
-                    val parts = nn.factors.map(mfbell.tupled).map(evalProperty[Option[ComplexNumber]](_, mf))
+                    val parts = nn.factors.map(evalProperty(_, mf))
                     if (parts.exists(_ isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({
                         case (acc, next) => CartesianComplex(Floating(acc.re * next.re - acc.im * next.im), Floating(acc.re * next.im + acc.im * next.re))
                     }))

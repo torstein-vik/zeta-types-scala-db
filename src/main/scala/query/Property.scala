@@ -35,6 +35,9 @@ trait Properties {
     case object comments extends MFProperty[Seq[String]]
     case object properties extends MFProperty[Record[Boolean]]
     case class bellcell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]
+    case class bellrow(p : Prime) extends MFProperty[Option[Seq[ComplexNumber]]]
+    case class bellsmalltable(ps : Int = 10, es : Int = 15) extends MFProperty[Seq[(Prime, Seq[ComplexNumber])]]
+    case object belltable extends MFProperty[Seq[(Prime, Seq[ComplexNumber])]]
     
     case class pretty(ps : Int = 10, es : Int = 15) extends CompoundProperty[String](Set(bellsmalltable(ps, es), mflabel, name, definition))
     case class mfvalue(n : Nat) extends CompoundProperty[Option[ComplexNumber]](Factor(n).toSet.map(bellcell.tupled)) {

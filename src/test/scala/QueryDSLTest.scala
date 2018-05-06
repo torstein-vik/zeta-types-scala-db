@@ -33,8 +33,8 @@ class QueryDSLTest extends FunSuite {
         mflabel where (mfvalue(2) ==? 1) : Query[String]
         mflabel where (!(mfvalue(2) ==? 1)) : Query[String]
         mflabel where (mfvalue(2) !=? 1) : Query[String]
-        mflabel where (mfbell(Prime(2), 3) ==? 1) : Query[String]
-        mflabel where (mfbell(Prime(2), 3) ==? 1 and mfbell(Prime(3), 3) ==? 1) : Query[String]
+        mflabel where (bellcell(Prime(2), 3) ==? 1) : Query[String]
+        mflabel where (bellcell(Prime(2), 3) ==? 1 and bellcell(Prime(3), 3) ==? 1) : Query[String]
         mflabel where (mfvalue(100) exists) : Query[String]
     }
 }

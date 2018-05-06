@@ -31,10 +31,10 @@ trait Properties {
     case object definition extends MFProperty[String]
     case object comments extends MFProperty[Seq[String]]
     case object properties extends MFProperty[Record[Boolean]]
+    case class bellcell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]
     
     case class belltable(ps : Int = 10, es : Int = 15) extends MFProperty[String]
     
-    case class mfbell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]
     case class mfvalue(n : Nat) extends MFProperty[Option[ComplexNumber]] {
         val factors = factor(n)
         

@@ -7,15 +7,18 @@ import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 object DirectQuery {
     
+    private[DirectQuery] sealed abstract class EvalContext
+    case object NoContext extends EvalContext
+    
     def query[T](q : Query[T])(mfs : Seq[MultiplicativeFunction]) : QueryResult[T] = new QueryResult(q match {
         case q : PropertyQuery[T] => q match {
             case CombinedPropertyQuery(q1, q2) => (query(q1)(mfs) zip query(q2)(mfs)) map {case (x, y) => x ~ y}
-            case SinglePropertyQuery(property) => mfs.map(evalProperty(property, _))
+            case SinglePropertyQuery(property) => mfs.map(evalProperty(property, _)(NoContext))
         }
-        case FilteredQuery(innerq, predicate) => query(innerq)(mfs.filter(evalPredicate(predicate, _)))
+        case FilteredQuery(innerq, predicate) => query(innerq)(mfs.filter(evalPredicate(predicate, _)(NoContext)))
     })
     
-    def evalProperty[T](p : Property[T], mf : MultiplicativeFunction) : T = p match {
+    def evalProperty[T](p : Property[T], mf : MultiplicativeFunction)(implicit ctx : EvalContext) : T = p match {
         case ConstantProperty(x) => x
         case GetProperty(x) => evalProperty[Option[T]](x, mf) match {
             case Some(y) => y
@@ -45,7 +48,7 @@ object DirectQuery {
         }
     }
     
-    def evalPredicate(p : Predicate, mf : MultiplicativeFunction) : Boolean = p match {
+    def evalPredicate(p : Predicate, mf : MultiplicativeFunction)(implicit ctx : EvalContext) : Boolean = p match {
         case EqualityPredicate(prop1, prop2) => evalProperty(prop1, mf) == evalProperty(prop2, mf)
         case StringContainsPredicate(superstr, substr) => evalProperty(superstr, mf) contains evalProperty(substr, mf)
         case RegexPredicate(str, regex) => evalProperty(str, mf) match {case regex() => true case _ => false}

@@ -67,6 +67,8 @@ object DirectQuery {
         case AndPredicate(pred1, pred2) => evalPredicate(pred1, mf) && evalPredicate(pred2, mf)
         case OrPredicate(pred1, pred2) => evalPredicate(pred1, mf) || evalPredicate(pred2, mf)
         case NotPredicate(pred) => !evalPredicate(pred, mf)
+        
+        case BooleanPredicate(prop) => evalProperty(prop, mf)
     }
     
     def evalPropertyLambda[T](lambda : PropertyLambda[T], v : T, mf : MultiplicativeFunction) : Boolean = evalPredicate(lambda.output, mf)(LambdaContext[T](v))

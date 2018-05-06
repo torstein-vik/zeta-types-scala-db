@@ -29,7 +29,7 @@ class QueryDSLTest extends FunSuite {
         mflabel where (comments has (_ contains "A000006")) : Query[String]
         mflabel where (mflabel contains name) : Query[String]
         mflabel where (("A000005A000006" : Property[String]) contains name) : Query[String]
-        mflabel where (properties contains "oeis_nonn") : Query[String]
+        mflabel where (properties("oeis_nonn")) : Query[String]
         mflabel where (mfvalue(2) ==? 1) : Query[String]
         mflabel where (!(mfvalue(2) ==? 1)) : Query[String]
         mflabel where (mfvalue(2) !=? 1) : Query[String]

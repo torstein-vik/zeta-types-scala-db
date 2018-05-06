@@ -30,7 +30,7 @@ trait Properties {
     case object name extends MFProperty[String]
     case object definition extends MFProperty[String]
     case object comments extends MFProperty[Seq[String]]
-    case object properties extends MFProperty[Seq[String]]
+    case object properties extends MFProperty[Record[Boolean]]
     
     case class belltable(ps : Int = 10, es : Int = 15) extends MFProperty[String]
     

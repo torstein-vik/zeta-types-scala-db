@@ -110,7 +110,7 @@ class DirectQueryTest extends FunSuite {
         assert(query(mflabel where (comments has (_ contains "A000005"))) === Seq("MF-OEIS-A000005"))
         assert(query(mflabel where (mflabel contains name)) === Seq("MF-OEIS-A000005"))
         assert(query(mflabel where (("A000005A000006" : Property[String]) contains name)) === Seq("MF-OEIS-A000005"))
-        assert(query(mflabel where (properties contains "oeis_nonn")) === Seq("MF-OEIS-A000005"))
+        assert(query(mflabel where (properties("oeis_nonn"))) === Seq("MF-OEIS-A000005"))
         assert(query(mflabel where (mfvalue(2) ==? 2)) === Seq("MF-OEIS-A000005"))
         assert(query(mflabel where (!(mfvalue(2) ==? 2))) === Seq("MF-Test-1"))
         assert(query(mflabel where (mfvalue(2) !=? 2)) === Seq("MF-Test-1"))

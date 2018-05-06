@@ -17,8 +17,8 @@ case class StringContainsPredicate(superstr : Property[String], substr : Propert
 case class RegexPredicate(str : Property[String], regex : Regex) extends Predicate
 
 case class SeqContainsPredicate[T](seq : Property[Seq[T]], element : Property[T]) extends Predicate
-case class SeqHasPredicate[T](seq : Property[Seq[T]], pred : Property[T] => Predicate) extends Predicate
-case class SeqAllPredicate[T](seq : Property[Seq[T]], pred : Property[T] => Predicate) extends Predicate
+case class SeqHasPredicate[T](seq : Property[Seq[T]], pred : PropertyLambda[T]) extends Predicate
+case class SeqAllPredicate[T](seq : Property[Seq[T]], pred : PropertyLambda[T]) extends Predicate
 
 case class ExistsPredicate[T](opt : Property[Option[T]]) extends Predicate
 

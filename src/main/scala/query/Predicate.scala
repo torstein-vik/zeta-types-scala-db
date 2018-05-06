@@ -28,3 +28,8 @@ case class NotPredicate(pred : Predicate) extends Predicate(pred.requires)
 
 case class BooleanPredicate(value : Property[Boolean]) extends Predicate(value.requires)
 
+object Predicate {
+    import scala.language.implicitConversions
+    implicit def liftBooleanPredicate(value : Property[Boolean]) = BooleanPredicate(value)
+    implicit def liftBooleanOptionPredicate(value : Property[Option[Boolean]]) = value.exists and value.get
+}

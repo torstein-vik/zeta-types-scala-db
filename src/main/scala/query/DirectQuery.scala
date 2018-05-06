@@ -20,15 +20,6 @@ object DirectQuery {
     })
     
     def evalProperty[T](p : Property[T], mf : MultiplicativeFunction)(implicit ctx : EvalContext) : T = p match {
-        case ConstantProperty(x) => x
-        case GetProperty(x) => evalProperty[Option[T]](x, mf) match {
-            case Some(y) => y
-            case None => throw new Exception("Value assumed to exist in query did not exist!")
-        }
-        case p : LambdaInputProperty[T] => ctx match {
-            case LambdaContext(t : T) => t
-            case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
-        }
         case p : MFProperty[T] => p match {
             case Property.mf => mf
             case Property.mflabel => mf.mflabel
@@ -42,6 +33,15 @@ object DirectQuery {
         }
         
         case p : CompoundProperty[T] => p match {
+            case LambdaInputProperty() => ctx match {
+                case LambdaContext(t : T) => t
+                case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
+            }
+            case ConstantProperty(x) => x
+            case GetProperty(x) => evalProperty(x, mf) match {
+                case Some(y) => y
+                case None => throw new Exception("Value assumed to exist in query did not exist!")
+            }
             case pretty(ps, es) => mf.bellTableText(ps, es)
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(Nat(0)) 

@@ -36,7 +36,7 @@ object DirectQuery {
             case Property.name => mf.metadata.descriptiveName
             case Property.definition => mf.metadata.verbalDefinition
             case Property.comments => mf.metadata.comments
-            case Property.properties => mf.properties.entries.collect{ case (property, true) => property }
+            case Property.properties => mf.properties
             
             case belltable(ps, es) => mf.bellTableText(ps, es)
             case mfbell(p, Nat(e)) => mf.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten

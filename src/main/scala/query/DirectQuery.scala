@@ -59,8 +59,8 @@ object DirectQuery {
         case RegexPredicate(str, regex) => evalProperty(str, mf) match {case regex() => true case _ => false}
         
         case SeqContainsPredicate(seq, element) => evalProperty(seq, mf) contains evalProperty(element, mf)
-        case SeqHasPredicate(seq, pred) => evalProperty(seq, mf).exists(v => evalPredicate(pred(ConstantProperty(v)), mf))
-        case SeqAllPredicate(seq, pred) => evalProperty(seq, mf).forall(v => evalPredicate(pred(ConstantProperty(v)), mf))
+        case SeqHasPredicate(seq, pred) => evalProperty(seq, mf).exists(evalPropertyLambda(pred, _, mf))
+        case SeqAllPredicate(seq, pred) => evalProperty(seq, mf).forall(evalPropertyLambda(pred, _, mf))
         
         case ExistsPredicate(opt) => !evalProperty(opt, mf).isEmpty
         
@@ -68,5 +68,7 @@ object DirectQuery {
         case OrPredicate(pred1, pred2) => evalPredicate(pred1, mf) || evalPredicate(pred2, mf)
         case NotPredicate(pred) => !evalPredicate(pred, mf)
     }
+    
+    def evalPropertyLambda[T](lambda : PropertyLambda[T], v : T, mf : MultiplicativeFunction) : Boolean = evalPredicate(lambda.output, mf)(LambdaContext[T](v))
     
 }

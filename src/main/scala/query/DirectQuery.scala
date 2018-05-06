@@ -38,8 +38,8 @@ object DirectQuery {
             case Property.comments => mf.metadata.comments
             case Property.properties => mf.properties
             
-            case belltable(ps, es) => mf.bellTableText(ps, es)
-            case mfbell(p, Nat(e)) => mf.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+            case bellcell(p, Nat(e)) => mf.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+            case pretty(ps, es) => mf.bellTableText(ps, es)
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(Nat(0)) 
                 case _ if n == 1 => mf.bellTable.values.headOption.map(_._2.headOption).flatten // In all cases but one, this is 1. Discuss this counterexample, should it be included?

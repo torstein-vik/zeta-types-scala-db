@@ -14,13 +14,13 @@ abstract sealed class Property[T] {
     final def !== (other : Property[T]) : Predicate = EqualityPredicate[T](this, other).not
 }
 
-case class ConstantProperty[T](value : T) extends Property[T]
-case class GetProperty[T](inner : Property[Option[T]]) extends Property[T]
 abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
 abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {def requires = requirements} 
 
+case class ConstantProperty[T](value : T) extends CompoundProperty[T](Set())
+case class GetProperty[T](inner : Property[Option[T]]) extends CompoundProperty[T](inner.requires)
 case class PropertyLambda[T](output : Predicate)
-case class LambdaInputProperty[T]() extends Property[T]
+case class LambdaInputProperty[T]() extends CompoundProperty[T](Set())
 
 trait Properties {
     import scala.language.implicitConversions

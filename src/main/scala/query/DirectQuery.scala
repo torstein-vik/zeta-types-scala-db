@@ -42,6 +42,9 @@ object DirectQuery {
                 case Some(y) => y
                 case None => throw new Exception("Value assumed to exist in query did not exist!")
             }
+            case ApplyProperty(record, name) => evalProperty(record, mf).entries.find(_._1 == name).map(_._2)
+            case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
+            case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
             case pretty(ps, es) => mf.bellTableText(ps, es)
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(Nat(0)) 

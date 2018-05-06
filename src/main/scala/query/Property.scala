@@ -8,13 +8,16 @@ import scala.util.matching.Regex
 import scala.annotation.tailrec
 
 abstract sealed class Property[T] {
+    def requires : Set[MFProperty[_]]
+    
     final def === (other : Property[T]) : Predicate = EqualityPredicate[T](this, other)
     final def !== (other : Property[T]) : Predicate = EqualityPredicate[T](this, other).not
 }
 
-abstract sealed class MFProperty[T] extends Property[T]
 case class ConstantProperty[T](value : T) extends Property[T]
 case class GetProperty[T](inner : Property[Option[T]]) extends Property[T]
+abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
+abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {def requires = requirements} 
 
 case class PropertyLambda[T](output : Predicate)
 case class LambdaInputProperty[T]() extends Property[T]

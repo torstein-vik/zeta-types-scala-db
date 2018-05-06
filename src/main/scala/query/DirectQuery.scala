@@ -9,6 +9,7 @@ object DirectQuery {
     
     private[DirectQuery] sealed abstract class EvalContext
     case object NoContext extends EvalContext
+    case class LambdaContext[T](t : T) extends EvalContext
     
     def query[T](q : Query[T])(mfs : Seq[MultiplicativeFunction]) : QueryResult[T] = new QueryResult(q match {
         case q : PropertyQuery[T] => q match {
@@ -23,6 +24,10 @@ object DirectQuery {
         case GetProperty(x) => evalProperty[Option[T]](x, mf) match {
             case Some(y) => y
             case None => throw new Exception("Value assumed to exist in query did not exist!")
+        }
+        case p : LambdaInputProperty[T] => ctx match {
+            case LambdaContext(t : T) => t
+            case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
         }
         case p : MFProperty[T] => p match {
             case Property.mf => mf

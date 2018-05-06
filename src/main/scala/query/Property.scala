@@ -36,7 +36,7 @@ trait Properties {
     case object properties extends MFProperty[Record[Boolean]]
     case class bellcell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]
     
-    case class belltable(ps : Int = 10, es : Int = 15) extends MFProperty[String]
+    case class pretty(ps : Int = 10, es : Int = 15) extends CompoundProperty[String](Set(bellsmalltable(ps, es), mflabel, name, definition))
     case class mfvalue(n : Nat) extends CompoundProperty[Option[ComplexNumber]](Factor(n).toSet.map(bellcell.tupled)) {
         val factors : Set[bellcell] = requires.asInstanceOf[Set[bellcell]]
     }

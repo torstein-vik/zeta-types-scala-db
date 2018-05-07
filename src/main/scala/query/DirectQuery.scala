@@ -45,7 +45,7 @@ object DirectQuery {
             case ApplyProperty(record, name) => evalProperty(record, mf).entries.find(_._1 == name).map(_._2)
             case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
             case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
-            case pretty(ps, es) => 
+            case pretty(ps, es) => {
                 var str = "Label: " + mflabel + "\t Name: " + metadata.descriptiveName + "\n Description: " + metadata.verbalDefinition + "\n\n Bell Table: \n"
                 
                 for {(Prime(prime), vals : Seq[ComplexNumber]) <- bellTable.values.take(ps)} { // max ps primes

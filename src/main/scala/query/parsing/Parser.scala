@@ -26,6 +26,18 @@ object Parser extends RegexParsers {
         def double[T : TypeTag, S : TypeTag] : Parser[(T, S)] = "(" ~> (literal[T] <~ ",") ~ literal[S] <~ ")" ^^ { case t ~ s => (t, s) }
     }
     
+    object mfproperties {
+        def mf          : Parser[MFProperty[MultiplicativeFunction]]             = "mf"          ^^^ Property.mf
+        def batchid     : Parser[MFProperty[Option[String]]]                     = "batchid"     ^^^ Property.batchid
+        def mflabel     : Parser[MFProperty[String]]                             = "mflabel"     ^^^ Property.mflabel
+        def name        : Parser[MFProperty[String]]                             = "name"        ^^^ Property.name
+        def definition  : Parser[MFProperty[String]]                             = "definition"  ^^^ Property.definition
+        def comments    : Parser[MFProperty[Seq[String]]]                        = "comments"    ^^^ Property.comments
+        def properties  : Parser[MFProperty[Record[Boolean]]]                    = "properties"  ^^^ Property.properties
+        def belltable   : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]]   = "belltable"   ^^^ Property.belltable
+        
+    }
+    
     def literal[T : TypeTag] : Parser[T] = (typeOf[T] match {
         case t if t =:= typeOf[Int] => literals.int
         case t if t =:= typeOf[Integer] => literals.integer

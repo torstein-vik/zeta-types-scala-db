@@ -18,4 +18,13 @@ object Downloader {
         promise.future
     }
     
+    
+    private def handleRequest() : Unit = {
+        val (url : String, promise : Promise[Seq[String]]) = /*if(downloadQueue.length > 200) downloadQueue.dequeueFirst(_._1) else*/ downloadQueue.dequeue()
+        println("Downloading " + url)
+        val source = Source.fromURL(url)("UTF-8") 
+        val download = Try(source.getLines.toList) 
+        source.close()
+        promise.complete(download)
+    }
 }

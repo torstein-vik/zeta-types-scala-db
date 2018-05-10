@@ -25,6 +25,19 @@ object MFPropertyProvider {
     
     // TODO factor out t so that we can use isDefinedAt... this requires re-doing some semantics. Also would speed things up.
     def apply[T] (provider : MFProperty[T])(t : T) : MFPropertyProvider = (provider, t) match {
+        case (`mf`, t : MultiplicativeFunction) => new MFPropertyProvider ({
+            case `mf` => t
+            case `mflabel` => t.mflabel
+            case `batchid` => t.metadata.batchId
+            case `name` => t.metadata.descriptiveName
+            case `definition` => t.metadata.verbalDefinition
+            case `comments` => t.metadata.comments
+            case `properties` => t.properties
+            case `belltable` => t.bellTable.values
+            case bellcell(p, Nat(e)) => t.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+            case bellrow(p) => t.bellTable.values.find(_._1 == p).map(_._2)
+            case bellsmalltable(ps, es) => t.bellTable.values.take(ps).map{case (p, vals) => (p, vals.take(es))}
+        })
         
     }
 }

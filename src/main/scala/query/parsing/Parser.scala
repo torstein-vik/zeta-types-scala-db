@@ -21,6 +21,16 @@ object Parser extends RegexParsers {
         case Error(msg, next) => throw ParserException(msg, next.pos)
     }
     
+    
+    def literal[T : TypeTag] : Parser[T] = (typeOf[T] match {
+        case t if t =:= typeOf[Int] => literals.int
+        case t if t =:= typeOf[Integer] => literals.integer
+        case t if t =:= typeOf[Prime] => literals.prime
+        case t if t =:= typeOf[Nat] => literals.natural
+        case t if t =:= typeOf[String] => literals.string
+        case _ => failure("Expected Literal")
+    }).map(_.asInstanceOf[T])
+    
     object literals {
         private def bigint : Parser[BigInt] = """-?\d+""".r ^^ (BigInt(_))
         

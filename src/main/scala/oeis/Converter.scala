@@ -9,8 +9,7 @@ import org.json4s._
 object Converter{
     private implicit val formats = DefaultFormats
     
-    //credit: https://stackoverflow.com/questions/8566532/scala-streams-and-their-memory-usage
-    private lazy val naturals: Stream[Int] = Stream.cons(0, naturals.map{_ + 1})
+    private lazy val naturals: Stream[Int] = Stream.from(0)
     
     def apply(json : JObject, useBFile : Boolean = false) : MultiplicativeFunction = {
         val oeisID : String = "A%06d".format((json \ "number").extract[Int])

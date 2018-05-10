@@ -70,6 +70,12 @@ class MongoDB (address : String, database : String, collection : String) extends
     })
     
     def query[T](query : Query[T]) : QueryResult[T] = {
+        val mfs : Seq[JValue] = sync(zetatypes.find()).map(MongoCodec.decode)
+        
+        val reqs = query.requirements.createProvidersFromPointers(mfs.map(multfunc => new QueryPointer {
+        }))
+        
+        DirectQuery.query(query)(reqs)
     }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)

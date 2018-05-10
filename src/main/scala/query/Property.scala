@@ -9,6 +9,8 @@ import scala.util.matching.Regex
 import scala.annotation.tailrec
 
 abstract sealed class Property[T] {
+    final type output = T
+    
     def requires : Set[MFProperty[_]]
     
     final def === (other : Property[T]) : Predicate = EqualityPredicate[T](this, other)

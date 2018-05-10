@@ -36,6 +36,10 @@ object Parser extends RegexParsers {
         def properties  : Parser[MFProperty[Record[Boolean]]]                    = "properties"  ^^^ Property.properties
         def belltable   : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]]   = "belltable"   ^^^ Property.belltable
         
+        def bellcell : Parser[MFProperty[Option[ComplexNumber]]] = "bellcell" ~> arguments.double[Prime, Nat] ^^ (Property.bellcell.tupled)
+        def bellrow : Parser[MFProperty[Option[Seq[ComplexNumber]]]] = "bellrow" ~> arguments.single[Prime] ^^ (Property.bellrow(_))
+        def bellsmalltable : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]] = "bellsmalltable" ~> arguments.double[Int, Int] ^^ (Property.bellsmalltable.tupled)
+        
     }
     
     def literal[T : TypeTag] : Parser[T] = (typeOf[T] match {

@@ -26,6 +26,8 @@ object Parser extends RegexParsers {
         def double[T : TypeTag, S : TypeTag] : Parser[(T, S)] = "(" ~> (literal[T] <~ ",") ~ literal[S] <~ ")" ^^ { case t ~ s => (t, s) }
     }
     
+    def property[T : TypeTag] : Parser[Property[T]] = mfproperty[T] | compoundproperty[T]
+    def compoundproperty[T : TypeTag] : Parser[CompoundProperty[T]] = ???
     
     def mfproperty[T : TypeTag] : Parser[MFProperty[T]] = (typeOf[T] match {
         case t if t =:= typeOf[MultiplicativeFunction] => mfproperties.mf

@@ -19,38 +19,42 @@ object Converter{
         val comments : Seq[String] = (json \ "comment").extract[Seq[String]]
         val author : String = (json \ "author").extract[String]
         
-        val (offset : Int, predata : Seq[BigInt]) = if (useBFile) {
-            BFile(oeisID) : (Int, Seq[BigInt])
+        // TODO: if f(1) != 1 exclude as it is not multipicative
+        // TODO: Add test to check if it is multipicative for the first 100 values
+        
+        (if (useBFile) {
+            BFile(oeisID) : Future[(Int, Seq[BigInt])]
         } else {
             val predata : Seq[BigInt] = (json \ "data").extract[String].split(",").map(BigInt(_))
             val offset : Int = (json \ "offset").extract[String].split(",")(0).toInt
-            (offset, predata)
+            Future{(offset, predata)}
+        }).map { case (offset : Int, predata : Seq[BigInt]) => 
+            val data : Seq[BigInt] = offset match {
+                case k if k < 0 => predata.drop( - k)
+                case 0 => predata
+                case 1 => BigInt(1) +: predata
+                case 2 => BigInt(1) +: BigInt(1) +: predata
+                case n => throw new Exception("Weird OEIS offset at " + oeisID + ": " + n)
+            }
+            
+            val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
+                for (e <- Stream.from(0).takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))
+            ).toList).toList
+            
+            MultiplicativeFunction (
+                mflabel = "MF-OEIS-" + oeisID,
+                metadata = Metadata (
+                    descriptiveName = oeisID,
+                    verbalDefinition = name,
+                    comments = comments,
+                    authors = Seq(author),
+                    computationalOrigin = "Converted from OEIS using https://github.com/torstein-vik/zeta-types-scala-db",
+                    relatedObjects = Seq(URI("oeis://" + oeisID))
+                ),
+                properties = Record (keywords : _*),
+                bellTable = BellTable (values = bellTable)
+            )
+            
         }
-        
-        val data : Seq[BigInt] = offset match {
-            case k if k < 0 => predata.drop( - k)
-            case 0 => predata
-            case 1 => BigInt(1) +: predata
-            case 2 => BigInt(1) +: BigInt(1) +: predata
-            case n => throw new Exception("Weird OEIS offset at " + oeisID + ": " + n)
-        }
-        
-        val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
-            for (e <- naturals.takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))
-        ).toList).toList
-        
-        return MultiplicativeFunction (
-            mflabel = "MF-OEIS-" + oeisID,
-            metadata = Metadata (
-                descriptiveName = oeisID,
-                verbalDefinition = name,
-                comments = comments,
-                authors = Seq(author),
-                computationalOrigin = "Converted from OEIS using https://github.com/torstein-vik/zeta-types-scala-db",
-                relatedObjects = Seq(URI("oeis://" + oeisID))
-            ),
-            properties = Record (keywords : _*),
-            bellTable = BellTable (values = bellTable)
-        )
     }
 }

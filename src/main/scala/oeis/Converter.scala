@@ -11,7 +11,8 @@ import ExecutionContext.Implicits.global
 
 object Converter{
     private implicit val formats = DefaultFormats
-    def apply(json : JObject, useBFile : Boolean = false) : MultiplicativeFunction = {
+        
+    def apply(json : JObject, useBFile : Boolean = false) : Future[MultiplicativeFunction] = {
         val oeisID : String = "A%06d".format((json \ "number").extract[Int])
         val name : String = (json \ "name").extract[String]
         val keywords : Seq[(String, Boolean)] = (json \ "keyword").extract[String].split(",").map(s => ("oeis_" + s) -> true)

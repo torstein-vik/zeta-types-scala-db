@@ -6,6 +6,7 @@ import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 final class Requirements(requirements : Set[MFProperty[_]]) {
     
+    type PropertyValue[T] = (MFProperty[T], T)
     
     /*
     
@@ -32,4 +33,13 @@ final class Requirements(requirements : Set[MFProperty[_]]) {
         case reqs => reqs
     }
     
+    // TODO: Account for case where minimal = Set()
+    def createProvidersFromPointers(pointers : Seq[QueryPointer]) : Seq[MFPropertyProvider] = pointers.map { pointer => 
+        def evalPropertyValue[T] (property : MFProperty[T]) : PropertyValue[property.output] = (property, pointer.evalMFProperty(property))
+        
+        val values : Seq[PropertyValue[_]] = minimal.toSeq.map(prop => evalPropertyValue[prop.output](prop.asInstanceOf[MFProperty[prop.output]]))
+        
+        values.map{case (property, value) => MFPropertyProvider(property)(value)}.reduce[MFPropertyProvider](_ ++ _)
+        
+    }
 }

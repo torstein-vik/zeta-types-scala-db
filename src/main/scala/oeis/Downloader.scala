@@ -32,9 +32,12 @@ object Downloader {
     private def handleRequest() : Unit = {
         val (url : String, promise : Promise[Seq[String]]) = downloadQueue.dequeue()
         println("Downloading " + url)
-        val source = Source.fromURL(url)("UTF-8") 
-        val download = Try(source.getLines.toList) 
-        source.close()
-        promise.complete(download)
+        Future {
+            val source = Source.fromURL(url)("UTF-8") 
+            val download = Try(source.getLines.toList) 
+            source.close()
+            promise.complete(download)
+            println("Downloaded " + url)
+        }
     }
 }

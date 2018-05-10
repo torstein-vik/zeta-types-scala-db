@@ -5,6 +5,7 @@ object Main extends App with REPL {
     import query.Property._
     
     // Download and store all oeis multiplicative functions in db, and use b-files for extra data
+    // oeis.Manager(mfstore, useBFile = true)
     
     // Print simple bell tables for all multiplicative functions in db
     // DBBellTables()

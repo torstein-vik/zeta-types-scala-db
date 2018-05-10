@@ -29,5 +29,7 @@ object Parser extends RegexParsers {
         def integer : Parser[Integer] = bigint ^^ (Integer(_))
         def prime : Parser[Prime] = bigint ^^ (Prime(_))
         def natural : Parser[Nat] = bigint ^^ (Nat(_))
+        
+        def string : Parser[String] = """(")(?:(?=(\\?))\2.)*?(\1)""".r ^^ (_.drop(1).dropRight(1)) ^^ (StringContext.treatEscapes(_))
     }
 }

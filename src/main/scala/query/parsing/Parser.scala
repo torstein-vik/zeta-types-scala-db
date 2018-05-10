@@ -21,4 +21,13 @@ object Parser extends RegexParsers {
         case Error(msg, next) => throw ParserException(msg, next.pos)
     }
     
+    object literals {
+        private def bigint : Parser[BigInt] = """-?\d+""".r ^^ (BigInt(_))
+        
+        def int : Parser[Int] = """-?\d+""".r ^^ (_.toInt)
+        
+        def integer : Parser[Integer] = bigint ^^ (Integer(_))
+        def prime : Parser[Prime] = bigint ^^ (Prime(_))
+        def natural : Parser[Nat] = bigint ^^ (Nat(_))
+    }
 }

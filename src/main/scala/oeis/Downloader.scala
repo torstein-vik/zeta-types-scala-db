@@ -18,6 +18,8 @@ object Downloader {
         promise.future
     }
     
+    Future {runDownloader()}
+    Future {runDownloader()}
     
     private def runDownloader() : Unit = {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);

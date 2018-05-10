@@ -12,4 +12,7 @@ import scala.reflect.runtime.universe.{Position => _, _}
 
 object Parser extends RegexParsers {
     
+    case class ParserException(msg : String, pos : Position) extends 
+        Exception("Parsing error at line " + pos.line + " column " + pos.column + "\n" + pos.longString + "\n" + msg)
+    
 }

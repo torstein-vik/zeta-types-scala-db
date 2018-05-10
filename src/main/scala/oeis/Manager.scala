@@ -13,6 +13,15 @@ import io.github.torsteinvik.zetatypes.db._
 
 object Manager {
     def apply(saver : MultiplicativeFunction => Unit, useBFile : Boolean = true) {
+        import scala.concurrent.duration.Duration
+        import scala.concurrent._
+        import ExecutionContext.Implicits.global
+        
+        
+        val (count, download : Seq[Future[Seq[JObject]]]) = Download()
+        
+        
+        
     }
     
 }

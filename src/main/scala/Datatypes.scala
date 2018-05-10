@@ -41,7 +41,7 @@ package Datatypes {
     /** A natural number >= 0, realizing a [[Real]] */
     case class Nat (x : BigInt) extends Integral(x) {require(x >= 0)}
     /** A prime number, realizing a [[Real]] */
-    case class Prime (x : BigInt) extends Integral(x) {require(x.isProbablePrime(10))}
+    case class Prime (x : BigInt) extends Integral(x) {require(x.isProbablePrime(10))} // TODO: Is primality testing slowing things down when there are large bell tables?
     /** A (big) integer, realizing a [[Real]] */
     case class Integer (x : BigInt) extends Integral(x)
     /** A floating point number, realizing a [[Real]] */

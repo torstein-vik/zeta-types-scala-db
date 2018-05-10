@@ -1,6 +1,7 @@
 package io.github.torsteinvik.zetatypes.db.oeis
 
 import io.github.torsteinvik.zetatypes.db._
+import io.github.torsteinvik.zetatypes.db.dbmath.Primes._
 import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 import org.json4s._
@@ -10,9 +11,6 @@ object Converter{
     
     //credit: https://stackoverflow.com/questions/8566532/scala-streams-and-their-memory-usage
     private lazy val naturals: Stream[Int] = Stream.cons(0, naturals.map{_ + 1})
-    
-    //credit: https://gist.github.com/ramn/8378315
-    private lazy val primes: Stream[Int] = 2 #:: Stream.from(3).filter { n => !primes.takeWhile(_ <= math.sqrt(n)).exists(n % _ == 0) }
     
     def apply(json : JObject, useBFile : Boolean = false) : MultiplicativeFunction = {
         val oeisID : String = "A%06d".format((json \ "number").extract[Int])

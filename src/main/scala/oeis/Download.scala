@@ -1,9 +1,8 @@
 package io.github.torsteinvik.zetatypes.db.oeis
 
-import scala.io.Source
-
 import org.json4s._
 
+import scala.concurrent.duration.Duration
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
@@ -11,9 +10,9 @@ import ExecutionContext.Implicits.global
 object Download {
     private implicit val formats = DefaultFormats
     
-    def apply() : Seq[Future[JObject]] = {
+    def apply() : (Int, Seq[Future[Seq[JObject]]]) = {
         
-        val first = query(0)
+        val first = Await.result(query(0), Duration.Inf)
         
         val count = (first \ "count").extract[Int]
         val amt = math.ceil(count.toFloat / 10).toInt
@@ -23,22 +22,15 @@ object Download {
         
         var downloaded : Int = 0
         
-        val data : Seq[Promise[JObject]] = Seq.fill(count)(Promise[JObject]())
-        
-        for (i <- 0 to (amt - 1)) { Future {
-            val results = query(i)
+        val data : Seq[Future[Seq[JObject]]] = for (i <- 0 to (amt - 1)) yield { query(i).map{ results => 
             val mfs = (results \ "results").extract[List[JObject]]
 
-            for ( (mf, index) <- mfs.zipWithIndex ) {
-                data(index + 10 * i).success(mf)
-            }
-            
             downloaded += mfs.length
             printf("download: %d of %d - %2.2f %%\n", downloaded, count, (downloaded.toFloat / count) * 100)
-            
+            mfs
         }}
         
-        return data.map(_.future)
+        return (count, data)
         
     }
     

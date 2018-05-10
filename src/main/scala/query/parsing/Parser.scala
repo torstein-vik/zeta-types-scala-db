@@ -26,6 +26,19 @@ object Parser extends RegexParsers {
         def double[T : TypeTag, S : TypeTag] : Parser[(T, S)] = "(" ~> (literal[T] <~ ",") ~ literal[S] <~ ")" ^^ { case t ~ s => (t, s) }
     }
     
+    
+    def mfproperty[T : TypeTag] : Parser[MFProperty[T]] = (typeOf[T] match {
+        case t if t =:= typeOf[MultiplicativeFunction] => mfproperties.mf
+        case t if t =:= typeOf[String] => (mfproperties.mflabel | mfproperties.name | mfproperties.definition)
+        case t if t =:= typeOf[Option[String]] => mfproperties.batchid
+        case t if t =:= typeOf[Seq[String]] => mfproperties.comments
+        case t if t =:= typeOf[Record[Boolean]] => mfproperties.properties
+        case t if t =:= typeOf[Option[ComplexNumber]] => mfproperties.bellcell
+        case t if t =:= typeOf[Option[Seq[ComplexNumber]]] => mfproperties.bellrow
+        case t if t =:= typeOf[Seq[(Prime, Seq[ComplexNumber])]] => (mfproperties.belltable | mfproperties.bellsmalltable)
+        case t => failure("There is no MFProperty of type " + t)
+    }).map(_.asInstanceOf[MFProperty[T]])
+    
     object mfproperties {
         def mf          : Parser[MFProperty[MultiplicativeFunction]]             = "mf"          ^^^ Property.mf
         def batchid     : Parser[MFProperty[Option[String]]]                     = "batchid"     ^^^ Property.batchid

@@ -10,4 +10,6 @@ import collection.mutable.Queue
 import util.Try
 
 object Downloader {
+    private val downloadQueue : Queue[(String, Promise[Seq[String]])] = Queue()
+    
 }

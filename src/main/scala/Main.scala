@@ -49,7 +49,8 @@ object Main extends App with REPL {
     def DBBellTables() {
         val all = mfgetall
         
-        all foreach {mf => println(mf.bellTableText()); println()}
+        // TODO: Do this with query
+        //all foreach {mf => println(mf.bellTableText()); println()}
     }
     
     // Close database

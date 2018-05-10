@@ -1,14 +1,18 @@
 package io.github.torsteinvik.zetatypes.db.mongo
 
 import io.github.torsteinvik.zetatypes.db._
+import io.github.torsteinvik.zetatypes.db.Datatypes._
 import io.github.torsteinvik.zetatypes.db.codec._
 import io.github.torsteinvik.zetatypes.db.query._
+import io.github.torsteinvik.zetatypes.db.query.Property._
 
 import org.mongodb.scala._
 
 import java.util.concurrent.TimeUnit
 
 import java.time.Instant
+
+import org.json4s._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -65,7 +69,8 @@ class MongoDB (address : String, database : String, collection : String) extends
         case _ => throw new Exception("Many with this label: " + mflabel)
     })
     
-    def query[T](query : Query[T]) : QueryResult[T] = DirectQuery.query(query)(getAll.sortBy(_.mflabel))
+    def query[T](query : Query[T]) : QueryResult[T] = {
+    }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)
     def length : Int = sync(zetatypes.count())(0).toInt

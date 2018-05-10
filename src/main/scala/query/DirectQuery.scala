@@ -46,10 +46,10 @@ object DirectQuery {
             case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
             case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
             case pretty(ps, es) => {
-                var str = "Label: " + mflabel + "\t Name: " + metadata.descriptiveName + "\n Description: " + metadata.verbalDefinition + "\n\n Bell Table: \n"
+                var str = "Label: " + mf.mflabel + "\t Name: " + mf.metadata.descriptiveName + "\n Description: " + mf.metadata.verbalDefinition + "\n\n Bell Table: \n"
                 
-                for {(Prime(prime), vals : Seq[ComplexNumber]) <- bellTable.values.take(ps)} { // max ps primes
-                    str = str + "\np=" + prime + ": \t "+ vals.take(es).map(_.pretty).mkString(",\t") // max es exponents 
+                for {(Prime(prime), vals : Seq[ComplexNumber]) <- mf.bellTable.values.take(ps)} { // max ps primes
+                    str = str + "\np=" + prime + ": \t "+ vals.map(_.pretty).mkString(",\t") // max es exponents
                 }
                 
                 return str

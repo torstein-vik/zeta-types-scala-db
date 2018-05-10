@@ -18,6 +18,20 @@ object Main extends App with REPL {
     
     5. Get the mongo query system to only retrive what is needed, using projections
     
+    6. Finish parser
+    
+    7. Create a web-api
+    
+    8. Deploy on heroku
+    
+    9. Create a webpage
+    
+    10. Integrate with zeta-types-scala main project, add many mathematical tools to query system
+    
+    11. Create an LMFDB downloader
+    
+    12. Work on test-cases and making them as simple as possible
+    
     */
     
     // Download and store all oeis multiplicative functions in db, and use b-files for extra data

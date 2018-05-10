@@ -46,5 +46,10 @@ object MFPropertyProvider {
             case bellsmalltable(ps, es) => t.take(ps).map{case (p, vals) => (p, vals.take(es))}
         })
         
+        case (bellrow(prime), t : Option[Seq[ComplexNumber]]) => new MFPropertyProvider ({
+            case bellrow(p) if p == prime => t
+            case bellcell(p, Nat(e)) if p == prime => t.map(_.lift(e.toInt))
+        })
+        
     }
 }

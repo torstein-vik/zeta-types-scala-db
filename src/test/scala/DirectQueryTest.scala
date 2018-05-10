@@ -87,7 +87,7 @@ class DirectQueryTest extends FunSuite {
     )
     
     val mfs = Seq(mf1, mf2)
-    def query[T](q : Query[T]) : Seq[T] = DirectQuery.query(q)(mfs)
+    def query[T](q : Query[T]) : Seq[T] = DirectQuery.query(q)(mfs.map(MFPropertyProvider(mf)))
     
     test("basic queries direct") {
         assert( query(mf) === Seq(mf1, mf2))

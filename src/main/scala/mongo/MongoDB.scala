@@ -67,7 +67,7 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def query[T](query : Query[T]) : QueryResult[T] = DirectQuery.query(query)(getAll.sortBy(_.mflabel))
     
-    def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction])
+    def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)
     def length : Int = sync(zetatypes.count())(0).toInt
     
 }

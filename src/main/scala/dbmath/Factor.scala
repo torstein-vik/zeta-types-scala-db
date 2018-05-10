@@ -1,12 +1,11 @@
-package io.github.torsteinvik.zetatypes.db.query
+package io.github.torsteinvik.zetatypes.db.dbmath
 
 import io.github.torsteinvik.zetatypes.db.Datatypes._
-import io.github.torsteinvik.zetatypes.db.dbmath.Primes._
 
 import scala.annotation.tailrec
 
-// TODO: This really needs to be placed somewhere more fitting...
 object Factor {
+    import Primes._
     
     def apply(nat : Nat) : Seq[(Prime, Nat)] = {
         @tailrec

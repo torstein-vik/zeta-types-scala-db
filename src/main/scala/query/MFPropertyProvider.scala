@@ -39,5 +39,12 @@ object MFPropertyProvider {
             case bellsmalltable(ps, es) => t.bellTable.values.take(ps).map{case (p, vals) => (p, vals.take(es))}
         })
         
+        case (`belltable`, t : Seq[(Prime, Seq[ComplexNumber])]) => new MFPropertyProvider ({
+            case `belltable` => t
+            case bellcell(p, Nat(e)) => t.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+            case bellrow(p) => t.find(_._1 == p).map(_._2)
+            case bellsmalltable(ps, es) => t.take(ps).map{case (p, vals) => (p, vals.take(es))}
+        })
+        
     }
 }

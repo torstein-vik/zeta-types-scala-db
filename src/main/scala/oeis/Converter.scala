@@ -6,11 +6,11 @@ import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 import org.json4s._
 
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+
 object Converter{
     private implicit val formats = DefaultFormats
-    
-    private lazy val naturals: Stream[Int] = Stream.from(0)
-    
     def apply(json : JObject, useBFile : Boolean = false) : MultiplicativeFunction = {
         val oeisID : String = "A%06d".format((json \ "number").extract[Int])
         val name : String = (json \ "name").extract[String]

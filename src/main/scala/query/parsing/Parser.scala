@@ -21,6 +21,10 @@ object Parser extends RegexParsers {
         case Error(msg, next) => throw ParserException(msg, next.pos)
     }
     
+    object arguments {
+        def single[T : TypeTag] : Parser[T] = "(" ~> literal[T] <~ ")"
+        def double[T : TypeTag, S : TypeTag] : Parser[(T, S)] = "(" ~> (literal[T] <~ ",") ~ literal[S] <~ ")" ^^ { case t ~ s => (t, s) }
+    }
     
     def literal[T : TypeTag] : Parser[T] = (typeOf[T] match {
         case t if t =:= typeOf[Int] => literals.int

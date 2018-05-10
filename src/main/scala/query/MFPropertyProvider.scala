@@ -57,5 +57,8 @@ object MFPropertyProvider {
             case bellcell(p, Nat(e)) if e < exponents && t.exists(_._1 == p) => t.find(_._1 == p).get._2.lift(e.toInt)
         })
         
+        case _ => new MFPropertyProvider ({
+            case x if provider == x => t
+        })
     }
 }

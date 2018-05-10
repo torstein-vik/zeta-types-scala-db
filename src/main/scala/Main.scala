@@ -10,7 +10,7 @@ object Main extends App with REPL {
     // DBBellTables()
     
     // All multiplicative functions where 24 and 51 are fix-points
-    // mfquery(belltable where (mfvalue(24) ==? 24 and mfvalue(51) ==? 51)).print()
+    // mfquery(pretty() where (mfvalue(24) ==? 24 and mfvalue(51) ==? 51)).print()
     
     def DBBellTables() {
         val all = mfgetall

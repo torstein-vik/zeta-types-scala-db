@@ -44,11 +44,10 @@ object Download {
     
     def queryurl(i : Int) = "https://oeis.org/search?q=keyword:mult&fmt=json&start=" + (i * 10)
     
-    def query (i : Int) : JValue = {
-        val source = Source.fromURL(queryurl(i))("UTF-8")
-        val result = try source.mkString finally source.close
+    def query (i : Int) : Future[JValue] = {
+        val result = Downloader(queryurl(i))
         
         import org.json4s.native.JsonMethods._
-        return parse(result)
+        return result.map(res => parse(res mkString "\n"))
     }
 }

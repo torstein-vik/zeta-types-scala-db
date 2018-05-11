@@ -1,10 +1,7 @@
 package io.github.torsteinvik.zetatypes.db.oeis
 
-import scala.concurrent.duration.Duration
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-
-import org.json4s._
 
 object BFile {
     

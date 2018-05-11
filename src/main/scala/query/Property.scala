@@ -6,8 +6,6 @@ import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 import scala.util.matching.Regex
 
-import scala.annotation.tailrec
-
 abstract sealed class Property[T] {
     final type output = T
     

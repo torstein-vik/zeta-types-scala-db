@@ -1,8 +1,6 @@
 package io.github.torsteinvik.zetatypes.db.query
 
-import io.github.torsteinvik.zetatypes.db._
 import io.github.torsteinvik.zetatypes.db.query.Property._
-import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 final class Requirements(requirements : Set[MFProperty[_]]) {
     

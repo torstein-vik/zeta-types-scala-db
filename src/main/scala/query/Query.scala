@@ -1,7 +1,5 @@
 package io.github.torsteinvik.zetatypes.db.query
 
-import io.github.torsteinvik.zetatypes.db._
-
 sealed abstract class Query[T] (val requires : Set[MFProperty[_]]) {
     lazy val requirements = new Requirements(requires)
     

@@ -15,14 +15,16 @@
 
 6. Finish parser
 
-7. Create a web-api
+7. Clean up entire codebase
 
-8. Deploy on heroku
+8. Create a web-api
 
-9. Create a webpage
+9. Deploy on heroku
 
-10. Integrate with zeta-types-scala main project, add many mathematical tools to query system
+10. Create a webpage
 
-11. Create an LMFDB downloader
+11. Integrate with zeta-types-scala main project, add many mathematical tools to query system
 
-12. Work on test-cases and making them as simple as possible
+12. Create an LMFDB downloader
+
+13. Work on test-cases and making them as simple as possible

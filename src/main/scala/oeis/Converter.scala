@@ -29,7 +29,7 @@ object Converter{
         } else {
             val predata : Seq[BigInt] = (json \ "data").extract[String].split(",").map(BigInt(_))
             val offset : Int = (json \ "offset").extract[String].split(",")(0).toInt
-            Future{(offset, predata)}
+            Future.successful((offset, predata))
         }).map { case (offset : Int, predata : Seq[BigInt]) => 
             val data : Seq[BigInt] = (offset match {
                 case k if k < 0 => predata.drop( - k)

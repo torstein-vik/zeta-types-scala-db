@@ -25,7 +25,7 @@ class MongoDB (address : String, database : String, collection : String) extends
     private def toDoc[T](x : T)(implicit codec : Codec[T]) : Document = MongoCodec.encode(encode[T](x))
     private def fromDoc[T](x : Document)(implicit codec : Codec[T]) : T = decode[T](MongoCodec.decode(x))
     
-    private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(10, TimeUnit.SECONDS))
+    private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(60, TimeUnit.SECONDS))
     
     def close() = {client.close();}
     

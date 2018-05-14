@@ -29,13 +29,14 @@ object Converter{
             val offset : Int = (json \ "offset").extract[String].split(",")(0).toInt
             Future{(offset, predata)}
         }).map { case (offset : Int, predata : Seq[BigInt]) => 
-            val data : Seq[BigInt] = offset match {
+            val data : Seq[BigInt] = (offset match {
                 case k if k < 0 => predata.drop( - k)
                 case 0 => predata
                 case 1 => BigInt(1) +: predata
                 case 2 => BigInt(1) +: BigInt(1) +: predata
                 case n => throw new Exception("Weird OEIS offset at " + oeisID + ": " + n)
-            }
+            }).to[IndexedSeq]
+            
             
             val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
                 for (e <- Stream.from(0).takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))

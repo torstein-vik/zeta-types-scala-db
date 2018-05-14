@@ -37,6 +37,7 @@ object Converter{
                 case n => throw new Exception("Weird OEIS offset at " + oeisID + ": " + n)
             }).to[IndexedSeq]
             
+            if(data(1) != 1) throw new Exception("Found MF with f(1) != 1, " + oeisID)
             
             val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
                 for (e <- Stream.from(0).takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))

@@ -7,13 +7,14 @@ import scala.concurrent._
 import ExecutionContext.Implicits.global
 
 import java.util.concurrent.atomic._
+import java.util.concurrent.TimeUnit
 
 object Download {
     private implicit val formats = DefaultFormats
     
     def apply() : (Int, Seq[Future[Seq[JObject]]]) = {
         
-        val first = Await.result(query(0), Duration.Inf)
+        val first = Await.result(query(0), Duration(60, TimeUnit.SECONDS))
         
         val count = (first \ "count").extract[Int]
         val amt = math.ceil(count.toFloat / 10).toInt

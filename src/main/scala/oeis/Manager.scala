@@ -31,6 +31,13 @@ object Manager {
         
         
         val res = Await.result(conv, timeout)
+        val excluded : Seq[(String, String)] = res.collect{case Failure(ConversionException(oeisID, msg)) => (oeisID, msg)}
+        println()
+        println("Finished downloading, converting, and uploading! Excluded " + excluded.length)
+        excluded.foreach { case (oeisID, msg) => 
+            println(oeisID + " was excluded because: " + msg)
+        }
+        println()
     }
     
 }

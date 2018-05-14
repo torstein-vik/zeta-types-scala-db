@@ -31,12 +31,9 @@ object Manager {
             }
         })
         
-        Await.result(Future.sequence(conv), Duration.Inf)
-        println("Downloaded all basic information!")
         
-        Await.result(Future.sequence(promises.toList), Duration.Inf)
-        println("Converted and uploaded all!")
         
+        val res = Await.result(conv, timeout)
     }
     
 }

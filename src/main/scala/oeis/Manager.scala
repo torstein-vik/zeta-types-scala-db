@@ -3,12 +3,14 @@ package io.github.torsteinvik.zetatypes.db.oeis
 import org.json4s._
 
 import java.util.concurrent.atomic._
+import java.util.concurrent.TimeUnit
 
 import io.github.torsteinvik.zetatypes.db._
 
+import scala.concurrent.duration.Duration
+
 object Manager {
-    def apply(saver : MultiplicativeFunction => Unit, useBFile : Boolean = true) {
-        import scala.concurrent.duration.Duration
+    def apply(saver : MultiplicativeFunction => Unit, useBFile : Boolean = true, timeout : Duration = Duration(10, TimeUnit.MINUTES)) {
         import scala.concurrent._
         import ExecutionContext.Implicits.global
         

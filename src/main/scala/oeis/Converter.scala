@@ -36,10 +36,10 @@ object Converter{
                 case 0 => predata
                 case 1 => BigInt(1) +: predata
                 case 2 => BigInt(1) +: BigInt(1) +: predata
-                case n => throw new Exception("Weird OEIS offset at " + oeisID + ": " + n)
+                case n => throw ConversionException(oeisID, s"Weird OEIS offset: $n")
             }).to[IndexedSeq]
             
-            if(data(1) != 1) throw new Exception("Found MF with f(1) != 1, " + oeisID)
+            if(data(1) != 1) throw ConversionException(oeisID, s"Not multipicative: f(1) = ${data(1)} =/= 1")
             
             val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
                 for (e <- Stream.from(0).takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))

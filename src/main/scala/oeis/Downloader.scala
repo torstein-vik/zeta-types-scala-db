@@ -10,11 +10,11 @@ import collection.mutable.Queue
 import util.Try
 
 object Downloader {
-    private val downloadQueue : Queue[(String, Promise[Seq[String]])] = Queue()
+    private val downloadQueue : Queue[Promise[Unit]] = Queue()
     
     def apply(url : String) : Future[Seq[String]] = {
-        val promise = Promise[Seq[String]]()
-        downloadQueue.enqueue((url, promise))
+        val promise = Promise[Unit]()
+        downloadQueue.enqueue(promise)
         promise.future
     }
     
@@ -25,19 +25,8 @@ object Downloader {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         while(true){
             Thread.sleep(500)
-            if(!downloadQueue.isEmpty) handleRequest()
+            if(!downloadQueue.isEmpty) downloadQueue.dequeue().success()
         }
     }
     
-    private def handleRequest() : Unit = {
-        val (url : String, promise : Promise[Seq[String]]) = downloadQueue.dequeue()
-        println("Downloading " + url)
-        Future {
-            val source = Source.fromURL(url)("UTF-8") 
-            val download = Try(source.getLines.toList) 
-            source.close()
-            promise.complete(download)
-            println("Downloaded " + url)
-        }
-    }
 }

@@ -9,6 +9,8 @@ import org.json4s._
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
+case class ConversionException(oeisID : String, msg : String) extends Exception("(" +oeisID+ "): " + msg)
+
 object Converter{
     private implicit val formats = DefaultFormats
         

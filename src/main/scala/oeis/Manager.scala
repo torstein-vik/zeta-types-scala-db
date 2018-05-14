@@ -9,6 +9,8 @@ import io.github.torsteinvik.zetatypes.db._
 
 import scala.concurrent.duration.Duration
 
+import scala.util._
+
 object Manager {
     def apply(saver : MultiplicativeFunction => Unit, useBFile : Boolean = true, timeout : Duration = Duration(10, TimeUnit.MINUTES)) {
         import scala.concurrent._
@@ -16,21 +18,16 @@ object Manager {
         
         
         val (count, download : Seq[Future[Seq[JObject]]]) = Download()
-        
-        val promises = collection.mutable.ArrayBuffer.empty[Future[Unit]]
-        
                 
         val uploaded : AtomicInteger = new AtomicInteger()
-        val conv : Seq[Future[Unit]] = download.map(_.map{now => 
-            now.foreach{ ob => 
-                promises += Converter.apply(ob, useBFile).map { mf => 
+        val conv : Future[Seq[Try[Unit]]] = Future.sequence(download.map(_.map{x => Future.sequence(x.map{ fmf => 
+                Converter.apply(fmf, useBFile).map { mf => 
                     saver(mf)
                     val up : Int = uploaded.incrementAndGet
-                    printf("upload: %d of %d - %2.2f %% - %s\n", up, promises.length, (up.toFloat / promises.length) * 100, mf.mflabel)
-                }
-            }
-        })
-        
+                    printf("upload: %d of %d - %2.2f %% - %s\n", up, count, (up.toFloat / count) * 100, mf.mflabel)
+                }.map(Success(_)).recover{case ce @ ConversionException(_, _) => Failure(ce)}
+            })
+        }.flatten)).map(_.flatten)
         
         
         val res = Await.result(conv, timeout)

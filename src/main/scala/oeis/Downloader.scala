@@ -19,12 +19,10 @@ object Downloader {
     }
     
     Future {runDownloader()}
-    Future {runDownloader()}
     
     private def runDownloader() : Unit = {
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         while(true){
-            Thread.sleep(500)
+            Thread.sleep(750)
             if(!downloadQueue.isEmpty) downloadQueue.dequeue().success()
         }
     }

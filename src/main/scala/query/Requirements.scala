@@ -32,7 +32,7 @@ final class Requirements(requirements : Set[MFProperty[_]]) {
     }
     
     // TODO: Account for case where minimal = Set()
-    def createProvidersFromPointers(pointers : Seq[QueryPointer]) : Seq[MFPropertyProvider] = pointers.map { pointer => 
+    def assembleProvider(pointer : QueryPointer) : MFPropertyProvider = {
         def evalPropertyValue[T] (property : MFProperty[T]) : PropertyValue[property.output] = (property, pointer.evalMFProperty(property))
         
         val values : Seq[PropertyValue[_]] = minimal.toSeq.map(prop => evalPropertyValue[prop.output](prop.asInstanceOf[MFProperty[prop.output]]))

@@ -13,7 +13,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 
 libraryDependencies += "org.json4s" %% "json4s-native" % "3.6.0-M1"
 
-libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "2.2.1"
+libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "2.3.0"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6"
 

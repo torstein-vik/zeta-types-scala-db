@@ -14,7 +14,7 @@ object Primes {
     def getPrimes(amount : Int) : Seq[Int] = sieveToBound(primeSizeBound(amount)).take(amount)
     
     def getPrimesBounded(bound : Int) : Seq[Int] = {
-        if(bound <= currentSieve._2) currentSieve._1.takeWhile(_ <= bound) else sieveToBound(bound)
+        if(bound <= currentSieve._2) currentSieve._1.takeWhile(_ < bound) else sieveToBound(bound)
     }
 
     private def primeSizeBound(amount : Int) : Int = amount match {

@@ -16,6 +16,9 @@
 6. Finish parser
 
 7. Clean up entire codebase
+    - Proper exception handling, for such as mongodb connections
+    - Clean up handling of f(1)
+    - Increase test coverage
 
 8. Create a web-API
 

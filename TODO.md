@@ -2,7 +2,7 @@
 # TODO:
 1. Speed up belltable-generation in OEIS converter
     - Implement better prime sieve [Done for now]
-    - Debug the other time-sinks
+    - Debug the other time-sinks [IndexedSeq added, seems fast now]
 
 2. Get the OEIS downloader working
     - There appear to be memory leaks

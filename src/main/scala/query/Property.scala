@@ -79,4 +79,6 @@ object Property extends Properties {
         def _2 : Property[S] = TupleSecondProperty(prop)
     }
     
+    import scala.language.implicitConversions
+    implicit def propertyAsQuery[T](p : Property[T]) : PropertyQuery[T] = new SinglePropertyQuery[T](p)
 }

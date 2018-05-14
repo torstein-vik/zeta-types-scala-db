@@ -28,7 +28,7 @@ object Primes {
         val primes = collection.mutable.Buffer[Int]()
     
         val primebound : Int = ceil(sqrt(bound)).toInt
-        val isPrime = collection.mutable.Seq.fill(bound)(true)
+        val isPrime : collection.mutable.IndexedSeq[Boolean] = collection.mutable.IndexedSeq.fill(bound)(true)
         
         for (p <- 2 to bound - 1 if isPrime(p)) {
             primes += p

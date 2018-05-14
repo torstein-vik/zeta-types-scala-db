@@ -69,29 +69,32 @@ class MongoDB (address : String, database : String, collection : String) extends
         case _ => throw new Exception("Many with this label: " + mflabel)
     })
     
-    def query[T](query : Query[T]) : QueryResult[T] = {
-        val mfs : Seq[JValue] = sync(zetatypes.find()).map(MongoCodec.decode)
-        
-        val reqs = query.requirements.createProvidersFromPointers(mfs.map(multfunc => new QueryPointer {
-            lazy val bellTable = decode[Seq[(Prime, Seq[ComplexNumber])]](multfunc \ "bellTable" \ "values")
+    def query[T](query : Query[T]) : QueryResult[T] = new QueryResult(sync{
             
-            def evalMFProperty[T](q : MFProperty[T]) : T = q match {
-                case `mf` => decode[MultiplicativeFunction](multfunc)
-                case `mflabel` => decode[String](multfunc \ "mflabel")
-                case `batchid` => decode[Option[String]](multfunc \ "metadata" \ "batchId")
-                case `name` => decode[String](multfunc \ "metadata" \ "descriptiveName")
-                case `definition` => decode[String](multfunc \ "metadata" \ "verbalDefinition")
-                case `comments` => decode[Seq[String]](multfunc \ "metadata" \ "comments")
-                case `properties` => decode[Record[Boolean]](multfunc \ "properties")
-                case `belltable` => bellTable
-                case bellcell(p, Nat(e)) => bellTable.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
-                case bellrow(p) => bellTable.find(_._1 == p).map(_._2)
-                case bellsmalltable(ps, es) => bellTable.take(ps).map{case (p, vals) => (p, vals.take(es))}
+            zetatypes.find().map { doc : Document => 
+                val multfunc = MongoCodec.decode(doc)
+                
+                val provider = query.requirements.assembleProvider( new QueryPointer {
+                    lazy val bellTable = decode[Seq[(Prime, Seq[ComplexNumber])]](multfunc \ "bellTable" \ "values")
+                    
+                    def evalMFProperty[S](q : MFProperty[S]) : S = q match {
+                        case `mf` => decode[MultiplicativeFunction](multfunc)
+                        case `mflabel` => decode[String](multfunc \ "mflabel")
+                        case `batchid` => decode[Option[String]](multfunc \ "metadata" \ "batchId")
+                        case `name` => decode[String](multfunc \ "metadata" \ "descriptiveName")
+                        case `definition` => decode[String](multfunc \ "metadata" \ "verbalDefinition")
+                        case `comments` => decode[Seq[String]](multfunc \ "metadata" \ "comments")
+                        case `properties` => decode[Record[Boolean]](multfunc \ "properties")
+                        case `belltable` => bellTable
+                        case bellcell(p, Nat(e)) => bellTable.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
+                        case bellrow(p) => bellTable.find(_._1 == p).map(_._2)
+                        case bellsmalltable(ps, es) => bellTable.take(ps).map{case (p, vals) => (p, vals.take(es))}
+                    }
+                })
+                
+                DirectQuery.queryOne(query)(provider)    
             }
-        }))
-        
-        DirectQuery.query(query)(reqs)
-    }
+    }.flatten)
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)
     def length : Int = sync(zetatypes.count())(0).toInt

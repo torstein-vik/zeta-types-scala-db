@@ -30,7 +30,7 @@ object DirectQuery {
             case ConstantProperty(x) => x
             case GetProperty(x) => evalProperty(x, mf) match {
                 case Some(y) => y
-                case None => throw new Exception("Value assumed to exist in query did not exist!")
+                case None => throw new Exception("Value assumed to exist in query did not exist! Property: " + x)
             }
             case ApplyProperty(record, name) => evalProperty(record, mf).entries.find(_._1 == name).map(_._2)
             case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1

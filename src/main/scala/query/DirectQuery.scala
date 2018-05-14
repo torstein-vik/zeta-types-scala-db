@@ -9,13 +9,15 @@ object DirectQuery {
     case object NoContext extends EvalContext
     case class LambdaContext[T](t : T) extends EvalContext
     
-    def query[T](q : Query[T])(mfs : Seq[MFPropertyProvider]) : QueryResult[T] = new QueryResult(q match {
+    def query[T](q : Query[T])(mfs : Seq[MFPropertyProvider]) : QueryResult[T] = new QueryResult(mfs.map(queryOne(q)(_)).flatten)
+    
+    def queryOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = q match {
         case q : PropertyQuery[T] => q match {
-            case CombinedPropertyQuery(q1, q2) => (query(q1)(mfs) zip query(q2)(mfs)) map {case (x, y) => x ~ y}
-            case SinglePropertyQuery(property) => mfs.map(evalProperty(property, _)(NoContext))
+            case CombinedPropertyQuery(q1, q2) => for {r1 <- queryOne(q1)(mf); r2 <- queryOne(q2)(mf)} yield (r1 ~ r2)
+            case SinglePropertyQuery(property) => Some(evalProperty(property, mf)(NoContext))
         }
-        case FilteredQuery(innerq, predicate) => query(innerq)(mfs.filter(evalPredicate(predicate, _)(NoContext)))
-    })
+        case FilteredQuery(innerq, predicate) => if (evalPredicate(predicate, mf)(NoContext)) queryOne(innerq)(mf) else None
+    }
     
     def evalProperty[T](p : Property[T], mf : MFPropertyProvider)(implicit ctx : EvalContext) : T = p match {
         case p : MFProperty[T] => mf.provide(p)

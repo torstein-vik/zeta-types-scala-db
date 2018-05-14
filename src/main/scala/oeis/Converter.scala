@@ -13,7 +13,9 @@ case class ConversionException(oeisID : String, msg : String) extends Exception(
 
 object Converter{
     private implicit val formats = DefaultFormats
-        
+    
+    private val multipicativityTests : Seq[(Int, (Int, Int))] = primes.take(5).combinations(2).toSeq.map{ case Seq(f1, f2) => (f1 * f2, (f1, f2)) }
+    
     def apply(json : JObject, useBFile : Boolean = false) : Future[MultiplicativeFunction] = {
         val oeisID : String = "A%06d".format((json \ "number").extract[Int])
         val name : String = (json \ "name").extract[String]
@@ -40,6 +42,9 @@ object Converter{
             }).to[IndexedSeq]
             
             if(data(1) != 1) throw ConversionException(oeisID, s"Not multipicative: f(1) = ${data(1)} =/= 1")
+            
+            for ((v, (f1, f2)) <- multipicativityTests if v < data.length if data(v) != data(f1) * data(f2)) 
+                throw ConversionException(oeisID, s"Not multipicative: f($v) = ${data(v)} =/= ${data(f1) * data(f2)} = f($f1) * f($f2)") 
             
             val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
                 for (e <- Stream.from(0).takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))

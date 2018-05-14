@@ -2,6 +2,8 @@ package io.github.torsteinvik.zetatypes.db.oeis
 
 import org.json4s._
 
+import java.util.concurrent.atomic._
+
 import io.github.torsteinvik.zetatypes.db._
 
 object Manager {
@@ -15,13 +17,14 @@ object Manager {
         
         val promises = collection.mutable.ArrayBuffer.empty[Future[Unit]]
         
-        var uploaded : Int = 0
+                
+        val uploaded : AtomicInteger = new AtomicInteger()
         val conv : Seq[Future[Unit]] = download.map(_.map{now => 
             now.foreach{ ob => 
                 promises += Converter.apply(ob, useBFile).map { mf => 
                     saver(mf)
-                    uploaded += 1
-                    printf("upload: %d of %d - %2.2f %% - %s\n", uploaded, promises.length, (uploaded.toFloat / promises.length) * 100, mf.mflabel)
+                    val up : Int = uploaded.incrementAndGet
+                    printf("upload: %d of %d - %2.2f %% - %s\n", up, promises.length, (up.toFloat / promises.length) * 100, mf.mflabel)
                 }
             }
         })

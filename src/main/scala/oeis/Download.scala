@@ -6,6 +6,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 
+import java.util.concurrent.atomic._
 
 object Download {
     private implicit val formats = DefaultFormats
@@ -20,13 +21,13 @@ object Download {
         println("count: " + count)
         println("queries: " + amt)
         
-        var downloaded : Int = 0
+        val downloaded : AtomicInteger = new AtomicInteger()
         
         val data : Seq[Future[Seq[JObject]]] = for (i <- 0 to (amt - 1)) yield { query(i).map{ results => 
             val mfs = (results \ "results").extract[List[JObject]]
 
-            downloaded += mfs.length
-            printf("download: %d of %d - %2.2f %%\n", downloaded, count, (downloaded.toFloat / count) * 100)
+            val down : Int = downloaded.addAndGet(mfs.length)
+            printf("download: %d of %d - %2.2f %%\n", down, count, (down.toFloat / count) * 100)
             mfs
         }}
         

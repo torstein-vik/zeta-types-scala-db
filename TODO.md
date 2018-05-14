@@ -11,15 +11,15 @@
 
 4. Get the mongo property-provider to only encode the bell-table values that are needed, this is a huge time-sink
 
-5. Get the mongo query system to only retrive what is needed, using projections
+5. Get the mongo query system to only retrieve what is needed, using projections
 
 6. Finish parser
 
 7. Clean up entire codebase
 
-8. Create a web-api
+8. Create a web-API
 
-9. Deploy on heroku
+9. Deploy on Heroku
 
 10. Create a webpage
 

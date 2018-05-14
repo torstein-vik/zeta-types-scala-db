@@ -15,7 +15,7 @@ object Downloader {
     def apply(url : String) : Future[Seq[String]] = {
         val promise = Promise[Unit]()
         downloadQueue.enqueue(promise)
-        promise.future
+        promise.future.map { _ => download(url) }
     }
     
     Future {runDownloader()}
@@ -29,4 +29,8 @@ object Downloader {
         }
     }
     
+    private def download(url : String) : Seq[String] = {
+        val source = Source.fromURL(url)("UTF-8") 
+        try source.getLines.toList finally source.close()
+    }
 }

@@ -8,11 +8,11 @@ trait Codecs {
         def encode (x : BigInt) : JValue = if (x <= BigInt(2).pow(32 - 1) && x >= -BigInt(2).pow(32 - 1)) JInt(x) else {
             val mod = BigInt(2).pow(32 - 1)
             var rem = x
-            var lst = Seq[Int]()
+            val lst = collection.mutable.Buffer[Int]()
             
             while (rem != BigInt(0)) {
                 val remm = rem % mod
-                lst = lst :+ remm.toInt
+                lst += remm.toInt
                 rem = (rem - remm) / mod
             }
             
@@ -79,6 +79,7 @@ trait Codecs {
             case _ => throw new CodecException("Found " + x + " expected array (JArray)")
         }
     }
+    
     implicit def seqCodec[T](implicit codec : Codec[T]) : Codec[Seq[T]] = new SeqCodec[T](codec)
     class SeqCodec[T] (codec : Codec[T]) extends Codec[Seq[T]] {
         def encode (x : Seq[T]) : JValue = JArray(x.map(codec.encode).toList)

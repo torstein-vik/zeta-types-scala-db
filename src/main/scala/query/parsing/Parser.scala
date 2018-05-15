@@ -28,17 +28,20 @@ object Parser extends RegexParsers {
     def property[T : TypeTag] : Parser[Property[T]] = mfproperty[T] | compoundproperty[T]
     def compoundproperty[T : TypeTag] : Parser[CompoundProperty[T]] = ???
     
-    def mfproperty[T : TypeTag] : Parser[MFProperty[T]] = (typeOf[T] match {
-        case t if t =:= typeOf[MultiplicativeFunction] => mfproperties.mf
-        case t if t =:= typeOf[String] => (mfproperties.mflabel | mfproperties.name | mfproperties.definition)
-        case t if t =:= typeOf[Option[String]] => mfproperties.batchid
-        case t if t =:= typeOf[Seq[String]] => mfproperties.comments
-        case t if t =:= typeOf[Record[Boolean]] => mfproperties.properties
-        case t if t =:= typeOf[Option[ComplexNumber]] => mfproperties.bellcell
-        case t if t =:= typeOf[Option[Seq[ComplexNumber]]] => mfproperties.bellrow
-        case t if t =:= typeOf[Seq[(Prime, Seq[ComplexNumber])]] => (mfproperties.belltable | mfproperties.bellsmalltable)
-        case t => failure("There is no MFProperty of type " + t)
-    }).map(_.asInstanceOf[MFProperty[T]])
+    def mfproperty[T : TypeTag] : Parser[MFProperty[T]] = {
+        import mfproperties._
+        typeOf[T] match {
+            case t if t =:= typeOf[MultiplicativeFunction] => mf
+            case t if t =:= typeOf[String] => (mflabel | name | definition)
+            case t if t =:= typeOf[Option[String]] => batchid
+            case t if t =:= typeOf[Seq[String]] => comments
+            case t if t =:= typeOf[Record[Boolean]] => properties
+            case t if t =:= typeOf[Option[ComplexNumber]] => bellcell
+            case t if t =:= typeOf[Option[Seq[ComplexNumber]]] => bellrow
+            case t if t =:= typeOf[Seq[(Prime, Seq[ComplexNumber])]] => (belltable | bellsmalltable)
+            case t => failure("There is no MFProperty of type " + t)
+        }
+    }.map(_.asInstanceOf[MFProperty[T]])
     
     object mfproperties {
         def mf          : Parser[MFProperty[MultiplicativeFunction]]             = "mf"          ^^^ Property.mf
@@ -56,14 +59,17 @@ object Parser extends RegexParsers {
         
     }
     
-    def literal[T : TypeTag] : Parser[T] = (typeOf[T] match {
-        case t if t =:= typeOf[Int] => literals.int
-        case t if t =:= typeOf[Integer] => literals.integer
-        case t if t =:= typeOf[Prime] => literals.prime
-        case t if t =:= typeOf[Nat] => literals.natural
-        case t if t =:= typeOf[String] => literals.string
-        case _ => failure("Expected Literal")
-    }).map(_.asInstanceOf[T])
+    def literal[T : TypeTag] : Parser[T] = {
+        import literals._
+        typeOf[T] match {
+            case t if t =:= typeOf[Int] => int
+            case t if t =:= typeOf[Integer] => integer
+            case t if t =:= typeOf[Prime] => prime
+            case t if t =:= typeOf[Nat] => natural
+            case t if t =:= typeOf[String] => string
+            case t => failure("There is no literal for type " + t)
+        }
+    }.map(_.asInstanceOf[T])
     
     object literals {
         private def bigint : Parser[BigInt] = """-?\d+""".r ^^ (BigInt(_))

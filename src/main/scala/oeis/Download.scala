@@ -32,8 +32,7 @@ object Download {
             mfs
         }}
         
-        return (count, data)
-        
+        (count, data)
     }
     
     def queryurl(i : Int) = "https://oeis.org/search?q=keyword:mult&fmt=json&start=" + (i * 10)
@@ -42,6 +41,6 @@ object Download {
         val result = Downloader(queryurl(i))
         
         import org.json4s.native.JsonMethods._
-        return result.map(res => parse(res mkString "\n"))
+        result.map(res => parse(res mkString "\n"))
     }
 }

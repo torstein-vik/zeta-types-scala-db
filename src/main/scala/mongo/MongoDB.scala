@@ -92,7 +92,7 @@ class MongoDB (address : String, database : String, collection : String) extends
                     }
                 })
                 
-                DirectQuery.queryOne(query)(provider)    
+                DirectQuery.queryOne(query)(provider)
             }
     }.flatten)
     

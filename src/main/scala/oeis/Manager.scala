@@ -25,7 +25,7 @@ object Manager {
                     saver(mf)
                     val up : Int = uploaded.incrementAndGet
                     printf("upload: %d of %d - %2.2f %% - %s\n", up, count, (up.toFloat / count) * 100, mf.mflabel)
-                }.map(Success(_)).recover{case ce @ ConversionException(_, _) => Failure(ce)}
+                }.map(Success(_)).recover{case ce : ConversionException => Failure(ce)}
             })
         }.flatten)).map(_.flatten)
         

@@ -3,6 +3,9 @@
 
 1. Test out queries on the large OEIS db for debug and benchmark purposes
     - Use VisualVM or similar to profile
+    - MongoCodec: 16%
+    - evalMFProperty: 70%
+        - Decoding is probably the slow part
 
 2. Get the mongo property-provider to only encode the bell-table values that are needed, this is a huge time-sink
 

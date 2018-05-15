@@ -5,7 +5,7 @@ import org.json4s._
 trait Codecs {
     
     implicit object BigIntCodec extends Codec[BigInt] {
-        def encode (x : BigInt) : JValue = if (x <= BigInt(2).pow(32 - 1) && x >= -BigInt(2).pow(32 - 1)) JInt(x) else {
+        def encode (x : BigInt) : JValue = if (x < BigInt(2).pow(32 - 1) && x > -BigInt(2).pow(32 - 1)) JInt(x) else {
             val mod = BigInt(2).pow(32 - 1)
             var rem = x
             val lst = collection.mutable.Buffer[Int]()
@@ -20,7 +20,6 @@ trait Codecs {
         }
         def decode (x : JValue) : BigInt = x match {
             case JInt(num) => num
-            case JObject(List(JField("$numberLong", JString(num)))) => BigInt(num) // TODO: This must be nuked // CAN THIS BE REMOVED NOW THAT WE FIXED ABOVE BUG?
             case JArray(List(JString("base"), JInt(base), JArray(lst))) => {
                 var sum = BigInt(0)
                 

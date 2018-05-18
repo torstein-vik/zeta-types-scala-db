@@ -119,6 +119,11 @@ class MongoDB (address : String, database : String, collection : String) extends
             case bellsmalltable(ps, _) => Slice(Field(belltable), 0, ps)
         }
         
+        private def toBsonProjection (p : FieldProjection[_]) : Bson = p match {
+            case Field(JSONProperty(path)) => include(path.mkString("."))
+            case Slice(Field(JSONProperty(path)), skip, amt) => slice(path.mkString("."), skip, amt)
+        }
+        
     }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)

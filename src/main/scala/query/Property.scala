@@ -16,6 +16,7 @@ abstract sealed class Property[T] {
 }
 
 abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
+abstract sealed class JSONProperty[T] (val path : String*) extends MFProperty[T]
 abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {def requires = requirements} 
 
 case class ConstantProperty[T](value : T) extends CompoundProperty[T](Set())
@@ -32,17 +33,18 @@ trait Properties {
     implicit def liftProperty[S, T](s : S)(implicit f : S => T) : ConstantProperty[T] = ConstantProperty[T](f(s))
     implicit def liftPropertyLambda[T](f : Property[T] => Predicate) : PropertyLambda[T] = PropertyLambda[T](f(LambdaInputProperty[T]()))
     
-    case object mf extends MFProperty[MultiplicativeFunction]
-    case object mflabel extends MFProperty[String]
-    case object batchid extends MFProperty[Option[String]]
-    case object name extends MFProperty[String]
-    case object definition extends MFProperty[String]
-    case object comments extends MFProperty[Seq[String]]
-    case object properties extends MFProperty[Record[Boolean]]
+    case object mf extends JSONProperty[MultiplicativeFunction]()
+    case object mflabel extends JSONProperty[String]("mflabel")
+    case object batchid extends JSONProperty[Option[String]]("metadata", "batchId")
+    case object name extends JSONProperty[String]("metadata", "descriptiveName")
+    case object definition extends JSONProperty[String]("metadata", "verbalDefinition")
+    case object comments extends JSONProperty[Seq[String]]("metadata", "comments")
+    case object properties extends JSONProperty[Record[Boolean]]("properties")
+    case object belltable extends JSONProperty[Seq[(Prime, Seq[ComplexNumber])]]("bellTable", "values")
+    
     case class bellcell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]
     case class bellrow(p : Prime) extends MFProperty[Option[Seq[ComplexNumber]]]
     case class bellsmalltable(ps : Int = 10, es : Int = 15) extends MFProperty[Seq[(Prime, Seq[ComplexNumber])]]
-    case object belltable extends MFProperty[Seq[(Prime, Seq[ComplexNumber])]]
     
     case class pretty(ps : Int = 10, es : Int = 15) extends CompoundProperty[String](Set(bellsmalltable(ps, es), mflabel, name, definition))
     case class mfvalue(n : Nat) extends CompoundProperty[Option[ComplexNumber]](Factor(n).toSet.map(bellcell.tupled)) {
@@ -81,4 +83,9 @@ object Property extends Properties {
     
     import scala.language.implicitConversions
     implicit def propertyAsQuery[T](p : Property[T]) : PropertyQuery[T] = new SinglePropertyQuery[T](p)
+}
+
+object JSONProperty {
+    def unapply[T] (p : JSONProperty[T]) : Option[Seq[String]] = p match {case p : JSONProperty[_] => Some(p.path) case _ => None}
+    def unapplySeq[T] (p : JSONProperty[T]) : Option[Seq[String]] = unapply(p)
 }

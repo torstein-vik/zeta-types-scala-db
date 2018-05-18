@@ -78,17 +78,11 @@ class MongoDB (address : String, database : String, collection : String) extends
                     lazy val bellTable = decode[Seq[(Prime, Seq[ComplexNumber])]](multfunc \ "bellTable" \ "values")
                     
                     def evalMFProperty[S](q : MFProperty[S]) : S = q match {
-                        case `mf` => decode[MultiplicativeFunction](multfunc)
-                        case `mflabel` => decode[String](multfunc \ "mflabel")
-                        case `batchid` => decode[Option[String]](multfunc \ "metadata" \ "batchId")
-                        case `name` => decode[String](multfunc \ "metadata" \ "descriptiveName")
-                        case `definition` => decode[String](multfunc \ "metadata" \ "verbalDefinition")
-                        case `comments` => decode[Seq[String]](multfunc \ "metadata" \ "comments")
-                        case `properties` => decode[Record[Boolean]](multfunc \ "properties")
                         case `belltable` => bellTable
                         case bellcell(p, Nat(e)) => bellTable.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
                         case bellrow(p) => bellTable.find(_._1 == p).map(_._2)
                         case bellsmalltable(ps, es) => bellTable.take(ps).map{case (p, vals) => (p, vals.take(es))}
+                        case q @ JSONProperty(path) => decode[S](path.foldLeft(multfunc)(_ \ _))(q.codec)
                     }
                 })
                 

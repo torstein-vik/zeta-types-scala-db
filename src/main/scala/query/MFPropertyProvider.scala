@@ -1,6 +1,7 @@
 package io.github.torsteinvik.zetatypes.db.query
 
 import io.github.torsteinvik.zetatypes.db._
+import io.github.torsteinvik.zetatypes.db.dbmath._
 import io.github.torsteinvik.zetatypes.db.query.Property._
 import io.github.torsteinvik.zetatypes.db.Datatypes._
 
@@ -54,7 +55,7 @@ object MFPropertyProvider {
         case (bellsmalltable(primes, exponents), t : Seq[(Prime, Seq[ComplexNumber])]) => new MFPropertyProvider ({
             case bellsmalltable(ps, es) if ps == primes && es == exponents => t
             case bellsmalltable(ps, es) if ps <= primes && es <= exponents => t.take(ps).map{case (p, vals) => (p, vals.take(es))}
-            case bellcell(p, Nat(e)) if e < exponents && t.exists(_._1 == p) => t.find(_._1 == p).get._2.lift(e.toInt)
+            case bellcell(pp @ Prime(p), Nat(e)) if e < exponents && Primes.indexOf(p.toInt) + 1 <= primes => t.find(_._1 == pp).get._2.lift(e.toInt)
         })
         
         case _ => new MFPropertyProvider ({

@@ -124,6 +124,13 @@ class MongoDB (address : String, database : String, collection : String) extends
             case Slice(Field(JSONProperty(path)), skip, amt) => slice(path.mkString("."), skip, amt)
         }
         
+        def apply (requirements : Set[MFProperty[_]]) : Bson = {
+            if (requirements.contains(mf)) return exclude()
+            
+            val bsonProjections = requirements.map(toProjection).groupBy(_.field).toSeq.map(_._2.reduce(union(_, _))).map(toBsonProjection _)
+            
+            fields(bsonProjections : _*)
+        }
     }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)

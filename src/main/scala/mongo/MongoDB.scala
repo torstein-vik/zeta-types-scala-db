@@ -71,7 +71,9 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def query[T](query : Query[T]) : QueryResult[T] = new QueryResult(sync{
             
-            zetatypes.find().map { doc : Document => 
+            val projection = assembleProjection(query.requirements.minimal)
+                        
+            zetatypes.find().projection(projection).map { doc : Document => 
                 val multfunc = MongoCodec.decode(doc)
                 
                 val provider = query.requirements.assembleProvider( new QueryPointer {
@@ -89,6 +91,18 @@ class MongoDB (address : String, database : String, collection : String) extends
                 DirectQuery.queryOne(query)(provider)
             }
     }.flatten)
+    
+    def assembleProjection (requirements : Set[MFProperty[_]]) = {
+        import org.mongodb.scala.model.Projections._
+        import org.bson.conversions.Bson
+        def getProjection (p : MFProperty[_]) : Bson = p match {
+            case `mf` => exclude()
+            case JSONProperty(path) => include(path.mkString(".")) 
+            case bellcell(_, _) | bellrow(_) | bellsmalltable(_, _) => getProjection(belltable)
+        }
+        
+        fields(requirements.map(getProjection).toSeq : _*)
+    }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)
     def length : Int = sync(zetatypes.count())(0).toInt

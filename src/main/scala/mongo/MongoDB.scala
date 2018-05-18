@@ -101,6 +101,16 @@ class MongoDB (address : String, database : String, collection : String) extends
         private case class Field[T] (property : JSONProperty[T]) extends FieldProjection[T] { def field = this}
         private case class Slice[T] (field : Field[Seq[T]], skip : Int, amount : Int) extends FieldProjection[Seq[T]]
         
+        private def union (f1 : FieldProjection[_], f2 : FieldProjection[_]) : FieldProjection[_] = {require(f1.field == f2.field); (f1, f2) match {
+            case (Slice(f, skip1, amt1), Slice(_, skip2, amt2)) => {
+                val skip = math.min(skip1, skip2)
+                val amt = math.max(skip1 + amt1, skip2 + amt2) - skip
+                Slice(f, skip, amt)
+            }
+            case (f : Field[_], _) => f
+            case (_, f : Field[_]) => f
+        }}
+        
     }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)

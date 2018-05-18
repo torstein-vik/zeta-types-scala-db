@@ -8,6 +8,8 @@ object Factor {
     import Primes._
     
     def apply(nat : Nat) : Seq[(Prime, Nat)] = {
+        require(nat != BigInt(0), "Can't factor zero into prime exponents!")
+        
         @tailrec
         def factor_(n : BigInt, curindex : Int, seq : Seq[(Int, Int)]) : Seq[(Int, Int)] = {
             if (n == BigInt(1)) return seq
@@ -16,7 +18,6 @@ object Factor {
             factor_(n / BigInt(p).pow(e), i + 1, (p, e) +: seq)
         }
         
-        if(nat == Nat(1)) return Seq((Prime(2), Nat(0))) // Should this be included???? surely Seq() will do
         factor_(nat.x, 0, Seq()).map{case (p, e) => new Prime(p) -> Nat(e)}
     }
 }

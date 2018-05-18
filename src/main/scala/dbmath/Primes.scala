@@ -11,6 +11,11 @@ object Primes {
 
     def getPrime(index : Int) : Int = currentSieve._1.applyOrElse(index, { i : Int => getPrimes(10000 * ceil((i + 1) / 10000.0).toInt)(i)})
 
+    def indexOf(prime : Int) : Int = primes.takeWhile(_ <= prime).indexOf(prime) match {
+        case -1 => throw new Exception(f"Can't find index of $prime among primes, is it proven prime?")
+        case n => n
+    }
+    
     def getPrimes(amount : Int) : Seq[Int] = sieveToBound(primeSizeBound(amount)).take(amount)
     
     def getPrimesBounded(bound : Int) : Seq[Int] = {

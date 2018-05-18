@@ -77,7 +77,7 @@ class MongoDB (address : String, database : String, collection : String) extends
                 val multfunc = MongoCodec.decode(doc)
                 
                 val provider = query.requirements.assembleProvider( new QueryPointer {
-                    lazy val bellTable = decode[Seq[(Prime, Seq[ComplexNumber])]](multfunc \ "bellTable" \ "values")
+                    lazy val bellTable = decode[Seq[(Prime, Seq[ComplexNumber])]](belltable.path.foldLeft(multfunc)(_ \ _))
                     
                     def evalMFProperty[S](q : MFProperty[S]) : S = q match {
                         case `belltable` => bellTable

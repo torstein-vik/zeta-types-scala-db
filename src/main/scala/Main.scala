@@ -15,6 +15,9 @@ object Main extends App with REPL {
     // All multiplicative functions where 24 and 51 are fix-points
     // mfquery(pretty() where (mfvalue(24) ==? 24 and mfvalue(51) ==? 51)).print()
     
+    // All multiplicative functions which are marked as nice in OEIS
+    // mfquery(pretty() where properties("oeis_nice")).print()
+    
     // Close database
     close()
 }

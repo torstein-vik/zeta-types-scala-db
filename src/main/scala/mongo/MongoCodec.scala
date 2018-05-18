@@ -5,6 +5,7 @@ import org.json4s.native.JsonMethods._
 
 import org.mongodb.scala._
 
+// TODO: Implement a better codec.
 object MongoCodec {
     def encode (x : JValue) : Document = Document(compact(render(x)))
     def decode (x : Document) : JValue = parse(x.toJson)

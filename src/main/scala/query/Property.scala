@@ -44,7 +44,7 @@ trait Properties {
     case object belltable extends JSONProperty[Seq[(Prime, Seq[ComplexNumber])]]("bellTable", "values")
     
     case class bellcell(p : Prime, e : Nat) extends MFProperty[Option[ComplexNumber]]
-    case class bellrow(p : Prime) extends MFProperty[Option[Seq[ComplexNumber]]]
+    case class bellrow(p : Prime) extends MFProperty[Option[Seq[ComplexNumber]]] // TODO: This doesn't need option, just return Seq()
     case class bellsmalltable(ps : Int = 10, es : Int = 15) extends MFProperty[Seq[(Prime, Seq[ComplexNumber])]]
     
     case class pretty(ps : Int = 10, es : Int = 15) extends CompoundProperty[String](Set(bellsmalltable(ps, es), mflabel, name, definition))

@@ -111,6 +111,14 @@ class MongoDB (address : String, database : String, collection : String) extends
             case (_, f : Field[_]) => f
         }}
         
+        import io.github.torsteinvik.zetatypes.db.dbmath._
+        private def toProjection (property : MFProperty[_]) : FieldProjection[_] = property match {
+            case property : JSONProperty[_] => Field(property)
+            case bellcell(Prime(p), _) => Slice(Field(belltable), Primes.indexOf(p.toInt), 1)
+            case bellrow(Prime(p)) => Slice(Field(belltable), Primes.indexOf(p.toInt), 1)
+            case bellsmalltable(ps, _) => Slice(Field(belltable), 0, ps)
+        }
+        
     }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)

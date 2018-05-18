@@ -23,6 +23,8 @@ class DatatypesTest extends FunSuite {
         ;{ Prime(17) }
         ;{ Prime(97) }
         ;{ Prime(179425177) }
+        
+        { new Prime(6) }
     }
     
     test ("Ratio requirements") {

@@ -12,12 +12,14 @@
 3. Get the mongo query system to only retrieve what is needed, using projections
 
 4. Finish parser
+    - Use built-in scala parser, not custom parser
 
 5. Clean up entire codebase
     - Proper exception handling, for such as mongodb connections
     - Clean up handling of f(1)
-    - Increase test coverage
+    - Increase test coverage, and extensively test code
     - Fix warnings
+    - Make dbmath use datatypes
 
 6. Create a web-API
 
@@ -30,3 +32,7 @@
 10. Create an LMFDB downloader
 
 11. Work on test-cases and making them as simple as possible
+
+12. Expand project
+    - Include all essential MFProperties
+    - Create compound properties related to the various datatypes

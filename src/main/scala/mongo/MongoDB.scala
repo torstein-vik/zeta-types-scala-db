@@ -97,13 +97,7 @@ class MongoDB (address : String, database : String, collection : String) extends
         import org.bson.conversions.Bson
         import org.mongodb.scala.model.Projections._
         
-        private def getProjection (p : MFProperty[_]) : Bson = p match {
-            case `mf` => exclude()
-            case JSONProperty(path) => include(path.mkString(".")) 
-            case bellcell(_, _) | bellrow(_) | bellsmalltable(_, _) => getProjection(belltable)
-        }
         
-        def apply (requirements : Set[MFProperty[_]]) : Bson = fields(requirements.map(getProjection).toSeq : _*)
     }
     
     def getAll : Seq[MultiplicativeFunction] = sync(zetatypes.find()).map(fromDoc[MultiplicativeFunction]).sortBy(_.mflabel)

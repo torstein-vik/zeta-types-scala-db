@@ -1,6 +1,7 @@
 package io.github.torsteinvik.zetatypes.db.query
 
 import io.github.torsteinvik.zetatypes.db._
+import io.github.torsteinvik.zetatypes.db.codec._
 import io.github.torsteinvik.zetatypes.db.dbmath._
 import io.github.torsteinvik.zetatypes.db.Datatypes._
 
@@ -16,7 +17,7 @@ abstract sealed class Property[T] {
 }
 
 abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
-abstract sealed class JSONProperty[T] (val path : String*) extends MFProperty[T]
+abstract sealed class JSONProperty[T] (val path : String*)(implicit val codec : Codec[T]) extends MFProperty[T]
 abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {def requires = requirements} 
 
 case class ConstantProperty[T](value : T) extends CompoundProperty[T](Set())

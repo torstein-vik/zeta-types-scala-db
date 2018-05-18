@@ -97,6 +97,9 @@ class MongoDB (address : String, database : String, collection : String) extends
         import org.bson.conversions.Bson
         import org.mongodb.scala.model.Projections._
         
+        private sealed abstract class FieldProjection[T] {def field : Field[T] }
+        private case class Field[T] (property : JSONProperty[T]) extends FieldProjection[T] { def field = this}
+        private case class Slice[T] (field : Field[Seq[T]], skip : Int, amount : Int) extends FieldProjection[Seq[T]]
         
     }
     

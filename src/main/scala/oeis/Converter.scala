@@ -46,7 +46,7 @@ object Converter{
             for ((v, (f1, f2)) <- multipicativityTests if v < data.length if data(v) != data(f1) * data(f2)) 
                 throw ConversionException(oeisID, s"Not multipicative: f($v) = ${data(v)} =/= ${data(f1) * data(f2)} = f($f1) * f($f2)") 
             
-            val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield Prime(p) -> (
+            val bellTable : List[(Prime, List[Integer])] = (for (p <- primes.takeWhile(_ < data.length)) yield new Prime(p) -> (
                 for (e <- Stream.from(0).takeWhile(math.pow(p, _) < data.length)) yield Integer(data(math.pow(p, e).toInt))
             ).toList).toList
             

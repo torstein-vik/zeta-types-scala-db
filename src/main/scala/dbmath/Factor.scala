@@ -17,6 +17,6 @@ object Factor {
         }
         
         if(nat == Nat(1)) return Seq((Prime(2), Nat(0))) // Should this be included???? surely Seq() will do
-        factor_(nat.x, 0, Seq()).map{case (p, e) => Prime(p) -> Nat(e)}
+        factor_(nat.x, 0, Seq()).map{case (p, e) => new Prime(p) -> Nat(e)}
     }
 }

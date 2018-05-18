@@ -41,7 +41,7 @@ package Datatypes {
     /** A natural number >= 0, realizing a [[Real]] */
     case class Nat (x : BigInt) extends Integral(x) {require(x >= 0)}
     /** A prime number, realizing a [[Real]] */
-    case class Prime (x : BigInt) extends Integral(x) {require(x.isProbablePrime(10))} // TODO: Is primality testing slowing things down when there are large bell tables?
+    case class Prime (x : BigInt) extends Integral(x) 
     /** A (big) integer, realizing a [[Real]] */
     case class Integer (x : BigInt) extends Integral(x)
     /** A floating point number, realizing a [[Real]] */
@@ -81,7 +81,9 @@ package Datatypes {
             case JObject(List(JField("prime", x))) => new Prime(decode[BigInt](x))
             case x => new Prime(decode[BigInt](x))
         }
-    )
+    ) {
+        def apply(x : BigInt) = {require(x.isProbablePrime(10), "Prime number not prime: " + x); new Prime(x)}
+    }
     object Integer extends CodecContainer[Integer]({case Integer(x) => encode[BigInt](x)}, {case x => new Integer(decode[BigInt](x))})
     
     object Floating extends CodecContainer[Floating]({case Floating(x) => encode[Double](x)}, {case x => new Floating(decode[Double](x))})

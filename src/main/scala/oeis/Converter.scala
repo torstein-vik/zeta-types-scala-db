@@ -23,9 +23,6 @@ object Converter{
         val comments : Seq[String] = (json \ "comment").extract[Seq[String]]
         val author : String = (json \ "author").extract[String]
         
-        // TODO: if f(1) != 1 exclude as it is not multipicative
-        // TODO: Add test to check if it is multipicative for the first 100 values
-        
         (if (useBFile) {
             BFile(oeisID) : Future[(Int, Seq[BigInt])]
         } else {

@@ -63,4 +63,16 @@ object MFPropertyProvider {
             case x if provider == x => t
         })
     }
+    
+    def provides[T, S] (provider : MFProperty[T], providee : MFProperty[S]) : Boolean = (provider, providee) match {
+        case (x, y) if x == y => true
+        case (`mf`, _) => true
+        case (`belltable`, _ : bellcell) => true
+        case (`belltable`, _ : bellrow) => true
+        case (`belltable`, _ : bellsmalltable) => true
+        case (bellrow(x), bellcell(y, _)) if x == y => true
+        case (bellsmalltable(ps1, es1), bellsmalltable(ps2, es2)) if ps2 <= ps1 && es2 <= es1 => true
+        case (bellsmalltable(ps, es), bellcell(p, Nat(e))) if e < es && Primes.indexOf(p) + 1 <= ps => true
+        case _ => false
+    }
 }

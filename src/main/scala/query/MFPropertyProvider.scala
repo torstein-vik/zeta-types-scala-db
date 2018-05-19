@@ -56,7 +56,7 @@ object MFPropertyProvider {
         case (bellsmalltable(primes, exponents), t : Seq[(Prime, Seq[ComplexNumber])]) => new MFPropertyProvider ({
             case bellsmalltable(ps, es) if ps == primes && es == exponents => t
             case bellsmalltable(ps, es) if ps <= primes && es <= exponents => t.take(ps).map{case (p, vals) => (p, vals.take(es))}
-            case bellcell(p, Nat(e)) if e < exponents && Primes.indexOf(p) + 1 <= primes => t.find(_._1 == p).get._2.lift(e.toInt).getOrElse(Seq())
+            case bellcell(p, Nat(e)) if e < exponents && Primes.indexOf(p) + 1 <= primes => t.find(_._1 == p).get._2.lift(e.toInt)
         })
         
         case _ => new MFPropertyProvider ({

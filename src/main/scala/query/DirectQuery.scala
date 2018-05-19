@@ -46,7 +46,7 @@ object DirectQuery {
             }
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(Nat(0)) 
-                case _ if n == 1 => mf.provide(bellcell(Prime(2), Nat(0))) // In all cases but one, this is 1. Discuss this counterexample, should it be included?
+                case _ if n == 1 => Some(Nat(1))
                 case _ => {
                     val parts = nn.factors.map(evalProperty(_, mf))
                     if (parts.exists(_.isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({

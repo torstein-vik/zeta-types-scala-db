@@ -54,7 +54,7 @@ object Parser extends RegexParsers {
         def belltable   : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]]   = "belltable"   ^^^ Property.belltable
         
         def bellcell : Parser[MFProperty[Option[ComplexNumber]]] = "bellcell" ~> arguments.double[Prime, Nat] ^^ (Property.bellcell.tupled)
-        def bellrow : Parser[MFProperty[Option[Seq[ComplexNumber]]]] = "bellrow" ~> arguments.single[Prime] ^^ (Property.bellrow(_))
+        def bellrow : Parser[MFProperty[Seq[ComplexNumber]]] = "bellrow" ~> arguments.single[Prime] ^^ (Property.bellrow(_))
         def bellsmalltable : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]] = "bellsmalltable" ~> arguments.double[Int, Int] ^^ (Property.bellsmalltable.tupled)
         
     }

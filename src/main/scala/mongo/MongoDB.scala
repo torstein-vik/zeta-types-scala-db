@@ -82,7 +82,7 @@ class MongoDB (address : String, database : String, collection : String) extends
                     def evalMFProperty[S](q : MFProperty[S]) : S = q match {
                         case `belltable` => bellTable
                         case bellcell(p, Nat(e)) => bellTable.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
-                        case bellrow(p) => bellTable.find(_._1 == p).map(_._2)
+                        case bellrow(p) => bellTable.find(_._1 == p).map(_._2).getOrElse(Seq())
                         case bellsmalltable(ps, es) => bellTable.take(ps).map{case (p, vals) => (p, vals.take(es))}
                         case q @ JSONProperty(path) => decode[S](path.foldLeft(multfunc)(_ \ _))(q.codec)
                     }

@@ -36,26 +36,26 @@ object MFPropertyProvider {
             case `properties` => t.properties
             case `belltable` => t.bellTable.values
             case bellcell(p, Nat(e)) => t.bellTable.values.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
-            case bellrow(p) => t.bellTable.values.find(_._1 == p).map(_._2)
+            case bellrow(p) => t.bellTable.values.find(_._1 == p).map(_._2).getOrElse(Seq())
             case bellsmalltable(ps, es) => t.bellTable.values.take(ps).map{case (p, vals) => (p, vals.take(es))}
         })
         
         case (`belltable`, t : Seq[(Prime, Seq[ComplexNumber])]) => new MFPropertyProvider ({
             case `belltable` => t
             case bellcell(p, Nat(e)) => t.find(_._1 == p).map(_._2.lift(e.toInt)).flatten
-            case bellrow(p) => t.find(_._1 == p).map(_._2)
+            case bellrow(p) => t.find(_._1 == p).map(_._2).getOrElse(Seq())
             case bellsmalltable(ps, es) => t.take(ps).map{case (p, vals) => (p, vals.take(es))}
         })
         
-        case (bellrow(prime), t : Option[Seq[ComplexNumber]]) => new MFPropertyProvider ({
+        case (bellrow(prime), t : Seq[ComplexNumber]) => new MFPropertyProvider ({
             case bellrow(p) if p == prime => t
-            case bellcell(p, Nat(e)) if p == prime => t.map(_.lift(e.toInt))
+            case bellcell(p, Nat(e)) if p == prime => t.lift(e.toInt)
         })
         
         case (bellsmalltable(primes, exponents), t : Seq[(Prime, Seq[ComplexNumber])]) => new MFPropertyProvider ({
             case bellsmalltable(ps, es) if ps == primes && es == exponents => t
             case bellsmalltable(ps, es) if ps <= primes && es <= exponents => t.take(ps).map{case (p, vals) => (p, vals.take(es))}
-            case bellcell(pp @ Prime(p), Nat(e)) if e < exponents && Primes.indexOf(p.toInt) + 1 <= primes => t.find(_._1 == pp).get._2.lift(e.toInt)
+            case bellcell(pp @ Prime(p), Nat(e)) if e < exponents && Primes.indexOf(p.toInt) + 1 <= primes => t.find(_._1 == pp).get._2.lift(e.toInt).getOrElse(Seq())
         })
         
         case _ => new MFPropertyProvider ({

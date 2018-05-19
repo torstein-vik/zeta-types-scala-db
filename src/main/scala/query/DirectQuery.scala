@@ -24,7 +24,7 @@ object DirectQuery {
         
         case p : CompoundProperty[T] => p match {
             case LambdaInputProperty() => ctx match {
-                case LambdaContext(t : T) => t
+                case LambdaContext(t) => t.asInstanceOf[T]
                 case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
             }
             case ConstantProperty(x) => x
@@ -38,7 +38,7 @@ object DirectQuery {
             case pretty(ps, es) => {
                 var str = "Label: " + mf.provide(mflabel) + "\t Name: " + mf.provide(name) + "\n Description: " + mf.provide(definition) + "\n\n Bell Table: \n"
                 
-                for {(Prime(prime), vals : Seq[ComplexNumber]) <- mf.provide(bellsmalltable(ps, es))} {
+                for {(Prime(prime), vals) <- mf.provide(bellsmalltable(ps, es))} {
                     str = str + "\np=" + prime + ": \t "+ vals.map(_.pretty).mkString(",\t")
                 }
                 
@@ -49,7 +49,7 @@ object DirectQuery {
                 case _ if n == 1 => mf.provide(bellcell(Prime(2), Nat(0))) // In all cases but one, this is 1. Discuss this counterexample, should it be included?
                 case _ => {
                     val parts = nn.factors.map(evalProperty(_, mf))
-                    if (parts.exists(_ isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({
+                    if (parts.exists(_.isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({
                         case (acc, next) => CartesianComplex(Floating(acc.re * next.re - acc.im * next.im), Floating(acc.re * next.im + acc.im * next.re))
                     }))
                 }

@@ -117,6 +117,6 @@ class DirectQueryTest extends FunSuite {
         assert(query(mflabel where (mfvalue(24) !=? 2)) === Seq("MF-OEIS-A000005"))
         assert(query(mflabel where (bellcell(Prime(2), 3) ==? 1)) === Seq("MF-Test-1"))
         assert(query(mflabel where (bellcell(Prime(2), 3) ==? 1 and bellcell(Prime(3), 3) ==? 1)) === Seq())
-        assert(query(mflabel where (mfvalue(100) exists)) === Seq("MF-OEIS-A000005"))
+        assert(query(mflabel where (mfvalue(100).exists)) === Seq("MF-OEIS-A000005"))
     }
 }

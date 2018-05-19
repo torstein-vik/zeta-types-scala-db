@@ -15,6 +15,11 @@ package Datatypes {
         def pretty : String = this match {
             case CartesianComplex(re, im) => re.pretty + " " + im.pretty + "i"
             case PolarComplex(abs, unitarg) => abs.pretty + " @ " + unitarg.pretty
+            case Nat(x) => x.toString
+            case Prime(x) => x.toString
+            case Integer(x) => x.toString
+            case Floating(x) => x.toString
+            case Ratio(x, y) => x.pretty + "/" + y.pretty
         }
         
         override def equals (other : Any) = other match {
@@ -26,14 +31,6 @@ package Datatypes {
     sealed abstract class Real extends ComplexNumber {
         def re = this
         def im = Integer(0)
-        
-        override def pretty : String = this match {
-            case Nat(x) => x.toString
-            case Prime(x) => x.toString
-            case Integer(x) => x.toString
-            case Floating(x) => x.toString
-            case Ratio(x, y) => x.pretty + "/" + y.pretty
-        }
     }
 
     sealed abstract class Integral (val value : BigInt) extends Real

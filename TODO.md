@@ -5,7 +5,6 @@
     - Proper exception handling, for such as mongodb connections
     - Clean up handling of f(1)
     - Increase test coverage, and extensively test code
-    - Fix warnings
     - Make dbmath use datatypes
 
 2. Finish parser

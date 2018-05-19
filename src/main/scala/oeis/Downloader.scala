@@ -7,8 +7,6 @@ import ExecutionContext.Implicits.global
 
 import collection.mutable.Queue
 
-import util.Try
-
 object Downloader {
     private val downloadQueue : Queue[Promise[Unit]] = Queue()
     
@@ -23,7 +21,7 @@ object Downloader {
     private def runDownloader() : Unit = {
         while(true){
             Thread.sleep(750)
-            if(!downloadQueue.isEmpty) downloadQueue.dequeue().success()
+            if(!downloadQueue.isEmpty) downloadQueue.dequeue().success(())
         }
     }
     

@@ -29,7 +29,7 @@ case class TupleSecondProperty[T, S](inner : Property[(T, S)]) extends CompoundP
 case class PropertyLambda[T](output : Predicate)
 case class LambdaInputProperty[T]() extends CompoundProperty[T](Set())
 
-trait Properties {
+object Property {
     import scala.language.implicitConversions
     implicit def liftProperty[S, T](s : S)(implicit f : S => T) : ConstantProperty[T] = ConstantProperty[T](f(s))
     implicit def liftPropertyLambda[T](f : Property[T] => Predicate) : PropertyLambda[T] = PropertyLambda[T](f(LambdaInputProperty[T]()))
@@ -51,9 +51,7 @@ trait Properties {
     case class mfvalue(n : Nat) extends CompoundProperty[Option[ComplexNumber]](Factor(n).toSet.map(bellcell.tupled)) {
         val factors : Set[bellcell] = requires.asInstanceOf[Set[bellcell]]
     }
-}
-
-object Property extends Properties {
+    
     implicit final class StringProperty(prop : Property[String]) {
         def contains (contains : Property[String]) : Predicate = StringContainsPredicate(prop, contains)
         def matches (regex : Regex) : Predicate = RegexPredicate(prop, regex)

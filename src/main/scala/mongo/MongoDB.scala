@@ -31,7 +31,7 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def batch(mfs : Seq[MultiplicativeFunction], batchId : String = null) : Unit = {
         val time = Instant.now.getEpochSecond.toString
-        val nBatchId = if(batchId == null) "#" + (mfs##).toHexString + " - " + mfs.length else batchId
+        val nBatchId = if(batchId == null) "#" + (mfs.##).toHexString + " - " + mfs.length else batchId
         
         val nmfs = for (mf <- mfs) yield {
             val meta = mf.metadata
@@ -48,7 +48,7 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def store(mf : MultiplicativeFunction) : Unit = {
         val time = Instant.now.getEpochSecond.toString
-        val batchId = "#" + (mf##).toHexString + " - 1" 
+        val batchId = "#" + (mf.##).toHexString + " - 1" 
         
         val meta = mf.metadata
         val nMeta = meta.copy(

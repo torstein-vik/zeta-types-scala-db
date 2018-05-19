@@ -33,7 +33,9 @@ package Datatypes {
         def im = Integer(0)
     }
 
-    sealed abstract class Integral (val value : BigInt) extends Real
+    sealed abstract class Integral (val value : BigInt) extends Real {
+        def toInt = value.toInt
+    }
 
     /** A natural number >= 0, realizing a [[Real]] */
     case class Nat (x : BigInt) extends Integral(x) {require(x >= 0)}

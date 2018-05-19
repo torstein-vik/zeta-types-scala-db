@@ -2,7 +2,6 @@ package io.github.torsteinvik.zetatypes.db.mongo
 
 import io.github.torsteinvik.zetatypes.db.query._
 import io.github.torsteinvik.zetatypes.db.query.Property._
-import io.github.torsteinvik.zetatypes.db.Datatypes._
 
 import org.bson.conversions.Bson
 import org.mongodb.scala.model.Projections._
@@ -26,8 +25,8 @@ object ProjectionAssembly {
     import io.github.torsteinvik.zetatypes.db.dbmath._
     private def toProjection (property : MFProperty[_]) : FieldProjection[_] = property match {
         case property : JSONProperty[_] => Field(property)
-        case bellcell(Prime(p), _) => Slice(Field(belltable), Primes.indexOf(p.toInt), 1)
-        case bellrow(Prime(p)) => Slice(Field(belltable), Primes.indexOf(p.toInt), 1)
+        case bellcell(p, _) => Slice(Field(belltable), Primes.indexOf(p), 1)
+        case bellrow(p) => Slice(Field(belltable), Primes.indexOf(p), 1)
         case bellsmalltable(ps, _) => Slice(Field(belltable), 0, ps)
     }
     

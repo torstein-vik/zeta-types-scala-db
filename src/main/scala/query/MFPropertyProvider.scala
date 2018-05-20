@@ -25,7 +25,6 @@ object MFPropertyProvider {
     
     */
     
-    // TODO factor out t so that we can use isDefinedAt... this requires re-doing some semantics. Also would speed things up.
     def apply[T] (provider : MFProperty[T])(t : T) : MFPropertyProvider = (provider, t) match {
         case (`mf`, t : MultiplicativeFunction) => new MFPropertyProvider ({
             case `mf` => t

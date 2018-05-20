@@ -35,7 +35,7 @@ object DirectQuery {
             case ApplyProperty(record, name) => evalProperty(record, mf).entries.find(_._1 == name).map(_._2)
             case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
             case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
-            case pretty(ps, es) => {
+            case mfpretty(ps, es) => {
                 var str = "Label: " + mf.provide(mflabel) + "\t Name: " + mf.provide(name) + "\n Description: " + mf.provide(definition) + "\n\n Bell Table: \n"
                 
                 for {(Prime(prime), vals) <- mf.provide(bellsmalltable(ps, es))} {

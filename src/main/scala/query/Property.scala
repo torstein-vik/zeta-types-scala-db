@@ -47,7 +47,7 @@ object Property {
     case class bellrow(p : Prime) extends MFProperty[Seq[ComplexNumber]]
     case class bellsmalltable(ps : Int = 10, es : Int = 15) extends MFProperty[Seq[(Prime, Seq[ComplexNumber])]]
     
-    case class pretty(ps : Int = 10, es : Int = 15) extends CompoundProperty[String](Set(bellsmalltable(ps, es), mflabel, name, definition))
+    case class mfpretty(ps : Int = 10, es : Int = 15) extends CompoundProperty[String](Set(bellsmalltable(ps, es), mflabel, name, definition))
     case class mfvalue(n : Nat) extends CompoundProperty[Option[ComplexNumber]](Factor(n).toSet.map(bellcell.tupled)) {
         val factors : Set[bellcell] = requires.asInstanceOf[Set[bellcell]]
     }

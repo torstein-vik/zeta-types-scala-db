@@ -70,4 +70,9 @@ object ComplexNumber extends CodecContainer[ComplexNumber](
         (Try(decode[PolarComplex](x)) getOrElse
         {throw new CodecException("Could not parse ComplexNumber from " + x.toString) })))
     }
-)
+) {
+    import scala.language.implicitConversions
+    implicit def floatToComplex(x : Float) : ComplexNumber = Floating(x.doubleValue)
+    implicit def doubleToComplex(x : Double) : ComplexNumber = Floating(x)
+    implicit def intToComplex(x : Int) : ComplexNumber = Integer(x)
+}

@@ -21,7 +21,11 @@ object Nat extends CodecContainer[Nat](
         case JObject(List(JField("nat", x))) => new Nat(decode[BigInt](x))
         case x => new Nat(decode[BigInt](x))
     }
- )
+){
+    import scala.language.implicitConversions
+    implicit def intToNat(x : Int) : Nat = Nat(x)
+}
+
 object Prime extends CodecContainer[Prime](
     {case Prime(x) => /*JObject(List(JField("prime",*/ encode[BigInt](x)/*)))*/}, 
     {
@@ -30,5 +34,10 @@ object Prime extends CodecContainer[Prime](
     }
 ) {
     def apply(x : BigInt) = {require(x.isProbablePrime(10), "Prime number not prime: " + x); new Prime(x)}
+    import scala.language.implicitConversions
+    implicit def intToPrime(x : Int) : Prime = Prime(x)
 }
-object Integer extends CodecContainer[Integer]({case Integer(x) => encode[BigInt](x)}, {case x => new Integer(decode[BigInt](x))})
+object Integer extends CodecContainer[Integer]({case Integer(x) => encode[BigInt](x)}, {case x => new Integer(decode[BigInt](x))}) {
+    import scala.language.implicitConversions
+    implicit def intToInteger(x : Int) : Integer = Integer(x)
+}

@@ -11,6 +11,8 @@ class DatatypesTest extends FunSuite {
         assertThrows[IllegalArgumentException]{ Nat(-1) }
         ;{ Nat(0) }
         ;{ Nat(10) }
+        
+        { new Nat(-1) }
     }
     
     test ("Prime number requirements") {

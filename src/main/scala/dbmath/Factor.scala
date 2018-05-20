@@ -18,6 +18,6 @@ object Factor {
             factor_(n / BigInt(p).pow(e), i + 1, (p, e) +: seq)
         }
         
-        factor_(nat.x, 0, Seq()).map{case (p, e) => new Prime(p) -> Nat(e)}
+        factor_(nat.x, 0, Seq()).map{case (p, e) => new Prime(p) -> new Nat(e)}
     }
 }

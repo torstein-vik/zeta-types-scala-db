@@ -45,8 +45,8 @@ object DirectQuery {
                 return str
             }
             case nn @ mfvalue(Nat(n)) => n match {
-                case _ if n == 0 => Some(Nat(0)) 
-                case _ if n == 1 => Some(Nat(1))
+                case _ if n == 0 => Some(new Nat(0)) 
+                case _ if n == 1 => Some(new Nat(1))
                 case _ => {
                     val parts = nn.factors.map(evalProperty(_, mf))
                     if (parts.exists(_.isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({

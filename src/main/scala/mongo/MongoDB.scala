@@ -1,7 +1,7 @@
 package io.github.torsteinvik.zetatypes.db.mongo
 
 import io.github.torsteinvik.zetatypes.db._
-import io.github.torsteinvik.zetatypes.db.Datatypes._
+import io.github.torsteinvik.zetatypes.db.datatypes._
 import io.github.torsteinvik.zetatypes.db.codec._
 import io.github.torsteinvik.zetatypes.db.query._
 import io.github.torsteinvik.zetatypes.db.query.Property._

@@ -1,6 +1,6 @@
 package io.github.torsteinvik.zetatypes.db.dbmath
 
-import io.github.torsteinvik.zetatypes.db.Datatypes._
+import io.github.torsteinvik.zetatypes.db.datatypes._
 
 import scala.annotation.tailrec
 

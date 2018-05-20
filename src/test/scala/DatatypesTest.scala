@@ -2,7 +2,7 @@ package io.github.torsteinvik.zetatypes.test.db
 
 import org.scalatest.FunSuite
 
-import io.github.torsteinvik.zetatypes.db.Datatypes._
+import io.github.torsteinvik.zetatypes.db.datatypes._
 
 class DatatypesTest extends FunSuite {
     

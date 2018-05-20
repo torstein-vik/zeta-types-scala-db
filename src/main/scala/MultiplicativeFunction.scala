@@ -1,6 +1,6 @@
 package io.github.torsteinvik.zetatypes.db
 
-import Datatypes._
+import datatypes._
 import codec._
 import org.json4s._
 

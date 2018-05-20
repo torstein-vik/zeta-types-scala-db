@@ -2,7 +2,7 @@ package io.github.torsteinvik.zetatypes.db.oeis
 
 import io.github.torsteinvik.zetatypes.db._
 import io.github.torsteinvik.zetatypes.db.dbmath.Primes._
-import io.github.torsteinvik.zetatypes.db.Datatypes._
+import io.github.torsteinvik.zetatypes.db.datatypes._
 
 import org.json4s._
 

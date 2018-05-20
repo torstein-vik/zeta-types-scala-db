@@ -1,7 +1,7 @@
 package io.github.torsteinvik.zetatypes.db.query
 
 import io.github.torsteinvik.zetatypes.db.query.Property._
-import io.github.torsteinvik.zetatypes.db.Datatypes._
+import io.github.torsteinvik.zetatypes.db.datatypes._
 
 object DirectQuery {
     

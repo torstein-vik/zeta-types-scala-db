@@ -20,5 +20,5 @@ object Main extends App with REPL {
     // mfquery(mfpretty() where properties("oeis_nice")).print()
     
     // Close database
-    close()
+    Thread.sleep(200); close()
 }

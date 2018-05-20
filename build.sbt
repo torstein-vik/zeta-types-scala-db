@@ -15,5 +15,6 @@ libraryDependencies += "org.json4s" %% "json4s-native" % "3.6.0-M1"
 
 libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "2.3.0"
 
+libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.12.3"
 
 //dependsOn(RootProject(uri("git://github.com/torstein-vik/zeta-types-scala.git#1.0.x")))

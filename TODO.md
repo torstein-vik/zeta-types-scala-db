@@ -7,6 +7,7 @@
     - Make dbmath use datatypes
     - MongoDB filter assembly
     - Find a better way to compute compound properties
+    - Add scaladoc to everything important
 
 2. Finish parser
     - Use built-in scala parser, not custom parser

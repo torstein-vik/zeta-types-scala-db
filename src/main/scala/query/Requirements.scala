@@ -13,8 +13,9 @@ final class Requirements(requirements : Set[MFProperty[_]]) {
     
     if (requirements.exists(req => !minimal.exists(MFPropertyProvider.provides(_, req)))) throw new Exception(f"Requirement minimization failed! $minimal cannot provide $requirements")
     
-    // TODO: Account for case where minimal = Set()
     def assembleProvider(pointer : QueryPointer) : MFPropertyProvider = {
+        if (minimal == Set()) return new MFPropertyProvider(PartialFunction.empty)
+        
         def evalPropertyValue[T] (property : MFProperty[T]) : PropertyValue[property.output] = (property, pointer.evalMFProperty(property))
         
         val values : Seq[PropertyValue[_]] = minimal.toSeq.map(prop => evalPropertyValue[prop.output](prop.asInstanceOf[MFProperty[prop.output]]))

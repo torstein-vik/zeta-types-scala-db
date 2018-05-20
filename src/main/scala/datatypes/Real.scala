@@ -16,8 +16,15 @@ case class Floating (x : Double) extends Real (ComplexNumberSubtypeLock)
 /** A ratio of integers, realizing a [[Real]] */
 case class Ratio (num : Integer, den : Integer) extends Real (ComplexNumberSubtypeLock) {require((den : Double) != 0)}
 
-object Floating extends CodecContainer[Floating]({case Floating(x) => encode[Double](x)}, {case x => new Floating(decode[Double](x))})
-object Ratio extends CodecContainer[Ratio]({case Ratio(x, y) => encode[(Integer, Integer)]((x, y))}, {case t => decode[(Integer, Integer)](t) match {case (x, y) => new Ratio(x, y)}})
+object Floating extends CodecContainer[Floating](
+    {case Floating(x) => encode[Double](x)}, 
+    {case x => new Floating(decode[Double](x))}
+)
+
+object Ratio extends CodecContainer[Ratio](
+    {case Ratio(x, y) => encode[(Integer, Integer)]((x, y))}, 
+    {case t => decode[(Integer, Integer)](t) match {case (x, y) => new Ratio(x, y)}}
+)
 
 object Real extends CodecContainer[Real](
     encoder = (x : Real) => x match { 
@@ -36,7 +43,7 @@ object Real extends CodecContainer[Real](
         (Try(decode[Prime](x)) getOrElse
         {throw new CodecException("Could not parse Real number from " + x.toString) })))))
     }
-){
+) {
     import scala.language.implicitConversions
     
     /** Implicit conversion of any [[Real]] to a scala floting point number */

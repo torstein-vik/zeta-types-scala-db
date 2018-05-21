@@ -27,17 +27,13 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(60, TimeUnit.SECONDS))
     
-    private def processMF(mf : MultiplicativeFunction, batchid : Option[String], time : String, batchFallback : String) : MultiplicativeFunction = {
-        val meta = mf.metadata
-        
-        mf.copy(
-            metadata = meta.copy(
-                firstAddedTimestamp = Some(meta.firstAddedTimestamp.getOrElse(time)),
-                lastChangedTimestamp = Some(time),
-                batchId = Some(batchid.getOrElse(meta.batchId.getOrElse(batchFallback)))
-            )
+    private def processMF(mf : MultiplicativeFunction, batchid : Option[String], time : String, batchFallback : String) : MultiplicativeFunction = mf.copy(
+        metadata = mf.metadata.copy(
+            firstAddedTimestamp = Some(mf.metadata.firstAddedTimestamp.getOrElse(time)),
+            lastChangedTimestamp = Some(time),
+            batchId = Some(batchid.getOrElse(mf.metadata.batchId.getOrElse(batchFallback)))
         )
-    }
+    )
     
     def close() = client.close()
     

@@ -27,5 +27,3 @@ trait REPL {
     
     def mfquery[T](q : Query[T]) : QueryResult[T] = db.query(q)
 }
-
-object REPL extends REPL

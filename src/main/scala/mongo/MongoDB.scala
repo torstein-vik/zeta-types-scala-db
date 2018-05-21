@@ -45,13 +45,7 @@ class MongoDB (address : String, database : String, collection : String) extends
         sync(zetatypes.insertMany(nmfs.map(toDoc[MultiplicativeFunction])))
     }
     
-    def store(mf : MultiplicativeFunction, batchid : Option[String] = None, time : Option[String] = None) : Unit = {
-        val altTime = Instant.now.getEpochSecond.toString
-        val altBatchId = f"#${mf.##}%X - 1"
-        
-        val nmf = processMF(mf, batchid, time.getOrElse(altTime), altBatchId)
-        sync(zetatypes.insertOne(toDoc(nmf)))
-    }
+    def store(mf : MultiplicativeFunction, batchid : Option[String] = None, time : Option[String] = None) : Unit = batch(Seq(mf), batchid, time)
     
     def get(mflabel : String) : MultiplicativeFunction = sync {
         import org.mongodb.scala.model.Filters._

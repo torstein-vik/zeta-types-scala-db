@@ -27,47 +27,44 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     private def sync[T](ob : Observable[T]) : Seq[T] = Await.result(ob.toFuture(), Duration(60, TimeUnit.SECONDS))
     
-    def close() = {client.close();}
+    private def processMF(mf : MultiplicativeFunction, batchid : Option[String], time : String, batchFallback : String) : MultiplicativeFunction = {
+        val meta = mf.metadata
+        
+        mf.copy(
+            metadata = meta.copy(
+                firstAddedTimestamp = Some(meta.firstAddedTimestamp.getOrElse(time)),
+                lastChangedTimestamp = Some(time),
+                batchId = Some(batchid.getOrElse(meta.batchId.getOrElse(batchFallback)))
+            )
+        )
+    }
+    
+    def close() = client.close()
     
     def batch(mfs : Seq[MultiplicativeFunction], batchid : Option[String] = None, time : Option[String] = None) : Unit = {
-        lazy val altTime = Instant.now.getEpochSecond.toString
-        lazy val altBatchId = f"#${mfs.##}%X - ${mfs.length}"
+        val altTime = Instant.now.getEpochSecond.toString
+        val altBatchId = f"#${mfs.##}%X - ${mfs.length}"
         
-        val nmfs = for (mf <- mfs) yield {
-            val meta = mf.metadata
-            val nMeta = meta.copy(
-                firstAddedTimestamp = Some(meta.firstAddedTimestamp.getOrElse(time.getOrElse(altTime))),
-                lastChangedTimestamp = Some(time.getOrElse(altTime)),
-                batchId = Some(batchid.getOrElse(meta.batchId.getOrElse(altBatchId)))
-            )
-            
-            mf.copy(metadata = nMeta)
-        }
+        val nmfs = for (mf <- mfs) yield processMF(mf, batchid, time.getOrElse(altTime), altBatchId)
         sync(zetatypes.insertMany(nmfs.map(toDoc[MultiplicativeFunction])))
     }
     
     def store(mf : MultiplicativeFunction, batchid : Option[String] = None, time : Option[String] = None) : Unit = {
-        lazy val altTime = Instant.now.getEpochSecond.toString
-        lazy val altBatchId = f"#${mf.##}%X - 1"
+        val altTime = Instant.now.getEpochSecond.toString
+        val altBatchId = f"#${mf.##}%X - 1"
         
-        val meta = mf.metadata
-        val nMeta = meta.copy(
-            firstAddedTimestamp = Some(meta.firstAddedTimestamp.getOrElse(time.getOrElse(altTime))),
-            lastChangedTimestamp = Some(time.getOrElse(altTime)),
-            batchId = Some(batchid.getOrElse(meta.batchId.getOrElse(altBatchId)))
-        )
-        val nmf = mf.copy(metadata = nMeta)
+        val nmf = processMF(mf, batchid, time.getOrElse(altTime), altBatchId)
         sync(zetatypes.insertOne(toDoc(nmf)))
     }
     
-    def get(mflabel : String) : MultiplicativeFunction = fromDoc[MultiplicativeFunction](sync {
+    def get(mflabel : String) : MultiplicativeFunction = sync {
         import org.mongodb.scala.model.Filters._
         zetatypes.find(equal("mflabel", mflabel))
     } match {
         case Seq() => throw new Exception("Didn't find: " + mflabel)
-        case Seq(x) => x
+        case Seq(x) => fromDoc[MultiplicativeFunction](x)
         case _ => throw new Exception("Many with this label: " + mflabel)
-    })
+    }
     
     def query[T](query : Query[T]) : QueryResult[T] = new QueryResult(sync{
             

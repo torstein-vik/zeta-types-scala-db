@@ -4,12 +4,9 @@
 1. Clean up entire codebase
     - Proper exception handling, for such as mongodb connections
     - Increase test coverage, and extensively test code
-    - Make dbmath use datatypes
     - Find a better way to compute compound properties
     - Add scaladoc to everything important
     - Finish parser. Use built-in scala parser, not custom parser
-    - Cleanup mongodb 
-    - Give oeis-data a batch-id
     - Cleanup MongoDB, make other query-like methods use query
 
 2. Additional features

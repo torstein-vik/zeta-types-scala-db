@@ -7,7 +7,10 @@ object Main extends App with REPL {
     
     def downloadAndSaveOEIS() = {
         import scala.concurrent.duration.Duration
-        oeis.Manager(mfstore, useBFile = true, timeout = Duration.Inf)
+        import java.time.Instant
+        val time : Long = Instant.now.getEpochSecond
+        val batchid = f"OEIS#$time%X"
+        oeis.Manager(mfstore(_, batchid = Some(batchid), time = Some(time.toString)), useBFile = true, timeout = Duration.Inf)
     }
     
     // Query examples: 

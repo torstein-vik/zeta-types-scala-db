@@ -29,16 +29,16 @@ class MongoDB (address : String, database : String, collection : String) extends
     
     def close() = {client.close();}
     
-    def batch(mfs : Seq[MultiplicativeFunction], batchId : String = null) : Unit = {
-        val time = Instant.now.getEpochSecond.toString
-        val nBatchId = if(batchId == null) "#" + (mfs.##).toHexString + " - " + mfs.length else batchId
+    def batch(mfs : Seq[MultiplicativeFunction], batchid : Option[String] = None, time : Option[String] = None) : Unit = {
+        lazy val altTime = Instant.now.getEpochSecond.toString
+        lazy val altBatchId = f"#${mfs.##}%X - ${mfs.length}"
         
         val nmfs = for (mf <- mfs) yield {
             val meta = mf.metadata
             val nMeta = meta.copy(
-                firstAddedTimestamp = if(meta.firstAddedTimestamp.isEmpty) Some(time) else meta.firstAddedTimestamp,
-                lastChangedTimestamp = Some(time),
-                batchId = Some(nBatchId)
+                firstAddedTimestamp = Some(meta.firstAddedTimestamp.getOrElse(time.getOrElse(altTime))),
+                lastChangedTimestamp = Some(time.getOrElse(altTime)),
+                batchId = Some(batchid.getOrElse(meta.batchId.getOrElse(altBatchId)))
             )
             
             mf.copy(metadata = nMeta)
@@ -46,15 +46,15 @@ class MongoDB (address : String, database : String, collection : String) extends
         sync(zetatypes.insertMany(nmfs.map(toDoc[MultiplicativeFunction])))
     }
     
-    def store(mf : MultiplicativeFunction) : Unit = {
-        val time = Instant.now.getEpochSecond.toString
-        val batchId = "#" + (mf.##).toHexString + " - 1" 
+    def store(mf : MultiplicativeFunction, batchid : Option[String] = None, time : Option[String] = None) : Unit = {
+        lazy val altTime = Instant.now.getEpochSecond.toString
+        lazy val altBatchId = f"#${mf.##}%X - 1"
         
         val meta = mf.metadata
         val nMeta = meta.copy(
-            firstAddedTimestamp = if(meta.firstAddedTimestamp.isEmpty) Some(time) else meta.firstAddedTimestamp,
-            lastChangedTimestamp = Some(time),
-            batchId = if(meta.batchId.isEmpty) Some(batchId) else meta.batchId
+            firstAddedTimestamp = Some(meta.firstAddedTimestamp.getOrElse(time.getOrElse(altTime))),
+            lastChangedTimestamp = Some(time.getOrElse(altTime)),
+            batchId = Some(batchid.getOrElse(meta.batchId.getOrElse(altBatchId)))
         )
         val nmf = mf.copy(metadata = nMeta)
         sync(zetatypes.insertOne(toDoc(nmf)))

@@ -23,7 +23,7 @@ object Main extends App with REPL {
     // mfquery(mf where (mflabel === "MF-OEIS-A000005")).print()
     
     // All multiplicative functions which are marked as nice in OEIS
-    // mfquery(mfpretty() where properties("oeis_nice")).print()
+    // mfquery(mfpretty() where properties("oeis_nice") take 5).print()
     
     // Close database
     Thread.sleep(200); close()

@@ -12,3 +12,4 @@ trait PrettyNoOptions[-T, M <: PrettyMode] extends Pretty[T, M, NoOptions] {
     final override def apply (t : T)(o : NoOptions) : String = apply(t)
 }
 
+object Pretty extends PrettyImplementations

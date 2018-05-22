@@ -11,4 +11,6 @@ case class Query[T] (projection : Projection[T], filter : Predicate = TruePredic
         limit = Some(math.min(n, limit.getOrElse(n)))
     )
     
+    final def filter(f : Predicate) : Query[T] = where(f)
+    final def limit(n : Int) : Query[T] = take(n)
 }

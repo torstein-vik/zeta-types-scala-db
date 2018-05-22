@@ -12,6 +12,8 @@
 2. Additional features
     - query sortBy and amount limit
     - MongoDB filter assembly
+    - Add prettification property system
+        - html and latex
 
 3. Create a web-API
 

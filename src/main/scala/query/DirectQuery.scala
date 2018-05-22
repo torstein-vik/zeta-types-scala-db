@@ -54,6 +54,8 @@ object DirectQuery {
     }
     
     def evalPredicate(p : Predicate, mf : MFPropertyProvider)(implicit ctx : EvalContext) : Boolean = p match {
+        case TruePredicate => true
+        
         case EqualityPredicate(prop1, prop2) => evalProperty(prop1, mf) == evalProperty(prop2, mf)
         case StringContainsPredicate(superstr, substr) => evalProperty(superstr, mf) contains evalProperty(substr, mf)
         case RegexPredicate(str, regex) => evalProperty(str, mf) match {case regex() => true case _ => false}

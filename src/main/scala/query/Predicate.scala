@@ -12,6 +12,8 @@ abstract sealed class Predicate (val requires : Set[MFProperty[_]]) {
     final def | (other : Predicate) = or(other)
 }
 
+case object TruePredicate extends Predicate(Set())
+
 case class EqualityPredicate[T](prop1 : Property[T], prop2 : Property[T]) extends Predicate(prop1.requires ++ prop2.requires)
 case class StringContainsPredicate(superstr : Property[String], substr : Property[String]) extends Predicate(superstr.requires ++ substr.requires)
 case class RegexPredicate(str : Property[String], regex : Regex) extends Predicate(str.requires)

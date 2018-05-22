@@ -9,9 +9,9 @@ object DirectQuery {
     case object NoContext extends EvalContext
     case class LambdaContext[T](t : T) extends EvalContext
     
-    def query[T](q : Query[T])(mfs : Seq[MFPropertyProvider]) : QueryResult[T] = new QueryResult(mfs.map(queryOne(q)(_)).flatten)
+    def query[T](q : Query[T])(mfs : Seq[MFPropertyProvider]) : QueryResult[T] = new QueryResult(mfs.map(filterAndProjectOne(q)(_)).flatten)
     
-    def queryOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = {
+    def filterAndProjectOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = {
         if (evalPredicate(q.filter, mf)(NoContext)) Some(evalProjection(q.projection, mf)) else None
     }
     

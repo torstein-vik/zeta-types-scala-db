@@ -7,3 +7,8 @@ trait Pretty[-T, M <: PrettyMode, O <: Options] {
     def apply (t : T)(o : O) : String
 }
 
+trait PrettyNoOptions[-T, M <: PrettyMode] extends Pretty[T, M, NoOptions] {
+    def apply (t : T) : String
+    final override def apply (t : T)(o : NoOptions) : String = apply(t)
+}
+

@@ -11,12 +11,13 @@ object DirectQuery {
     
     def query[T](q : Query[T])(mfs : Seq[MFPropertyProvider]) : QueryResult[T] = new QueryResult(mfs.map(queryOne(q)(_)).flatten)
     
-    def queryOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = q match {
-        case q : PropertyQuery[T] => q match {
-            case CombinedPropertyQuery(q1, q2) => for {r1 <- queryOne(q1)(mf); r2 <- queryOne(q2)(mf)} yield (r1 ~ r2)
-            case SinglePropertyQuery(property) => Some(evalProperty(property, mf)(NoContext))
-        }
-        case FilteredQuery(innerq, predicate) => if (evalPredicate(predicate, mf)(NoContext)) queryOne(innerq)(mf) else None
+    def queryOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = {
+        if (evalPredicate(q.filter, mf)(NoContext)) Some(evalProjection(q.projection, mf)) else None
+    }
+    
+    def evalProjection[T](p : Projection[T], mf : MFPropertyProvider) : T = p match {
+        case Projection.PCombined(p1, p2) => evalProjection(p1, mf) ~ evalProjection(p2, mf)
+        case Projection.PSingle(property) => evalProperty(property, mf)(NoContext)
     }
     
     def evalProperty[T](p : Property[T], mf : MFPropertyProvider)(implicit ctx : EvalContext) : T = p match {

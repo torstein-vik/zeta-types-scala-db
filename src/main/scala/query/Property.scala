@@ -80,8 +80,8 @@ object Property {
         def _2 : Property[S] = TupleSecondProperty(prop)
     }
     
-    import scala.language.implicitConversions
-    implicit def propertyAsQuery[T](p : Property[T]) : PropertyQuery[T] = new SinglePropertyQuery[T](p)
+    implicit def toProjection[T](p : Property[T]) : Projection[T] = Projection(p)
+    implicit def toQuery[T](p : Property[T]) : Query[T] = Query(Projection(p))
 }
 
 object JSONProperty {

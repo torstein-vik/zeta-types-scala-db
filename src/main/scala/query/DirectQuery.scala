@@ -13,6 +13,7 @@ object DirectQuery {
     
     def aggregate[T](q : Query[T])(mfs : QueryResult[T]) : QueryResult[T] = {
         
+        new QueryResult(mfs.take(q.limit.getOrElse(mfs.length)))
     }
     
     def filterAndProjectOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = {

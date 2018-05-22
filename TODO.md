@@ -10,7 +10,7 @@
     - Cleanup MongoDB, make other query-like methods use query
 
 2. Additional features
-    - query sortBy and amount limit
+    - query sortBy
     - MongoDB filter assembly
     - MongoDB sorter assembly
     - MongoDB amount limit optimization

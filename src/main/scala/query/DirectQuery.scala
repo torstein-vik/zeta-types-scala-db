@@ -36,13 +36,9 @@ object DirectQuery {
             case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
             case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
             case mfpretty(ps, es) => {
-                var str = "Label: " + mf.provide(mflabel) + "\t Name: " + mf.provide(name) + "\n Description: " + mf.provide(definition) + "\n\n Bell Table: \n"
-                
-                for {(Prime(prime), vals) <- mf.provide(bellsmalltable(ps, es))} {
-                    str = str + "\np=" + prime + ": \t "+ vals.map(_.pretty).mkString(",\t")
-                }
-                
-                return str
+                f"Label: ${mf(mflabel)} \t Name: ${mf(name)} \nDescription: ${mf(definition)} \n\nBell Table: \n" + (
+                    for {(Prime(prime), vals) <- mf(bellsmalltable(ps, es))} 
+                        yield f"p=${prime}: \t " + vals.map(_.pretty).mkString(", \t")).mkString("\n")
             }
             case nn @ mfvalue(Nat(n)) => n match {
                 case _ if n == 0 => Some(new Nat(0)) 

@@ -20,7 +20,7 @@ object DirectQuery {
     }
     
     def evalProperty[T](p : Property[T], mf : MFPropertyProvider)(implicit ctx : EvalContext) : T = p match {
-        case p : MFProperty[T] => mf.provide(p)
+        case p : MFProperty[T] => mf(p)
         
         case p : CompoundProperty[T] => p match {
             case LambdaInputProperty() => ctx match {

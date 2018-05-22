@@ -8,4 +8,6 @@ package object pretty {
     type HTML = HTML.type
     type LaTeX = LaTeX.type
     
+    type NoOptions = NoOptions.type
+    
 }

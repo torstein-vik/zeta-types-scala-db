@@ -12,6 +12,8 @@
 2. Additional features
     - query sortBy and amount limit
     - MongoDB filter assembly
+    - MongoDB sorter assembly
+    - MongoDB amount limit optimization
     - Add prettification property system
         - html and latex
 

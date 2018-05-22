@@ -4,4 +4,8 @@ package io.github.torsteinvik.zetatypes.db
  *  @author Torstein Vik
  */
 package object pretty {
+    type Plain = Plain.type
+    type HTML = HTML.type
+    type LaTeX = LaTeX.type
+    
 }

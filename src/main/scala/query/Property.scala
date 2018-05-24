@@ -7,7 +7,12 @@ import io.github.torsteinvik.zetatypes.db.datatypes._
 
 import scala.util.matching.Regex
 
-abstract sealed class Property[T] {
+private[query] sealed abstract class PropertySubtypeLock
+private[query] case object PropertySubtypeLock extends PropertySubtypeLock
+
+abstract class Property[T] (lock : PropertySubtypeLock) {
+    require (lock == PropertySubtypeLock, "Subtyping Property is not allowed without the subtyping lock!")
+    
     final type output = T
     
     def requires : Set[MFProperty[_]]
@@ -16,7 +21,7 @@ abstract sealed class Property[T] {
     final def !== (other : Property[T]) : Predicate = EqualityPredicate[T](this, other).not
 }
 
-abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
+abstract sealed class MFProperty[T] extends Property[T](PropertySubtypeLock) {def requires = Set(this)}
 abstract sealed class JSONProperty[T] (val path : String*)(implicit val codec : Codec[T]) extends MFProperty[T]
 abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {
     override def requires = requirements
@@ -47,7 +52,7 @@ case class TupleSecondProperty[T, S](inner : Property[(T, S)]) extends CompoundP
 }
 
 case class PropertyLambda[T](output : Predicate)
-case class LambdaInputProperty[T]() extends Property[T] {def requires = Set()}
+case class LambdaInputProperty[T]() extends Property[T](PropertySubtypeLock) {def requires = Set()}
 
 object Property {
     import scala.language.implicitConversions

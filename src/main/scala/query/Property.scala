@@ -54,6 +54,7 @@ object Property {
         def _2 : Property[S] = TupleSecondProperty(prop)
     }
     
-    implicit def toProjection[T](p : Property[T]) : Projection[T] = Projection(p)
-    implicit def toQuery[T](p : Property[T]) : Query[T] = Query(Projection(p))
+        
+    implicit def toProjection[S, T](s : S)(implicit f : S => Property[T]) : Projection[T] = Projection(f(s))
+    implicit def toQuery[S, T](s : S)(implicit f : S => Property[T]) : Query[T] = Query(Projection(f(s)))
 }

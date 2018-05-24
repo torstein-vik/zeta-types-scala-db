@@ -25,6 +25,10 @@ object QueryTools {
         case Projection.PSingle(property) => evalProperty(property, mf)(NoContext)
     }
     
+    class Evaluator (mf : MFPropertyProvider, ctx : EvalContext) extends PropertyEvaluator {
+        def apply[T] (p : Property[T]) : T = evalProperty(p, mf)(ctx)
+    }
+    
     def evalProperty[T](p : Property[T], mf : MFPropertyProvider)(implicit ctx : EvalContext) : T = p match {
         case p : MFProperty[T] => mf(p)
         

@@ -14,13 +14,9 @@ object QueryTools {
     }
     
     def filterAndProjectOne[T](q : Query[T])(mf : MFPropertyProvider) : Option[T] = {
-        if (evalPredicate(q.filter, mf)(NoContext)) Some(evalProjection(q.projection, mf)) else None
+        if (evalPredicate(q.filter, mf)(NoContext)) Some(evalProperty(q.projection, mf)(NoContext)) else None
     }
-    
-    def evalProjection[T](p : Projection[T], mf : MFPropertyProvider) : T = p match {
-        case Projection.PSingle(property) => evalProperty(property, mf)(NoContext)
-    }
-    
+        
     class Evaluator (mf : MFPropertyProvider, ctx : EvalContext) extends PropertyEvaluator {
         def apply[T] (p : Property[T]) : T = evalProperty(p, mf)(ctx)
     }

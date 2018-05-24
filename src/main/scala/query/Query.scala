@@ -1,6 +1,6 @@
 package io.github.torsteinvik.zetatypes.db.query
 
-case class Query[T] (projection : Projection[T], filter : Predicate = TruePredicate, limit : Option[Int] = None) {
+case class Query[T] (projection : Property[T], filter : Predicate = TruePredicate, limit : Option[Int] = None) {
     lazy val requirements = new Requirements(projection.requires ++ filter.requires)
     
     def where(f : Predicate) : Query[T] = copy(

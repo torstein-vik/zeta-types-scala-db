@@ -56,7 +56,7 @@ class MongoDB (address : String, database : String, collection : String) extends
         case _ => throw new Exception("Many with this label: " + mflabel)
     }
     
-    def query[T](query : Query[T]) : QueryResult[T] = DirectQuery.aggregate(query)(new QueryResult(sync{
+    def query[T](query : Query[T]) : QueryResult[T] = QueryTools.aggregate(query)(new QueryResult(sync{
             
             val projection = ProjectionAssembly(query.requirements.minimal)
             
@@ -75,7 +75,7 @@ class MongoDB (address : String, database : String, collection : String) extends
                     }
                 })
                 
-                DirectQuery.filterAndProjectOne(query)(provider)
+                QueryTools.filterAndProjectOne(query)(provider)
             }
     }.flatten))
     

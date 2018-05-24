@@ -7,7 +7,7 @@ import io.github.torsteinvik.zetatypes.db.datatypes._
 import io.github.torsteinvik.zetatypes.db.query._
 import io.github.torsteinvik.zetatypes.db.query.Property._
 
-class DirectQueryTest extends FunSuite {
+class QueryToolsTest extends FunSuite {
     val mf1 = MultiplicativeFunction(
         mflabel = "MF-OEIS-A000005",
         metadata = Metadata(
@@ -87,7 +87,7 @@ class DirectQueryTest extends FunSuite {
     )
     
     val mfs = Seq(mf1, mf2)
-    def query[T](q : Query[T]) : Seq[T] = DirectQuery.query(q)(mfs.map(MFPropertyProvider(mf)))
+    def query[T](q : Query[T]) : Seq[T] = QueryTools.query(q)(mfs.map(MFPropertyProvider(mf)))
     
     test("basic queries direct") {
         assert( query(mf) === Seq(mf1, mf2))

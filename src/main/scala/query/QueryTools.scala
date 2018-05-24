@@ -3,9 +3,9 @@ package io.github.torsteinvik.zetatypes.db.query
 import io.github.torsteinvik.zetatypes.db.query.Property._
 import io.github.torsteinvik.zetatypes.db.datatypes._
 
-object DirectQuery {
+object QueryTools {
     
-    private[DirectQuery] sealed abstract class EvalContext
+    private[QueryTools] sealed abstract class EvalContext
     case object NoContext extends EvalContext
     case class LambdaContext[T](t : T) extends EvalContext
     

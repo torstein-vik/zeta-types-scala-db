@@ -12,6 +12,18 @@ case class ConstantProperty[T](value : T) extends CompoundProperty[T](Set()) {
     def apply (eval : PropertyEvaluator) : T = value
 }
 
+case class TupledProperties2[T, S](value1 : Property[T], value2 : Property[S]) extends CompoundProperty[(T, S)](value1.requires ++ value2.requires) {
+    def apply (eval : PropertyEvaluator) : (T, S) = (eval(value1), eval(value2))
+}
+
+case class TupledProperties3[T, S, U](value1 : Property[T], value2 : Property[S], value3 : Property[U]) extends CompoundProperty[(T, S, U)](value1.requires ++ value2.requires ++ value3.requires) {
+    def apply (eval : PropertyEvaluator) : (T, S, U) = (eval(value1), eval(value2), eval(value3))
+}
+
+case class TupledProperties4[T, S, U, V](value1 : Property[T], value2 : Property[S], value3 : Property[U], value4 : Property[V]) extends CompoundProperty[(T, S, U, V)](value1.requires ++ value2.requires ++ value3.requires ++ value4.requires) {
+    def apply (eval : PropertyEvaluator) : (T, S, U, V) = (eval(value1), eval(value2), eval(value3), eval(value4))
+}
+
 case class GetProperty[T](inner : Property[Option[T]]) extends CompoundProperty[T](inner.requires) {
     def apply (eval : PropertyEvaluator) : T = eval(inner) match {
         case Some(y) => y

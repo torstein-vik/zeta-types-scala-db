@@ -31,36 +31,11 @@ object QueryTools {
     
     def evalProperty[T](p : Property[T], mf : MFPropertyProvider)(implicit ctx : EvalContext) : T = p match {
         case p : MFProperty[T] => mf(p)
+        case p : CompoundProperty[T] => p(new Evaluator(mf, ctx))
         
         case LambdaInputProperty() => ctx match {
             case LambdaContext(t) => t.asInstanceOf[T]
             case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
-        }
-        
-        case p : CompoundProperty[T] => p match {
-            case ConstantProperty(x) => x
-            case GetProperty(x) => evalProperty(x, mf) match {
-                case Some(y) => y
-                case None => throw new Exception("Value assumed to exist in query did not exist! Property: " + x)
-            }
-            case ApplyProperty(record, name) => evalProperty(record, mf).entries.find(_._1 == name).map(_._2)
-            case TupleFirstProperty(tuple) => evalProperty(tuple, mf)._1
-            case TupleSecondProperty(tuple) => evalProperty(tuple, mf)._2
-            case mfpretty(ps, es) => {
-                f"Label: ${mf(mflabel)} \t Name: ${mf(name)} \nDescription: ${mf(definition)} \n\nBell Table: \n" + (
-                    for {(Prime(prime), vals) <- mf(bellsmalltable(ps, es))} 
-                        yield f"p=${prime}: \t " + vals.map(_.pretty).mkString(", \t")).mkString("\n")
-            }
-            case nn @ mfvalue(Nat(n)) => n match {
-                case _ if n == 0 => Some(new Nat(0)) 
-                case _ if n == 1 => Some(new Nat(1))
-                case _ => {
-                    val parts = nn.factors.map(evalProperty(_, mf))
-                    if (parts.exists(_.isEmpty)) None else Some(parts.map(_.get).foldLeft[ComplexNumber](Integer(1))({
-                        case (acc, next) => CartesianComplex(Floating(acc.re * next.re - acc.im * next.im), Floating(acc.re * next.im + acc.im * next.re))
-                    }))
-                }
-            }
         }
     }
     

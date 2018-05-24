@@ -14,7 +14,7 @@ object Main extends App with REPL {
     }
     
     // Query examples: 
-    // import query.Property._
+    // import query._ ; import Property._
     
     // All multiplicative functions where 24 and 51 are fix-points
     // mfquery(mfpretty() where (mfvalue(24) ==? 24 and mfvalue(51) ==? 51)).print()

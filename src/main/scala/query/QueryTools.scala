@@ -1,8 +1,5 @@
 package io.github.torsteinvik.zetatypes.db.query
 
-import io.github.torsteinvik.zetatypes.db.query.Property._
-import io.github.torsteinvik.zetatypes.db.datatypes._
-
 object QueryTools {
     
     private[QueryTools] sealed abstract class EvalContext

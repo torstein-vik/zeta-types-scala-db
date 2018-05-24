@@ -18,7 +18,6 @@ object QueryTools {
     }
     
     def evalProjection[T](p : Projection[T], mf : MFPropertyProvider) : T = p match {
-        case Projection.PCombined(p1, p2) => evalProjection(p1, mf) ~ evalProjection(p2, mf)
         case Projection.PSingle(property) => evalProperty(property, mf)(NoContext)
     }
     

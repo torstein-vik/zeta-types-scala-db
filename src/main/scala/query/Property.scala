@@ -16,6 +16,12 @@ abstract sealed class Property[T] {
     final def !== (other : Property[T]) : Predicate = EqualityPredicate[T](this, other).not
 }
 
+// TODO: move
+
+trait PropertyEvaluator {
+    def apply[T] (p : Property[T]) : T
+}
+
 abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
 abstract sealed class JSONProperty[T] (val path : String*)(implicit val codec : Codec[T]) extends MFProperty[T]
 abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {def requires = requirements} 

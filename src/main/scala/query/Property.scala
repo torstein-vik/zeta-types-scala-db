@@ -24,7 +24,10 @@ trait PropertyEvaluator {
 
 abstract sealed class MFProperty[T] extends Property[T] {def requires = Set(this)}
 abstract sealed class JSONProperty[T] (val path : String*)(implicit val codec : Codec[T]) extends MFProperty[T]
-abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {def requires = requirements} 
+abstract sealed class CompoundProperty[T](requirements : Set[MFProperty[_]]) extends Property[T] {
+    override def requires = requirements
+    def apply (eval : PropertyEvaluator) : T
+} 
 
 case class ConstantProperty[T](value : T) extends CompoundProperty[T](Set())
 case class GetProperty[T](inner : Property[Option[T]]) extends CompoundProperty[T](inner.requires)

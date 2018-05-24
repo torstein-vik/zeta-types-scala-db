@@ -1,7 +1,6 @@
 package io.github.torsteinvik.zetatypes.db.mongo
 
 import io.github.torsteinvik.zetatypes.db.query._
-import io.github.torsteinvik.zetatypes.db.query.Property._
 
 import org.bson.conversions.Bson
 import org.mongodb.scala.model.Projections._

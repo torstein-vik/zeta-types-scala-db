@@ -2,7 +2,6 @@ package io.github.torsteinvik.zetatypes.db.query
 
 import io.github.torsteinvik.zetatypes.db._
 import io.github.torsteinvik.zetatypes.db.dbmath._
-import io.github.torsteinvik.zetatypes.db.query.Property._
 import io.github.torsteinvik.zetatypes.db.datatypes._
 
 final class MFPropertyProvider(val provider : PartialFunction[MFProperty[_], _]) {

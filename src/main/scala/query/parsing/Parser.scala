@@ -44,18 +44,18 @@ object Parser extends RegexParsers {
     }.map(_.asInstanceOf[MFProperty[T]])
     
     object mfproperties {
-        def mf          : Parser[MFProperty[MultiplicativeFunction]]             = "mf"          ^^^ Property.mf
-        def batchid     : Parser[MFProperty[Option[String]]]                     = "batchid"     ^^^ Property.batchid
-        def mflabel     : Parser[MFProperty[String]]                             = "mflabel"     ^^^ Property.mflabel
-        def name        : Parser[MFProperty[String]]                             = "name"        ^^^ Property.name
-        def definition  : Parser[MFProperty[String]]                             = "definition"  ^^^ Property.definition
-        def comments    : Parser[MFProperty[Seq[String]]]                        = "comments"    ^^^ Property.comments
-        def properties  : Parser[MFProperty[Record[Boolean]]]                    = "properties"  ^^^ Property.properties
-        def belltable   : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]]   = "belltable"   ^^^ Property.belltable
+        def mf          : Parser[MFProperty[MultiplicativeFunction]]             = "mf"          ^^^ query.mf
+        def batchid     : Parser[MFProperty[Option[String]]]                     = "batchid"     ^^^ query.batchid
+        def mflabel     : Parser[MFProperty[String]]                             = "mflabel"     ^^^ query.mflabel
+        def name        : Parser[MFProperty[String]]                             = "name"        ^^^ query.name
+        def definition  : Parser[MFProperty[String]]                             = "definition"  ^^^ query.definition
+        def comments    : Parser[MFProperty[Seq[String]]]                        = "comments"    ^^^ query.comments
+        def properties  : Parser[MFProperty[Record[Boolean]]]                    = "properties"  ^^^ query.properties
+        def belltable   : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]]   = "belltable"   ^^^ query.belltable
         
-        def bellcell : Parser[MFProperty[Option[ComplexNumber]]] = "bellcell" ~> arguments.double[Prime, Nat] ^^ (Property.bellcell.tupled)
-        def bellrow : Parser[MFProperty[Seq[ComplexNumber]]] = "bellrow" ~> arguments.single[Prime] ^^ (Property.bellrow(_))
-        def bellsmalltable : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]] = "bellsmalltable" ~> arguments.double[Int, Int] ^^ (Property.bellsmalltable.tupled)
+        def bellcell : Parser[MFProperty[Option[ComplexNumber]]] = "bellcell" ~> arguments.double[Prime, Nat] ^^ (query.bellcell.tupled)
+        def bellrow : Parser[MFProperty[Seq[ComplexNumber]]] = "bellrow" ~> arguments.single[Prime] ^^ (query.bellrow(_))
+        def bellsmalltable : Parser[MFProperty[Seq[(Prime, Seq[ComplexNumber])]]] = "bellsmalltable" ~> arguments.double[Int, Int] ^^ (query.bellsmalltable.tupled)
         
     }
     

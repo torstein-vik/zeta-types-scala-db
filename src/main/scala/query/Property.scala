@@ -27,7 +27,7 @@ case class TupleFirstProperty[T, S](inner : Property[(T, S)]) extends CompoundPr
 case class TupleSecondProperty[T, S](inner : Property[(T, S)]) extends CompoundProperty[S](inner.requires)
 
 case class PropertyLambda[T](output : Predicate)
-case class LambdaInputProperty[T]() extends CompoundProperty[T](Set())
+case class LambdaInputProperty[T]() extends Property[T] {def requires = Set()}
 
 object Property {
     import scala.language.implicitConversions

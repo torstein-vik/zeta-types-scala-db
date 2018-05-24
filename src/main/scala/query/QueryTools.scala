@@ -28,11 +28,12 @@ object QueryTools {
     def evalProperty[T](p : Property[T], mf : MFPropertyProvider)(implicit ctx : EvalContext) : T = p match {
         case p : MFProperty[T] => mf(p)
         
+        case LambdaInputProperty() => ctx match {
+            case LambdaContext(t) => t.asInstanceOf[T]
+            case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
+        }
+        
         case p : CompoundProperty[T] => p match {
-            case LambdaInputProperty() => ctx match {
-                case LambdaContext(t) => t.asInstanceOf[T]
-                case NoContext => throw new Exception("LambdaInputProperty not in lambda position!")
-            }
             case ConstantProperty(x) => x
             case GetProperty(x) => evalProperty(x, mf) match {
                 case Some(y) => y

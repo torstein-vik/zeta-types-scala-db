@@ -7,6 +7,7 @@
     - Add scaladoc to everything important
     - Finish parser. Use built-in scala parser, not custom parser
     - Cleanup MongoDB, make other query-like methods use query
+    - Make proper MongoCodec
 
 2. Additional features
     - Query sortBy (and traits and classes for generalized sorting, similar to Comparable)

@@ -17,7 +17,7 @@ object QueryTools {
         if (evalPredicate(q.filter, mf)(NoContext)) Some(evalProperty(q.projection, mf)(NoContext)) else None
     }
         
-    class Evaluator (mf : MFPropertyProvider, ctx : EvalContext) extends PropertyEvaluator {
+    class StandardEvaluator (mf : MFPropertyProvider, ctx : EvalContext) extends Evaluator {
         def apply[T] (p : Property[T]) : T = evalProperty(p, mf)(ctx)
     }
     

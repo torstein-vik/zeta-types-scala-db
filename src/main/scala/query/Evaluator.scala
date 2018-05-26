@@ -1,5 +1,5 @@
 package io.github.torsteinvik.zetatypes.db.query
 
-trait PropertyEvaluator {
+trait Evaluator {
     def apply[T] (p : Property[T]) : T
 }

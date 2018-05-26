@@ -3,8 +3,8 @@ package io.github.torsteinvik.zetatypes.db.query
 object QueryTools {
     
     private[QueryTools] sealed abstract class EvalContext
-    case object NoContext extends EvalContext
-    case class LambdaContext[T](t : T) extends EvalContext
+    private[QueryTools] case object NoContext extends EvalContext
+    private[QueryTools] case class LambdaContext[T](t : T) extends EvalContext
     
     def query[T](q : Query[T])(mfs : Seq[MFPropertyProvider]) : QueryResult[T] = aggregate(q)(new QueryResult(mfs.map(filterAndProjectOne(q)(_)).flatten))
     

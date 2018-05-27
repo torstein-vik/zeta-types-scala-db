@@ -44,4 +44,16 @@ class MongoCodecTest extends FunSuite {
         assert(MongoCodec.encodeBson(JArray(List(JInt(12), JInt(24), JInt(34)))).asArray.getValues().asScala.map(_.asNumber.doubleValue()) === Seq(12, 24, 34))
                 
     }
+    
+    test ("MongoCodec decode from Bson") {
+        
+        assert(MongoCodec.decodeBson(new BsonString("hey")) === JString("hey"))
+        assert(MongoCodec.decodeBson(new BsonInt32(12)) === JInt(12))
+        assert(MongoCodec.decodeBson(new BsonDouble(12302.4553)) === JDouble(12302.4553))
+        assert(MongoCodec.decodeBson(new BsonNull()) === JNull)
+        assert(MongoCodec.decodeBson(new BsonBoolean(true)) === JBool(true))
+        assert(MongoCodec.decodeBson(new BsonArray(Seq(new BsonInt32(12), new BsonInt32(24), new BsonInt32(34)).asJava)) === JArray(List(JInt(12), JInt(24), JInt(34))))
+        
+    }
+    
 }

@@ -24,6 +24,10 @@ case class TupledProperties4[T, S, U, V](value1 : Property[T], value2 : Property
     def apply (eval : Evaluator) : (T, S, U, V) = (eval(value1), eval(value2), eval(value3), eval(value4))
 }
 
+case class TupledProperties5[T, S, U, V, W](value1 : Property[T], value2 : Property[S], value3 : Property[U], value4 : Property[V], value5 : Property[W]) extends CompoundProperty[(T, S, U, V, W)](value1.requires ++ value2.requires ++ value3.requires ++ value4.requires ++ value5.requires) {
+    def apply (eval : Evaluator) : (T, S, U, V, W) = (eval(value1), eval(value2), eval(value3), eval(value4), eval(value5))
+}
+
 case class GetProperty[T](inner : Property[Option[T]]) extends CompoundProperty[T](inner.requires) {
     def apply (eval : Evaluator) : T = eval(inner) match {
         case Some(y) => y

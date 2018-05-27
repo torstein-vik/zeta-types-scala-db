@@ -57,6 +57,7 @@ object Property {
     implicit def tuple2[S, T] (tuple : (Property[S], Property[T])) = TupledProperties2(tuple._1, tuple._2)
     implicit def tuple3[S, T, U] (tuple : (Property[S], Property[T], Property[U])) = TupledProperties3(tuple._1, tuple._2, tuple._3)
     implicit def tuple4[S, T, U, V] (tuple : (Property[S], Property[T], Property[U], Property[V])) = TupledProperties4(tuple._1, tuple._2, tuple._3, tuple._4)
+    implicit def tuple5[S, T, U, V, W] (tuple : (Property[S], Property[T], Property[U], Property[V], Property[W])) = TupledProperties5(tuple._1, tuple._2, tuple._3, tuple._4, tuple._5)
         
     implicit def propertyToQuery[S, T](s : S)(implicit f : S => Property[T]) : Query[T] = Query(projection = f(s))
 }

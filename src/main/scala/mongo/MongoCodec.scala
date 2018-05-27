@@ -12,6 +12,6 @@ object MongoCodec {
     def encodeBson (x : JValue) : BsonValue = encode(JObject(List(JField("value", x)))).apply[BsonValue]("value")
     def decodeBson (x : BsonValue) : JValue = decode(Document("value" -> x)) \ "value"
     
-    def encode (x : JValue) : Document = Document(compact(render(x)))
-    def decode (x : Document) : JValue = parse(x.toJson)
+    def encode (x : JValue) : Document = new Document(encodeBson(x).asDocument)
+    def decode (x : Document) : JValue = decodeBson(x.toBsonDocument)
 }

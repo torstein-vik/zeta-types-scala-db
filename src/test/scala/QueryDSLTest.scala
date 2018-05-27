@@ -11,6 +11,8 @@ class QueryDSLTest extends FunSuite {
         mf : Query[MultiplicativeFunction]
         
         (mf, mflabel, mfvalue(2).get) : Query[(MultiplicativeFunction, String, ComplexNumber)]
+        (mf, mflabel, mfvalue(2).get, definition) : Query[(MultiplicativeFunction, String, ComplexNumber, String)]
+        (mf, mflabel, mfvalue(2).get, definition, bellrow(7)) : Query[(MultiplicativeFunction, String, ComplexNumber, String, Seq[ComplexNumber])]
     }
     
     test("simple filtered queries") {

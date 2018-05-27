@@ -23,6 +23,22 @@ object MongoCodec {
         case _ => throw new Exception(f"Unhandled JValue in MongoCodec: $x")
     }
     
+    // TODO: Look into using : @switch, maybe it will speed things up
+    // Unhandled: BINARY, DATE_TIME, DB_POINTER, END_OF_DOCUMENT, INT64, JAVASCRIPT, JAVASCRIPT_WITH_SCOPE, MAX_KEY, MIN_KEY, REGULAR_EXPRESSION, SYMBOL, TIMESTAMP, UNDEFINED
+    def decodeBson (x : BsonValue) : JValue = (x.getBsonType) match {
+        case STRING => JString(x.asString.getValue())
+        case INT32 => JInt(x.asInt32.getValue())
+        case DOUBLE => JDouble(x.asDouble.getValue())
+        case BOOLEAN => JBool(x.asBoolean.getValue())
+        case ARRAY => JArray(x.asArray.asScala.toList.map(decodeBson(_)))
+        case DOCUMENT => JObject(x.asDocument.asScala.toList.map{case (str, bval) => JField(str, decodeBson(bval))})
+        case NULL => JNull
+        
+        case OBJECT_ID => JString(x.asObjectId.getValue().toHexString())
+        
+        case _ => throw new Exception(f"Unhandled BsonValue in MongoCodec: $x of type ${x.getBsonType}")
+    }
+    
     def encode (x : JValue) : Document = new Document(encodeBson(x).asDocument)
     def decode (x : Document) : JValue = decodeBson(x.toBsonDocument)
 }

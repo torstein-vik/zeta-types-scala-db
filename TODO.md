@@ -4,10 +4,10 @@
 1. Clean up entire codebase
     - Proper exception handling, for such as mongodb connections
     - Increase test coverage, and extensively test code
+        - Codec tests that include the json
     - Add scaladoc to everything important
     - Finish parser. Use built-in scala parser, not custom parser
     - Cleanup MongoDB, make other query-like methods use query
-    - Make proper MongoCodec
 
 2. Additional features
     - Query sortBy (and traits and classes for generalized sorting, similar to Comparable)

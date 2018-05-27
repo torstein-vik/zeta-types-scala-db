@@ -54,6 +54,8 @@ class MongoCodecTest extends FunSuite {
         assert(MongoCodec.decodeBson(new BsonBoolean(true)) === JBool(true))
         assert(MongoCodec.decodeBson(new BsonArray(Seq(new BsonInt32(12), new BsonInt32(24), new BsonInt32(34)).asJava)) === JArray(List(JInt(12), JInt(24), JInt(34))))
         
+        assert(MongoCodec.decodeBson(new BsonObjectId(new ObjectId("37d969a34805f751d7146a37"))) === JString("37d969a34805f751d7146a37"))
+        
     }
     
 }

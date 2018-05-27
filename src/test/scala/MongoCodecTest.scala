@@ -4,6 +4,12 @@ import org.scalatest.FunSuite
 
 import io.github.torsteinvik.zetatypes.db.mongo.MongoCodec
 
+import org.json4s._
+import org.json4s.native.JsonMethods._
+
+import org.mongodb.scala._
+import org.mongodb.scala.bson.{Document => _, _}
+
 class MongoCodecTest extends FunSuite {
     test ("MongoCodec for documents") {
         val json = """
@@ -16,11 +22,6 @@ class MongoCodecTest extends FunSuite {
             "arr": [{"check": ["test1", "test2"]}, 12, [12, 4, []]]
         }
         """
-        
-        import org.json4s._
-        import org.json4s.native.JsonMethods._
-        
-        import org.mongodb.scala._
         
         val doc = Document(json) 
         val json4s = parse(json)

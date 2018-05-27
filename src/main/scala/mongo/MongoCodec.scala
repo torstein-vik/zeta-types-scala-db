@@ -9,8 +9,6 @@ import scala.collection.JavaConverters._
 
 // TODO: Implement a better codec.
 object MongoCodec {
-    def encodeBson (x : JValue) : BsonValue = encode(JObject(List(JField("value", x)))).apply[BsonValue]("value")
-    def decodeBson (x : BsonValue) : JValue = decode(Document("value" -> x)) \ "value"
     
     def encode (x : JValue) : Document = new Document(encodeBson(x).asDocument)
     def decode (x : Document) : JValue = decodeBson(x.toBsonDocument)

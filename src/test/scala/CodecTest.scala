@@ -6,12 +6,16 @@ import io.github.torsteinvik.zetatypes.db._
 import io.github.torsteinvik.zetatypes.db.datatypes._
 import io.github.torsteinvik.zetatypes.db.codec._
 
+import org.json4s._
+
 class CodecTest extends FunSuite {
     
     test("Codec for basic types") {
         
         assert(decode[Boolean](encode(true)) === true)
         assert(decode[Boolean](encode(false)) === false)
+        
+        assert(encode(true) === JBool(true))
         
         assert(decode[BigInt](encode(BigInt("13"))) === BigInt("13"))
         assert(decode[BigInt](encode(BigInt("-135532525253"))) === BigInt("-135532525253"))
@@ -28,15 +32,21 @@ class CodecTest extends FunSuite {
         assert(decode[BigInt](encode((BigInt(2) pow 32) - 1)) === (BigInt(2) pow 32) - 1)
         assert(decode[BigInt](encode((BigInt(2) pow 32) + 1)) === (BigInt(2) pow 32) + 1)
         
+        assert(encode(BigInt(12)) === JInt(12))
+        
         assert(decode[Double](encode(121.243)) === 121.243)
         assert(decode[Double](encode(12E23)) === 12E23)
         assert(decode[Double](encode(-5E-21)) === -5E-21)
         assert(decode[Double](encode(-4E-21)) !== -3E-21)
         
+        assert(encode(12.34) === JDouble(12.34))
+        
         assert(decode[String](encode("test1..%&\"")) === "test1..%&\"")
         assert(decode[String](encode("testy test +++--- <3")) === "testy test +++--- <3")
         assert(decode[String](encode("''''hey$:::")) === "''''hey$:::")
         assert(decode[String](encode("halo")) !== "halo ")
+        
+        assert(encode("halo") === JString("halo"))
         
         
         assert(decode[Option[BigInt]](encode[Option[BigInt]](Some(BigInt(123)))) === Some(BigInt(123)))
@@ -52,17 +62,27 @@ class CodecTest extends FunSuite {
         assert(decode[Option[Double]](encode[Option[Double]](None)) === None)
         assert(decode[Option[String]](encode[Option[String]](None)) === None)
         
+        assert(encode[Option[String]](Some("hello")) === JString("hello"))
+        assert(encode[Option[String]](None) === JNull)
+        
         assert(decode[List[BigInt]](encode(List(BigInt(1), BigInt(2), BigInt(3)))) === List(BigInt(1), BigInt(2), BigInt(3)))
         assert(decode[List[Double]](encode(List(1.2, 2.4, 3.5))) === List(1.2, 2.4, 3.5))
         assert(decode[List[String]](encode(List("hey", "there", "!"))) === List("hey", "there", "!"))
+        
+        assert(encode(List("hey", "hello")) === JArray(List(JString("hey"), JString("hello"))))
         
         assert(decode[Seq[BigInt]](encode(Seq(BigInt(1), BigInt(2), BigInt(3)))) === Seq(BigInt(1), BigInt(2), BigInt(3)))
         assert(decode[Seq[Double]](encode(Seq(1.2, 2.4, 3.5))) === Seq(1.2, 2.4, 3.5))
         assert(decode[Seq[String]](encode(Seq("hey", "there", "!"))) === Seq("hey", "there", "!"))
         
+        assert(encode(Seq("hey", "hello")) === JArray(List(JString("hey"), JString("hello"))))
+        
         assert(decode[(String, Double)](encode(("hey", 1.2))) ===(("hey", 1.2)))
         assert(decode[(String, (Double, String))](encode(("hey", (1.2, "hallo")))) ===(("hey", (1.2, "hallo"))))
         assert(decode[(String, (BigInt, BigInt))](encode(("hey", (BigInt(4), BigInt(3))))) ===(("hey", (BigInt(4), BigInt(3)))))
+        
+        assert(encode(("hey", "hello")) === JArray(List(JString("hey"), JString("hello"))))
+        assert(encode(("hey", "hello", "hi")) === JArray(List(JString("hey"), JString("hello"), JString("hi"))))
         
         assert(decode[(String, BigInt, BigInt)](encode(("hey", BigInt(4), BigInt(3)))) ===(("hey", BigInt(4), BigInt(3))))
     }

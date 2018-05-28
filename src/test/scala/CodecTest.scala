@@ -108,6 +108,21 @@ class CodecTest extends FunSuite {
         for (x <- xs) {
             assert(decode[ComplexNumber](encode[ComplexNumber](x)) === x)
         }    
+        
+        assert(encode(xs(0)) === JInt(12))
+        assert(encode(xs(1)) === JInt(7))
+        assert(encode(xs(2)) === JInt(3))
+        assert(encode(xs(3)) === JInt(-2))
+        assert(encode(xs(4)) === JInt(0))
+        assert(encode(xs(5)) === JDouble(12E-23))
+        assert(encode(xs(6)) === JDouble(1.4322E22))
+        assert(encode(xs(7)) === JArray(List(JInt(1), JInt(2))))
+        assert(encode(xs(8)) === JArray(List(JInt(1), JInt(3))))
+        assert(encode(xs(9)) === JObject(List("re" -> JArray(List(JInt(1), JInt(3))), "im" -> JDouble(12E-23))))
+        assert(encode(xs(10)) === JObject(List("re" -> JInt(2), "im" -> JDouble(2))))
+        assert(encode(xs(11)) === JObject(List("re" -> JInt(-4), "im" -> JArray(List(JInt(2), JInt(4))))))
+        assert(encode(xs(12)) === JObject(List("abs" -> JInt(7), "unitarg" -> JArray(List(JInt(1), JInt(2))))))
+        assert(encode(xs(13)) === JObject(List("abs" -> JInt(7), "unitarg" -> JDouble(1/2 + 5E-7))))
     }
     
     test("Codec for ComplexPolynomial") {

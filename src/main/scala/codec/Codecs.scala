@@ -5,7 +5,7 @@ import org.json4s._
 trait Codecs {
     
     implicit object BigIntCodec extends Codec[BigInt] {
-        def encode (x : BigInt) : JValue = if (x.abs < Int.MaxValue) JInt(x) else {
+        def encode (x : BigInt) : JValue = if (x.abs <= Int.MaxValue) JInt(x) else {
             val mod = BigInt(2).pow(32 - 1)
             var rem = x
             val lst = collection.mutable.Buffer[Int]()

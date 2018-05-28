@@ -13,7 +13,7 @@ object MongoCodec {
     // Unhandled: JNothing, JDecimal, JInt out of INT32 bounds
     def encodeBson (x : JValue) : BsonValue = x match {
         case JString(str) => new BsonString(str)
-        case JInt(num) if num.abs < Int.MaxValue => new BsonInt32(num.toInt)
+        case JInt(num) if num.abs <= Int.MaxValue => new BsonInt32(num.toInt)
         case JDouble(num) => new BsonDouble(num)
         case JBool(b) => new BsonBoolean(b)
         case JArray(lst) => new BsonArray(lst.map(encodeBson(_)).asJava)
